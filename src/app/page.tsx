@@ -1,7 +1,12 @@
 import React from "react";
-import { HeroSection } from "@/features/hero/components/HeroSection";
-import { CollectionGrid } from "@/features/collections/components/CollectionGrid";
-import { FeaturedProducts } from "@/features/products/components/FeaturedProducts";
+import { HeroSection } from "../features/hero/components/HeroSection";
+import { CollectionGrid } from "../features/collections/components/CollectionGrid";
+import { SummerSale } from "../features/hero/components/SummerSale";
+import { FeaturedProducts } from "../features/products/components/FeaturedProducts";
+import { LatestBlog } from "../features/blog/components/LatestBlog";
+import { BrandLogos } from "../features/brands/components/BrandLogos";
+import { InstagramSection } from "../features/social/components/InstagramSection";
+import { NewsletterSection } from "../shared/components/NewsletterSection";
 
 export default function HomePage() {
   return (
@@ -12,10 +17,23 @@ export default function HomePage() {
       {/* Categories / Collections Grid */}
       <CollectionGrid />
 
-      {/* Featured Products Showcase */}
-      <FeaturedProducts title="Sản phẩm nổi bật" />
+      {/* Summer Sale Banner */}
+      <SummerSale />
 
-      {/* Additional sections can be added here */}
+      {/* Featured Products Showcase */}
+      <FeaturedProducts title="Featured Products" />
+
+      {/* Latest Blog Section */}
+      <LatestBlog />
+
+      {/* Brand Logos Section */}
+      <BrandLogos />
+
+      {/* Instagram Feature Section */}
+      <InstagramSection />
+
+      {/* Newsletter Subscription Section */}
+      <NewsletterSection />
     </div>
   );
 }

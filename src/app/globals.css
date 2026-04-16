@@ -1,21 +1,30 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
+
+@theme {
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --shadow-luxury: var(--luxury-shadow);
+  --font-sans: var(--font-work-sans);
+  --font-serif: var(--font-playfair);
+}
 
 /* Luxury Design Tokens for Next.js */
 :root {
-  --primary: #715b39;
+  --primary: #f74f2e;
   --primary-foreground: #ffffff;
   --background: #faf9f7;
-  --foreground: #1a1a1a;
+  --foreground: #333333;
   --card: #ffffff;
   --card-foreground: #1a1a1a;
   --border: #e2e2e2;
   --input: #f0f0f0;
   --ring: #715b39;
-  
+
   --radius: 0.75rem;
-  
+
   --luxury-shadow: 0 10px 30px -10px rgba(113, 91, 57, 0.15);
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.2);
@@ -26,6 +35,27 @@
     background-color: var(--background);
     color: var(--foreground);
     line-height: 1.6;
+    font-family: var(--font-work-sans), sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .font-serif,
+  .font-sans {
+    font-family: var(--font-work-sans), sans-serif;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font-family: var(--font-work-sans), sans-serif;
   }
 }
 
@@ -51,4 +81,60 @@
     top: 0;
     z-index: 50;
   }
+}
+
+@keyframes progress {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@layer utilities {
+  .animate-progress {
+    animation: progress 8s linear infinite;
+  }
+}
+
+/* Legacy Parity: Instagram Section Styles */
+.instagram_section .instagram_title {
+  padding: 89px 0 91px 30px;
+  position: relative;
+  background: url("/images/instagram.png") no-repeat;
+  background-size: cover;
+}
+
+.instagram_section .instagram_title:before {
+  background-color: rgba(255, 255, 255, 0.9);
+  content: '';
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.instagram_section .instagram_title h3,
+.instagram_section .instagram_title p,
+.instagram_section .instagram_title i {
+  position: relative;
+  z-index: 1;
+}
+
+.instagram_section .instagram_title h3 {
+  font-weight: 400;
+  line-height: 43px;
+  margin-bottom: 3px;
+}
+
+.instagram_section .instagram_title i:before {
+  font-size: 28px;
+  display: block;
+  margin-bottom: 15px;
 }
