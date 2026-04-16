@@ -1,0 +1,13 @@
+/**
+ * Mapping for {{moduleName}} object (Single)
+ */
+exports.{{moduleName}}DTO = (data) => ({
+  id: data.id,
+  // Thêm các trường cần thiết ở đây
+  created_at: data.created_at
+});
+
+/**
+ * Mapping for list of {{moduleName}}
+ */
+exports.{{moduleName}}ListDTO = (items) => items.map(item => exports.{{moduleName}}DTO(item));

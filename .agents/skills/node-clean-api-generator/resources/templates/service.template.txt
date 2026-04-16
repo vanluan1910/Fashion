@@ -1,0 +1,26 @@
+const {{moduleName}}Repo = require('../repositories/{{moduleName}}.repo');
+const {{moduleName}}Model = require('../models/{{moduleName}}.model');
+const { {{moduleName}}DTO, {{moduleName}}ListDTO } = require('../dtos/{{moduleName}}.dto');
+
+class {{moduleName.capitalize()}}Service {
+  async getAll() {
+    const items = await {{moduleName}}Repo.findAll();
+    return {{moduleName}}ListDTO(items);
+  }
+
+  async getById(id) {
+    const item = await {{moduleName}}Repo.findById(id);
+    if (!item) {
+      throw new Error('Không tìm thấy bản ghi này');
+    }
+    return {{moduleName}}DTO(item);
+  }
+
+  async create(data) {
+    // Logic nghiệp vụ và gán giá trị mặc định từ Model nếu cần
+    const id = await {{moduleName}}Repo.create(data);
+    return { id, message: 'Tạo mới thành công' };
+  }
+}
+
+module.exports = new {{moduleName.capitalize()}}Service();

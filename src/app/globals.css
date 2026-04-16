@@ -1,0 +1,54 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* Luxury Design Tokens for Next.js */
+:root {
+  --primary: #715b39;
+  --primary-foreground: #ffffff;
+  --background: #faf9f7;
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --border: #e2e2e2;
+  --input: #f0f0f0;
+  --ring: #715b39;
+  
+  --radius: 0.75rem;
+  
+  --luxury-shadow: 0 10px 30px -10px rgba(113, 91, 57, 0.15);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.2);
+}
+
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    line-height: 1.6;
+  }
+}
+
+@layer components {
+  .luxury-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--luxury-shadow);
+    transition: all 0.3s ease;
+  }
+
+  .luxury-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 40px -12px rgba(113, 91, 57, 0.25);
+  }
+
+  .glass-header {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+}

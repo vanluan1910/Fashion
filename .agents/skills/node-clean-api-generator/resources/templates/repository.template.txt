@@ -1,0 +1,38 @@
+const db = require('../../../shared/database');
+const {{moduleName}}Model = require('../models/{{moduleName}}.model');
+
+class {{moduleName.capitalize()}}Repository {
+  constructor() {
+    // Tự động lấy danh sách các cột từ Model (trừ password/object)
+    this.columns = Object.keys({{moduleName}}Model)
+      .filter(key => key !== 'password' && typeof {{moduleName}}Model[key] !== 'object')
+      .join(', ');
+  }
+
+  async findAll() {
+    const [rows] = await db.query(`SELECT ${this.columns} FROM {{tableName}}`);
+    return rows;
+  }
+
+  async findById(id) {
+    const [rows] = await db.query(`SELECT ${this.columns} FROM {{tableName}} WHERE id = ?`, [id]);
+    return rows[0];
+  }
+
+  async create(data) {
+    const [result] = await db.query('INSERT INTO {{tableName}} SET ?', data);
+    return result.insertId;
+  }
+
+  async update(id, data) {
+    const [result] = await db.query('UPDATE {{tableName}} SET ? WHERE id = ?', [data, id]);
+    return result.affectedRows > 0;
+  }
+
+  async delete(id) {
+    const [result] = await db.query('DELETE FROM {{tableName}} WHERE id = ?', [id]);
+    return result.affectedRows > 0;
+  }
+}
+
+module.exports = new {{moduleName.capitalize()}}Repository();
