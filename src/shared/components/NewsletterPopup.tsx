@@ -38,7 +38,7 @@ export function NewsletterPopup() {
 
           {/* Popup Content */}
           <motion.div
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[10001] w-full max-w-[730px] min-h-[450px] bg-cover bg-no-repeat bg-center newsletter_popup shadow-2xl overflow-visible"
+            className="fixed top-1/2 left-1/2 z-[10001] w-full max-w-[730px] min-h-[450px] bg-cover bg-no-repeat bg-center newsletter_popup shadow-2xl overflow-visible"
             style={{ backgroundImage: "url('/images/newsletter_popup.jpg')" }}
             initial={{ opacity: 0, scale: 0.8, x: "-50%", y: "-55%" }}
             animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}

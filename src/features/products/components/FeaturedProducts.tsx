@@ -86,21 +86,24 @@ export function FeaturedProducts({ title }: { title: string }) {
                       </div>
                     )}
 
-                    {/* Hover Buttons Overlay - Snappy 0.2s Transition & 45% position */}
-                    <div className="absolute inset-0 bg-white/70 backdrop-blur-[1px] opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 flex flex-col items-center justify-center">
+                    {/* Home Collection Style Hover - Heavy White Wipe UP */}
+                    <div className="absolute bottom-0 left-0 right-0 h-0 group-hover:h-full bg-white/90 opacity-0 group-hover:opacity-100 transition-all duration-400 ease-in-out z-10 pointer-events-none" />
+
+                    {/* Hover Buttons Overlay - Centered with Slide Up */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 flex flex-col items-center justify-center">
                       {!product.isSoldOut ? (
                         <div className="flex flex-col space-y-[11px] w-full items-center transform translate-y-4 group-hover:-translate-y-2 transition-transform duration-200">
                           <Link 
                             href="/cart"
-                            className="inline-table py-[4px] px-[28px] bg-[#f74f2e] text-white text-[14px] font-bold uppercase hover:bg-[#d12807] transition-all duration-200 text-center leading-normal"
+                            className="inline-flex items-center justify-center py-[4px] px-[28px] bg-[#f74f2e] text-white text-[14px] font-bold uppercase hover:bg-[#d12807] transition-all duration-200 text-center leading-normal"
                           >
-                            Add To Bag
+                            Add To Bag <i className="flaticon-arrows ml-2 text-[12px]"></i>
                           </Link>
                           <button 
                             onClick={() => handleQuickView(product)}
-                            className="inline-table py-[4px] px-[28px] border border-[#f74f2e] text-[#f74f2e] text-[14px] font-bold uppercase bg-transparent hover:bg-[#f74f2e] hover:text-white transition-all duration-200 text-center leading-normal"
+                            className="inline-flex items-center justify-center py-[4px] px-[28px] border border-[#f74f2e] text-[#f74f2e] text-[14px] font-bold uppercase bg-transparent hover:bg-[#f74f2e] hover:text-white transition-all duration-200 text-center leading-normal"
                           >
-                            Quick View
+                            Quick View <i className="flaticon-arrows ml-2 text-[12px]"></i>
                           </button>
                         </div>
                       ) : (

@@ -7,6 +7,7 @@ import "./flaticon.css";
 import { Header } from "../shared/components/Header";
 import { Footer } from "../shared/components/Footer";
 import { NewsletterPopup } from "../shared/components/NewsletterPopup";
+import { ScrollToTop } from "../shared/components/ScrollToTop";
 
 // Configure the luxury font
 const workSans = Work_Sans({
@@ -45,6 +46,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <NewsletterPopup />
+        <ScrollToTop />
       </body>
     </html>
   );

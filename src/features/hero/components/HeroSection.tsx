@@ -73,21 +73,22 @@ export function HeroSection() {
                 src={slide.image}
                 alt={slide.title}
                 fill
+                sizes="100vw"
                 priority={index === 0}
                 className="object-cover"
               />
             </div>
             <div className="absolute inset-0 bg-transparent flex flex-col items-center justify-center text-center p-4">
-              <h2 className={`text-[48px] md:text-[60px] font-bold text-[#333] mb-2 font-sans tracking-tight transition-all duration-1000 delay-300 ${index === currentSlide ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}>
+              <h2 className={`text-[36px] md:text-[48px] font-semibold text-[#333] mb-2 font-sans capitalize transition-all duration-1000 delay-300 ${index === currentSlide ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}>
                 {slide.title}
               </h2>
-              <p className={`text-[20px] md:text-[24px] text-[#333] mb-10 max-w-2xl font-sans font-normal transition-all duration-1000 delay-500 ${index === currentSlide ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0"}`}>
+              <p className={`text-[18px] md:text-[24px] text-[#333] mb-8 max-w-2xl font-sans font-normal transition-all duration-1000 delay-500 ${index === currentSlide ? "translate-y-0 opacity-100" : "-translate-y-10 opacity-0"}`}>
                 {slide.subtitle}
               </p>
               <div className={`transition-all duration-1000 delay-700 ${index === currentSlide ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}>
                 <Link 
                   href={slide.link}
-                  className="inline-flex items-center px-[30px] py-[13px] border-[1px] border-[#f74f2e] bg-transparent text-[#f74f2e] hover:!bg-[#f74f2e] hover:!text-white transition-all duration-300 text-[18px] font-semibold font-sans tracking-wider rounded-none group z-20 cursor-pointer"
+                  className="inline-flex items-center px-[30px] py-[13px] border-[1px] border-[#f74f2e] bg-transparent text-[#f74f2e] hover:!bg-[#f74f2e] hover:!text-white transition-all duration-300 text-[18px] font-normal font-sans text-uppercase tracking-normal rounded-none group z-20 cursor-pointer"
                 >
                   SHOP NOW <i className="ml-2 flaticon-arrows vertical_middle transition-colors"></i>
                 </Link>
