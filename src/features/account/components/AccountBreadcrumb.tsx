@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 export function AccountBreadcrumb({ title }: { title: string }) {
   return (
     <section className="bg-[#f9f9f9] border-t border-[#eee] overflow-hidden">
-      <div className="max-w-[1170px] mx-auto px-[15px] pt-[24px] pb-[21px]">
+      <div className="max-w-[1170px] mx-auto px-[15px] pt-[10px] pb-[21px]">
         {/* Replicating wow fadeIn behavior */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -19,9 +19,9 @@ export function AccountBreadcrumb({ title }: { title: string }) {
             <ol className="flex items-center list-none p-0 m-0 text-[14px] font-medium capitalize">
               <li className="flex items-center">
                 <Link href="/" className="text-[#333] hover:text-primary transition-colors">
-                  Home
+                  Trang chủ
                 </Link>
-                <i className="flaticon-arrows-4 mx-[6px] text-[15px] text-[#d5d5d5] before:content-['\f100']"></i>
+                <i className="flaticon-arrows-4 mx-[10px] text-[10px] text-[#333]"></i>
               </li>
               <li className="text-[#888] active" aria-current="page">
                 {title}

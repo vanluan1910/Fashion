@@ -4,15 +4,15 @@ import { AccountBreadcrumb } from "@/features/account/components/AccountBreadcru
 import { CartTable } from "@/features/cart/components/CartTable";
 
 export const metadata: Metadata = {
-  title: "Your Cart | Earthyellow",
-  description: "Review your items and proceed to checkout at Earthyellow luxury storefront.",
+  title: "Giỏ hàng của bạn | Atelier Fashion",
+  description: "Kiểm tra lại các món đồ và tiến hành thanh toán tại cửa hàng thời trang cao cấp Atelier Fashion.",
 };
 
 export default function CartPage() {
   return (
     <main className="main_section">
       {/* START Breadcrumb */}
-      <AccountBreadcrumb title="Your Cart" />
+      <AccountBreadcrumb title="Giỏ hàng của bạn" />
       {/* END Breadcrumb */}
 
       {/* START Cart Section */}

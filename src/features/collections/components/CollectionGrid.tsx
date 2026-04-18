@@ -3,9 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 const COLLECTIONS = [
-  { id: 1, title: "Women", image: "/images/women.png", link: "/category/women" },
-  { id: 2, title: "Men", image: "/images/men.png", link: "/category/men" },
-  { id: 3, title: "Products", image: "/images/products.png", link: "/products" },
+  { id: 1, title: "Thời trang Nữ", image: "/images/women.png", link: "/category/women" },
+  { id: 2, title: "Thời trang Nam", image: "/images/men.png", link: "/category/men" },
+  { id: 3, title: "Phụ kiện cao cấp", image: "/images/products.png", link: "/products" },
 ];
 
 export function CollectionGrid() {
@@ -32,7 +32,7 @@ export function CollectionGrid() {
                 <div className="absolute inset-0 bg-white/90 translate-y-full group-hover:translate-y-0 transition-all duration-300 ease-in-out z-10"></div>
                 
                 {/* Category Label - Fades in and moves on hover */}
-                <span className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 text-[#333] text-[30px] font-semibold uppercase tracking-wider opacity-0 group-hover:opacity-100 group-hover:top-1/2 transition-all duration-300 z-20 whitespace-nowrap">
+                <span className="absolute left-1/2 top-[45%] -translate-x-1/2 -translate-y-1/2 text-[#333] text-[30px] font-semibold capitalize tracking-wider opacity-0 group-hover:opacity-100 group-hover:top-1/2 transition-all duration-300 z-20 whitespace-nowrap">
                   {item.title}
                   <i className="flaticon-arrows ml-1 text-[20px] align-middle"></i>
                 </span>

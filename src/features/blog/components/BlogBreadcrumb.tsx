@@ -19,17 +19,17 @@ export function BlogBreadcrumb() {
             <ol className="flex items-center list-none p-0 m-0 text-[14px] uppercase font-medium">
               <li className="flex items-center">
                 <Link href="/" className="text-[#333] hover:text-primary transition-colors">
-                  Home
+                  Trang chủ
                 </Link>
                 <i className="flaticon-arrows-4 mx-[10px] text-[10px] text-[#333]"></i>
               </li>
               <li className="text-[#999] active" aria-current="page">
-                Blog
+                Tin tức
               </li>
             </ol>
           </nav>
           <h1 className="text-[40px] font-normal text-[#333] capitalize m-0" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Blog
+            Tin tức & Sự kiện
           </h1>
         </motion.div>
       </div>

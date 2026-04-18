@@ -16,7 +16,7 @@ export function NewsletterSection() {
           viewport={{ once: true }}
           transition={{ duration: 1.0, ease: "easeOut" }}
         >
-          Sign Up Our Newsletter
+          Đăng Ký Nhận Bản Tin
         </motion.h3>
 
         <form className="form-inline justify-content-center flex flex-col md:flex-row justify-center items-center gap-0">
@@ -24,7 +24,7 @@ export function NewsletterSection() {
           <motion.input
             type="email"
             className="form-control w-full md:w-[350px] h-auto py-[10px] px-[18px] bg-white border border-[#aaa] text-[18px] text-[#888] rounded-none outline-none focus:border-[#f74f2e] transition-colors"
-            placeholder="Enter your email"
+            placeholder="Nhập địa chỉ email của bạn"
             name="email"
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -35,7 +35,7 @@ export function NewsletterSection() {
           {/* Submit Button with fadeInRight */}
           <motion.button
             type="submit"
-            className="btn border-btn text-uppercase rounded-none ml-0 md:ml-[10px] mt-4 md:mt-0"
+            className="btn border-btn capitalize rounded-none ml-0 md:ml-[10px] mt-4 md:mt-0"
             style={{
               fontSize: "18px",
               padding: "8px 18px 10px",
@@ -49,7 +49,7 @@ export function NewsletterSection() {
             viewport={{ once: true }}
             transition={{ duration: 1, ease: "easeOut" }}
           >
-            SIGN UP <i className="flaticon-arrows" style={{ marginLeft: "4px" }}></i>
+            ĐĂNG KÝ <i className="flaticon-arrows" style={{ marginLeft: "4px" }}></i>
           </motion.button>
         </form>
       </div>

@@ -42,7 +42,7 @@ export function FeaturedProducts({ title }: { title: string }) {
   return (
     <section className="pt-[60px] bg-white overflow-hidden">
       <div className="max-w-[1170px] mx-auto px-[15px]">
-        <h3 className="text-[30px] font-normal text-[#333] text-center mb-[40px] uppercase" style={{ fontFamily: "'Work Sans', sans-serif" }}>
+        <h3 className="text-[30px] font-normal text-[#333] text-center mb-[40px] capitalize" style={{ fontFamily: "'Work Sans', sans-serif" }}>
           {title}
         </h3>
         
@@ -64,7 +64,7 @@ export function FeaturedProducts({ title }: { title: string }) {
                 <div className="group flex flex-col featured_content">
                   {/* Image Section with Hover Actions */}
                   <div className="relative overflow-hidden mb-5 featured_img_content">
-                    <div className="relative aspect-[270/340] w-full">
+                    <div className="relative w-full featured_img_box" style={{ aspectRatio: '270/340' }}>
                       <Image
                         src={product.image}
                         alt={product.title}
@@ -76,13 +76,13 @@ export function FeaturedProducts({ title }: { title: string }) {
                     
                     {/* Labels */}
                     {product.isNew && (
-                      <div className="absolute top-0 left-0 bg-[#333] text-white text-[12px] font-bold px-3 py-1 uppercase z-20">
-                        new<span className="absolute -bottom-1 left-1 w-2 h-2 bg-[#333] rotate-45 transform"></span>
+                      <div className="absolute top-0 left-0 bg-[#333] text-white text-[12px] font-bold px-3 py-1 capitalize z-20">
+                        Mới<span className="absolute -bottom-1 left-1 w-2 h-2 bg-[#333] rotate-45 transform"></span>
                       </div>
                     )}
                     {product.isSale && (
-                      <div className="absolute top-0 left-0 bg-[#f74f2e] text-white text-[12px] font-bold px-3 py-1 uppercase z-20">
-                        sale<span className="absolute -bottom-1 left-1 w-2 h-2 bg-[#f74f2e] rotate-45 transform"></span>
+                      <div className="absolute top-0 left-0 bg-[#f74f2e] text-white text-[12px] font-bold px-3 py-1 capitalize z-20">
+                        Giảm giá<span className="absolute -bottom-1 left-1 w-2 h-2 bg-[#f74f2e] rotate-45 transform"></span>
                       </div>
                     )}
 
@@ -95,26 +95,30 @@ export function FeaturedProducts({ title }: { title: string }) {
                         <div className="flex flex-col space-y-[11px] w-full items-center transform translate-y-4 group-hover:-translate-y-2 transition-transform duration-200">
                           <Link 
                             href="/cart"
-                            className="inline-flex items-center justify-center py-[4px] px-[28px] bg-[#f74f2e] text-white text-[14px] font-bold uppercase hover:bg-[#d12807] transition-all duration-200 text-center leading-normal"
+                            className="inline-flex items-center justify-center py-[4px] px-[28px] bg-[#f74f2e] text-white text-[14px] font-bold capitalize hover:bg-[#d12807] transition-all duration-200 text-center leading-normal"
                           >
-                            Add To Bag <i className="flaticon-arrows ml-2 text-[12px]"></i>
+                            Thêm vào giỏ <i className="flaticon-arrows ml-2 text-[12px]"></i>
                           </Link>
                           <button 
                             onClick={() => handleQuickView(product)}
-                            className="inline-flex items-center justify-center py-[4px] px-[28px] border border-[#f74f2e] text-[#f74f2e] text-[14px] font-bold uppercase bg-transparent hover:bg-[#f74f2e] hover:text-white transition-all duration-200 text-center leading-normal"
+                            className="inline-flex items-center justify-center py-[4px] px-[28px] border border-[#f74f2e] text-[#f74f2e] text-[14px] font-bold capitalize bg-transparent hover:bg-[#f74f2e] hover:text-white transition-all duration-200 text-center leading-normal"
+                            suppressHydrationWarning
                           >
-                            Quick View <i className="flaticon-arrows ml-2 text-[12px]"></i>
+                            Xem nhanh <i className="flaticon-arrows ml-2 text-[12px]"></i>
                           </button>
                         </div>
                       ) : (
-                        <span className="inline-table py-[4px] px-[28px] bg-[#333] text-white text-[14px] font-bold uppercase text-center transform translate-y-4 group-hover:-translate-y-2 transition-transform duration-200">
-                          Sold Out
+                        <span className="inline-table py-[4px] px-[28px] bg-[#333] text-white text-[14px] font-bold capitalize text-center transform translate-y-4 group-hover:-translate-y-2 transition-transform duration-200">
+                          Hết hàng
                         </span>
                       )}
                     </div>
 
                     {/* Wishlist Heart - Snappy 0.2s Transition */}
-                    <button className="absolute bottom-4 right-4 w-9 h-9 bg-white rounded-full flex items-center justify-center text-[#333] hover:bg-[#f74f2e] hover:text-white transition-all duration-200 shadow-md z-20 opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0">
+                    <button 
+                      className="absolute bottom-4 right-4 w-9 h-9 bg-white rounded-full flex items-center justify-center text-[#333] hover:bg-[#f74f2e] hover:text-white transition-all duration-200 shadow-md z-20 opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0"
+                      suppressHydrationWarning
+                    >
                       <i className="flaticon-heart text-[16px]"></i>
                     </button>
                   </div>
@@ -122,9 +126,9 @@ export function FeaturedProducts({ title }: { title: string }) {
                   {/* Details Section */}
                   <div className="text-center featured_detail_content">
                     <Link href={`/product/${product.id}`} className="block mb-1">
-                      <p className="text-[15px] text-[#333] hover:text-[#f74f2e] transition-colors capitalize font-medium" style={{ fontFamily: "'Work Sans', sans-serif" }}>
+                      <span className="block text-[15px] text-[#333] hover:text-[#f74f2e] transition-colors capitalize font-medium" style={{ fontFamily: "'Work Sans', sans-serif" }}>
                         {product.title}
-                      </p>
+                      </span>
                     </Link>
                     <p className="text-[18px] font-bold text-[#333] mb-3" style={{ fontFamily: "'Work Sans', sans-serif" }}>
                       {product.oldPrice && (

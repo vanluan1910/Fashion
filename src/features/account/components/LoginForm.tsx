@@ -3,8 +3,26 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useAuth } from "@/core/providers/AuthProvider";
 
 export function LoginForm() {
+  const { login } = useAuth();
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    
+    // Giả lập login
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("Email") as string;
+    
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    login(email, email.split('@')[0]); // Lấy phần trước @ làm tên tạm thời
+    window.location.href = "/";
+  };
+
   return (
     <div className="login_form lg:pr-[30px] lg:border-r border-[#eee]">
       <motion.div
@@ -13,10 +31,10 @@ export function LoginForm() {
         viewport={{ once: true }}
         transition={{ duration: 1.3, ease: "easeOut" }}
       >
-        <form onSubmit={(e) => e.preventDefault()}>
-          <div className="mb-[20px]">
-            <label htmlFor="email" className="block text-[16px] font-medium text-[#333] mb-[12px] tracking-wider font-sans">
-              Email
+        <form onSubmit={handleSubmit}>
+          <div className="mb-[16px]">
+            <label htmlFor="email" className="block text-[14px] font-bold text-[#333] mb-[8px] uppercase tracking-wider font-sans text-left">
+              Địa chỉ Email <span className="text-[#f74f2e]">*</span>
             </label>
             <input 
               type="email" 
@@ -24,12 +42,13 @@ export function LoginForm() {
               name="Email"
               className="w-full h-[50px] px-5 border border-[#eee] focus:border-[#f74f2e] outline-none transition-all duration-300 font-sans"
               required
+              suppressHydrationWarning
             />
           </div>
           
-          <div className="mb-[20px]">
-            <label htmlFor="password" className="block text-[16px] font-medium text-[#333] mb-[12px] tracking-wider font-sans">
-              Password
+          <div className="mb-[16px]">
+            <label htmlFor="password" className="block text-[14px] font-bold text-[#333] mb-[8px] uppercase tracking-wider font-sans text-left">
+              Mật khẩu <span className="text-[#f74f2e]">*</span>
             </label>
             <input 
               type="password" 
@@ -37,22 +56,27 @@ export function LoginForm() {
               name="Password"
               className="w-full h-[50px] px-5 border border-[#eee] focus:border-[#f74f2e] outline-none transition-all duration-300 font-sans"
               required
+              suppressHydrationWarning
             />
           </div>
           
-          <div className="login_links mt-[20px] flex flex-wrap items-center">
+          <div className="login_links mt-[25px] flex flex-wrap items-center gap-y-4">
             <button 
               type="submit" 
-              className="background-btn h-[52px] px-[19px] bg-[#f74f2e] text-white text-[18px] font-normal uppercase hover:bg-transparent hover:text-[#f74f2e] hover:border-[#f74f2e] border border-transparent transition-all duration-300 flex items-center justify-center font-sans tracking-normal"
+              disabled={isLoading}
+              className={`background-btn h-[50px] px-[35px] bg-[#f74f2e] text-white text-[16px] font-bold uppercase transition-all duration-300 flex items-center justify-center font-sans tracking-widest ${isLoading ? "opacity-70 cursor-not-allowed" : "hover:bg-[#333]"}`}
+              suppressHydrationWarning
             >
-              login
+              {isLoading ? "Đang đăng nhập..." : "đăng nhập"}
             </button>
-            <p className="inline-block pl-[14px] text-[14px] text-[#333] m-0 mr-4 font-sans">or</p>
-            <Link href="/shop" className="text-[14px] text-[#222] hover:text-[#f74f2e] transition-all font-sans mr-auto">
-              Return to shop
-            </Link>
-            <Link href="#" className="text-[14px] text-[#222] hover:text-[#f74f2e] transition-all font-sans text-right w-full lg:w-[45%] lg:mt-[-2px] mt-4 lg:text-right text-left">
-              <u>Forgot Password?</u>
+            <div className="flex items-center ml-[20px]">
+              <p className="text-[14px] text-[#777] m-0 mr-4 font-sans italic">hoặc</p>
+              <Link href="/shop" className="text-[14px] text-[#222] hover:text-[#f74f2e] transition-all font-sans font-medium border-b border-transparent hover:border-[#f74f2e]">
+                Quay lại cửa hàng
+              </Link>
+            </div>
+            <Link href="#" className="text-[13px] text-[#777] hover:text-[#f74f2e] transition-all font-sans text-right ml-auto">
+              Quên mật khẩu?
             </Link>
           </div>
         </form>
@@ -72,14 +96,14 @@ export function CreateAccountSection() {
         className="text-center"
       >
         <h3 className="text-[30px] font-normal text-[#333] mb-4" style={{ fontFamily: "'Work Sans', sans-serif" }}>
-          Create Account
+          Tạo tài khoản mới
         </h3>
         <p className="text-[16px] text-[#777] leading-relaxed max-w-[400px]">
-          If you have not registered yet. Please{" "}
-          <Link href="#" className="text-[#333] hover:text-[#f74f2e] transition-all underline underline-offset-4 font-normal">
-            click here
+          Nếu bạn chưa có tài khoản, vui lòng{" "}
+          <Link href="/register" className="text-[#333] hover:text-[#f74f2e] transition-all underline underline-offset-4 font-normal">
+            nhấn vào đây
           </Link>{" "}
-          to create an account.
+          để đăng ký thành viên mới.
         </p>
       </motion.div>
     </div>

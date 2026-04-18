@@ -21,7 +21,7 @@ export default function HomePage() {
       <SummerSale />
 
       {/* Featured Products Showcase */}
-      <FeaturedProducts title="Featured Products" />
+      <FeaturedProducts title="Sản phẩm nổi bật" />
 
       {/* Latest Blog Section */}
       <LatestBlog />

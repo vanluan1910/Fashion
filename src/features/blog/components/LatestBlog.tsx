@@ -8,20 +8,20 @@ import { motion } from "framer-motion";
 const BLOGS = [
   {
     id: 1,
-    title: "Sed ut perspiciatis unde omnis iste",
-    date: "March 21, 2018",
-    author: "Admin",
+    title: "Xu hướng thời trang mùa hè 2026",
+    date: "21 Tháng 3, 2026",
+    author: "Quản trị viên",
     image: "/images/blog1.png",
-    excerpt: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in som...",
+    excerpt: "Khám phá những xu hướng thời trang mới nhất sẽ làm mưa làm gió trong mùa hè năm nay...",
     link: "/blog/1"
   },
   {
     id: 2,
-    title: "Voluptatem accusantium dolor emque totam",
-    date: "March 21, 2018",
-    author: "Admin",
+    title: "Cách phối đồ sang trọng cho quý cô",
+    date: "21 Tháng 3, 2026",
+    author: "Quản trị viên",
     image: "/images/blog2.png",
-    excerpt: "Contrary to popular belief, Lorem Ipsum is not simply used random text. It has roots in a piece of classical Latin from...",
+    excerpt: "Nâng tầm phong cách cá nhân với những bí quyết phối đồ tinh tế và đẳng cấp từ chuyên gia...",
     link: "/blog/2"
   }
 ];
@@ -30,8 +30,8 @@ export function LatestBlog() {
   return (
     <section className="pt-[60px] bg-white overflow-hidden pb-[40px]">
       <div className="max-w-[1170px] mx-auto px-[15px]">
-        <h3 className="text-[30px] font-normal text-[#333] text-center mb-[40px] uppercase" style={{ fontFamily: "'Work Sans', sans-serif" }}>
-          Latest Blog
+        <h3 className="text-[30px] font-normal text-[#333] text-center mb-[40px] capitalize" style={{ fontFamily: "'Work Sans', sans-serif" }}>
+          Tin tức mới nhất
         </h3>
         
         <div className="flex flex-wrap -mx-[15px]">
@@ -60,7 +60,7 @@ export function LatestBlog() {
                   
                   <div className="blog_content">
                     <span className="flex items-center text-[12px] text-[#888] mb-3 uppercase tracking-wider">
-                      {blog.date} | Posted By {blog.author}
+                      {blog.date} | Đăng bởi {blog.author}
                       <span className="relative ml-4 w-2 h-2 bg-[#f74f2e] rotate-45 transform"></span>
                     </span>
                     

@@ -51,7 +51,7 @@ export function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps
                         <div className="col-lg-6 w-full lg:w-1/2 px-[15px] pt-[30px] lg:pt-[45px] pb-[30px] lg:pb-[45px]">
                             <div id="q_sync1" className="owl-carousel owl-theme mb-4">
                                 <div className="item">
-                                    <div className="product_img relative aspect-[470/560] w-full">
+                                    <div className="product_img relative w-full" style={{ aspectRatio: '470/560' }}>
                                         <Image 
                                             src={product.image} 
                                             alt={product.title} 
@@ -112,7 +112,10 @@ export function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps
                                         </div>
                                         <div className="form-group size_box">
                                             <label className="title_h5 text-capitalize block text-[14px] font-bold mb-4">Size</label>
-                                            <select className="form-control w-[150px] h-[45px] border border-[#eee] px-4 text-[14px] outline-none rounded-none appearance-none bg-[url('/images/arrow-down.svg')] bg-[length:12px] bg-[90%_center] bg-no-repeat transition-colors focus:border-[#f74f2e]">
+                                            <select 
+                                                className="form-control w-[150px] h-[45px] border border-[#eee] px-4 text-[14px] outline-none rounded-none appearance-none bg-[url('/images/arrow-down.svg')] bg-[length:12px] bg-[90%_center] bg-no-repeat transition-colors focus:border-[#f74f2e]"
+                                                suppressHydrationWarning
+                                            >
                                                 <option>XS</option>
                                                 <option>S</option>
                                                 <option>M</option>
@@ -134,8 +137,8 @@ export function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps
                                     </div>
                                     <div className="product_btns mt-8 pt-6 border-t border-[#eee]">
                                         <div className="flex flex-wrap gap-4 items-center">
-                                            <a href="#" className="wishlist_btn border-btn text-uppercase py-3 px-6 text-[13px] font-bold transition-all hover:bg-[#333] hover:text-white inline-block">add to wishlist </a>
-                                            <a href="#" className="background-btn text-uppercase cart_btn py-3 px-8 text-[13px] font-bold bg-[#f74f2e] text-white hover:bg-[#d12807] transition-all inline-block">Add To Bag</a>
+                                            <a href="#" className="wishlist_btn border-btn text-uppercase py-3 px-6 text-[13px] font-bold transition-all hover:bg-[#333] hover:text-white inline-block" suppressHydrationWarning>add to wishlist </a>
+                                            <a href="#" className="background-btn text-uppercase cart_btn py-3 px-8 text-[13px] font-bold bg-[#f74f2e] text-white hover:bg-[#d12807] transition-all inline-block" suppressHydrationWarning>Add To Bag</a>
                                         </div>
                                         
                                         <div className="product_share mt-8">

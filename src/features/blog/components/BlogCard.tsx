@@ -24,7 +24,7 @@ export function BlogCard({ post }: BlogCardProps) {
       
       <div className="blog_details">
         <span className="text-[14px] text-[#999] mb-[15px] block font-sans">
-          {post.date} | Posted By {post.author}
+          {post.date} | Đăng bởi {post.author}
           <span className="inline-block w-2 h-2 bg-[#f74f2e] rotate-45 ml-2 relative top-[-1px]"></span>
         </span>
         

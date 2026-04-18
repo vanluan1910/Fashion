@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export function Footer() {
   return (
-    <motion.footer 
+    <motion.footer
       className="wow fadeIn animated footer_section bg-white pt-[39px]"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
@@ -17,7 +17,7 @@ export function Footer() {
         <div className="footer_top pb-[35px] text-center sm:text-left">
           <div className="row flex flex-wrap -mx-[15px] justify-center sm:justify-start">
             {/* Logo Column */}
-            <motion.div 
+            <motion.div
               className="w-full sm:w-1/2 lg:w-1/4 px-[15px] mb-8 lg:mb-0 wow fadeInUp flex flex-col items-center sm:items-start"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -25,7 +25,7 @@ export function Footer() {
               transition={{ duration: 0.8 }}
             >
               <div className="column text-center sm:text-left" style={{ borderLeft: "0px" }}>
-                <a href="#" className="inline-block"><img src="/images/logo.png" alt="logo" className="img-fluid footer_logo mb-[14px] h-[35px] w-auto mx-auto sm:mx-0" /></a>
+                <a href="#" className="inline-block"><img src="/images/lo_go.png" alt="logo" className="img-fluid footer_logo mb-[14px] h-[35px] w-auto mx-auto sm:mx-0" /></a>
                 <p className="text-[#777] text-[14px] leading-relaxed mb-0">
                   There are many variations of passages of Lorem Ipsum has been the industry stand ard dummy text ever since...
                 </p>
@@ -33,7 +33,7 @@ export function Footer() {
             </motion.div>
 
             {/* Need Help? */}
-            <motion.div 
+            <motion.div
               className="w-full sm:w-1/2 lg:w-1/4 px-[15px] mb-8 lg:mb-0 wow fadeInUp flex flex-col items-center sm:items-start text-center sm:text-left"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -52,7 +52,7 @@ export function Footer() {
             </motion.div>
 
             {/* Shopping With Us */}
-            <motion.div 
+            <motion.div
               className="w-full sm:w-1/2 lg:w-1/4 px-[15px] mb-8 lg:mb-0 wow fadeInUp flex flex-col items-center sm:items-start text-center sm:text-left"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -70,7 +70,7 @@ export function Footer() {
             </motion.div>
 
             {/* About Us */}
-            <motion.div 
+            <motion.div
               className="w-full sm:w-1/2 lg:w-1/4 px-[15px] wow fadeInUp flex flex-col items-center sm:items-start text-center sm:text-left"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -92,7 +92,7 @@ export function Footer() {
         {/* Start Footer Middle */}
         <div className="footer_middle border-t border-[#eee] py-[35px]">
           <div className="row flex flex-wrap -mx-[15px] justify-center">
-            <motion.div 
+            <motion.div
               className="w-full md:w-1/3 px-[15px] mb-10 md:mb-0 wow fadeInUp flex flex-col items-center text-center"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -106,7 +106,7 @@ export function Footer() {
               </ul>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="w-full md:w-1/3 px-[15px] mb-10 md:mb-0 wow fadeInUp flex flex-col items-center text-center"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -121,7 +121,7 @@ export function Footer() {
               </ul>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="w-full md:w-1/3 px-[15px] wow fadeInUp flex flex-col items-center text-center"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -142,15 +142,15 @@ export function Footer() {
       </div>
 
       {/* Start Footer Bottom --> */}
-      <motion.div 
-        className="footer_bottom text-center container-fluid border-t border-[#eee] py-6 bg-[#f9f9f9] wow fadeInUp"
+      <motion.div
+        className="footer_bottom text-center container-fluid border-t border-[#333] py-8 bg-[#111] text-[#fff] wow fadeInUp"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 1.0 }}
       >
-        <div className="container max-w-[1170px] mx-auto px-[15px] text-center"> 
-          2018 © Earthyellow All rights reserved.
+        <div className="container max-w-[1170px] mx-auto px-[15px] text-center text-sm tracking-widest uppercase">
+          2024 © Atelier Fashion All rights reserved.
         </div>
       </motion.div>
       {/* End Footer Bottom --> */}

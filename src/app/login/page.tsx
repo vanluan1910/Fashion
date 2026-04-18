@@ -4,16 +4,16 @@ import { AccountBreadcrumb } from "@/features/account/components/AccountBreadcru
 import { LoginForm, CreateAccountSection } from "@/features/account/components/LoginForm";
 
 export const metadata: Metadata = {
-  title: "Login | Earthyellow",
-  description: "Secure login page for Earthyellow luxury fashion storefront.",
+  title: "Đăng nhập | Atelier Fashion",
+  description: "Trang đăng nhập an toàn cho cửa hàng thời trang cao cấp Atelier Fashion.",
 };
 
 export default function LoginPage() {
   return (
     <main className="min-h-screen bg-white">
-      <AccountBreadcrumb title="login" />
+      <AccountBreadcrumb title="đăng nhập" />
       
-      <section className="py-[60px]">
+      <section className="py-[50px]">
         <div className="max-w-[1170px] mx-auto px-[15px]">
           <div className="flex flex-wrap -mx-[15px] items-center">
             <div className="w-full lg:w-1/2 px-[15px] mb-[40px] lg:mb-0 lg:border-r border-[#aaa]">

@@ -32,6 +32,11 @@ export const metadata: Metadata = {
   },
 };
 
+import { AuthProvider } from "@/core/providers/AuthProvider";
+import { CartProvider } from "@/core/providers/CartProvider";
+import WishlistProvider from "@/core/providers/WishlistProvider";
+import { CurrencyProvider } from "@/core/providers/CurrencyProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -39,14 +44,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi">
-      <body className={`${workSans.variable} ${playfair.variable} font-sans antialiased text-[#333]`}>
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
-        <NewsletterPopup />
-        <ScrollToTop />
+      <body className={`${workSans.variable} ${playfair.variable} font-sans antialiased text-[#333] flex flex-col min-h-screen`}>
+        <AuthProvider>
+          <CartProvider>
+            <WishlistProvider>
+              <CurrencyProvider>
+                <Header />
+                <main className="flex-grow">
+                  {children}
+                </main>
+                <Footer />
+                <NewsletterPopup />
+                <ScrollToTop />
+              </CurrencyProvider>
+            </WishlistProvider>
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

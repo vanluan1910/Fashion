@@ -3,8 +3,8 @@ import { BlogBreadcrumb } from "@/features/blog/components/BlogBreadcrumb";
 import { BlogGrid } from "@/features/blog/components/BlogGrid";
 
 export const metadata = {
-  title: "Blog | Earthyellow",
-  description: "Stay updated with the latest fashion trends and lifestyle tips from Earthyellow.",
+  title: "Tin tức & Sự kiện | Atelier Fashion",
+  description: "Cập nhật những xu hướng thời trang mới nhất và bí quyết phong cách sống cùng Atelier Fashion.",
 };
 
 export default function BlogPage() {

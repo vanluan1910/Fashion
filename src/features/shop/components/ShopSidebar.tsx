@@ -38,9 +38,8 @@ export function ShopSidebar() {
 
   return (
     <div className="collection_sidebar">
-      {/* Mobile Title */}
       <div className="flex items-center justify-between lg:hidden mb-[30px] pb-[20px] border-b border-[#ececec]">
-        <h3 className="text-[24px] font-normal text-[#333]">Filter</h3>
+        <h3 className="text-[24px] font-normal text-[#333]">Bộ lọc</h3>
         <button className="text-[#333]">
           <CloseIcon className="w-5 h-5" />
         </button>
@@ -49,7 +48,7 @@ export function ShopSidebar() {
       {/* 1. Shopping by */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h2 className="text-[20px] font-bold text-[#333] mb-0 leading-none capitalize">Shopping by</h2>
+          <h2 className="text-[20px] font-bold text-[#333] mb-0 leading-none capitalize">Đang lọc theo</h2>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         
@@ -57,8 +56,8 @@ export function ShopSidebar() {
           {/* Women Category Select */}
           <div className="select_category flex flex-col mb-[15px]">
             <div className="fill_type overflow-hidden mb-[8px]">
-              <p className="fill_name text-[14px] text-[#333] font-normal float-left w-1/2 mb-0">Women</p>
-              <a href="#" className="clear text-[#333] text-[14px] text-right float-left w-1/2 capitalize hover:text-primary transition-colors">Clear</a>
+              <p className="fill_name text-[14px] text-[#333] font-normal float-left w-1/2 mb-0">Nữ</p>
+              <a href="#" className="clear text-[#333] text-[14px] text-right float-left w-1/2 capitalize hover:text-primary transition-colors">Xóa</a>
             </div>
             <div className="fill_value relative -mt-[7px] block w-[85%] pr-[20px]">
               {["Tops", "Outerwear", "Bottoms", "Activewear"].map(tag => (
@@ -75,8 +74,8 @@ export function ShopSidebar() {
           {/* Price Select */}
           <div className="select_category">
             <div className="fill_type overflow-hidden mb-[8px]">
-              <p className="fill_name text-[14px] text-[#333] font-normal float-left w-1/2 mb-0">Price</p>
-              <a href="#" className="clear text-[#333] text-[14px] text-right float-left w-1/2 capitalize hover:text-primary transition-colors">Clear</a>
+              <p className="fill_name text-[14px] text-[#333] font-normal float-left w-1/2 mb-0">Giá</p>
+              <a href="#" className="clear text-[#333] text-[14px] text-right float-left w-1/2 capitalize hover:text-primary transition-colors">Xóa</a>
             </div>
             <div className="fill_value relative -mt-[7px] block w-[85%] pr-[20px]">
               <p className="text-[14px] text-[#797979] mb-[8px] leading-normal">${minPrice} - ${maxPrice}</p>
@@ -89,8 +88,8 @@ export function ShopSidebar() {
           {/* Size Select */}
           <div className="select_category flex flex-col mb-[15px]">
             <div className="fill_type overflow-hidden mb-[8px]">
-              <p className="fill_name text-[14px] text-[#333] font-normal float-left w-1/2 mb-0">Size</p>
-              <a href="#" className="clear text-[#333] text-[14px] text-right float-left w-1/2 capitalize hover:text-primary transition-colors">Clear</a>
+              <p className="fill_name text-[14px] text-[#333] font-normal float-left w-1/2 mb-0">Kích cỡ</p>
+              <a href="#" className="clear text-[#333] text-[14px] text-right float-left w-1/2 capitalize hover:text-primary transition-colors">Xóa</a>
             </div>
             <div className="fill_value relative -mt-[7px] block w-[85%] pr-[20px]">
               {["XS", "S", "M", "L", "XL"].map(size => (
@@ -107,8 +106,8 @@ export function ShopSidebar() {
            {/* Color Select */}
           <div className="select_category flex flex-col pb-0 mb-0">
             <div className="fill_type overflow-hidden mb-[8px]">
-              <p className="fill_name text-[14px] text-[#333] font-normal float-left w-1/2 mb-0">Color</p>
-              <a href="#" className="clear text-[#333] text-[14px] text-right float-left w-1/2 capitalize hover:text-primary transition-colors">Clear</a>
+              <p className="fill_name text-[14px] text-[#333] font-normal float-left w-1/2 mb-0">Màu sắc</p>
+              <a href="#" className="clear text-[#333] text-[14px] text-right float-left w-1/2 capitalize hover:text-primary transition-colors">Xóa</a>
             </div>
             <div className="fill_value relative block w-[85%] pr-[20px] -mt-[7px]">
               <p className="float-left mr-[11px] mb-[8px] leading-normal inline-flex items-center text-[#797979]">
@@ -127,7 +126,7 @@ export function ShopSidebar() {
                 <CloseIcon className="w-3 h-3" />
               </a>
             </div>
-            <a href="#" className="claerall text-uppercase inline-block mt-[15px] text-[15px] font-bold text-[#f74f2e] hover:text-[#333] transition-all">CLEAR ALL</a>
+            <a href="#" className="claerall text-uppercase inline-block mt-[15px] text-[15px] font-bold text-[#f74f2e] hover:text-[#333] transition-all">XÓA TẤT CẢ</a>
           </div>
         </div>
       </div>
@@ -135,13 +134,13 @@ export function ShopSidebar() {
       {/* 2. Availability */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Availability</h5>
+          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Trạng thái</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter pt-[9px] px-[10px] pb-[12px]">
           <ul className="m-0 p-0 list-none space-y-[7px]">
-            <li><a href="#" className="text-[14px] text-[#666] hover:text-primary transition-colors leading-none"> On Sale</a></li>
-            <li><a href="#" className="text-[14px] text-[#666] hover:text-primary transition-colors leading-none">In Stock</a></li>
+            <li><a href="#" className="text-[14px] text-[#666] hover:text-primary transition-colors leading-none"> Đang giảm giá</a></li>
+            <li><a href="#" className="text-[14px] text-[#666] hover:text-primary transition-colors leading-none">Còn hàng</a></li>
           </ul>
         </div>
       </div>
@@ -149,17 +148,21 @@ export function ShopSidebar() {
       {/* 3. Women Category */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Women</h5>
+          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Sản phẩm Nữ</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter">
           <div className="search_tag p-[8px_10px_0] relative">
             <input
               type="text"
-              placeholder="search"
+              placeholder="tìm kiếm"
+              suppressHydrationWarning
               className="w-full border-0 border-b border-[#e0dcdc] px-[9px] pb-[7px] text-[12px] text-[#888888] focus:border-primary outline-none"
             />
-            <button className="absolute right-[19px] top-[10px] flaticon-magnifying-glass text-[12px] text-[#888888]"></button>
+            <button 
+              suppressHydrationWarning
+              className="absolute right-[19px] top-[10px] flaticon-magnifying-glass text-[12px] text-[#888888]"
+            ></button>
           </div>
           <ul className="women m-0 p-[12px_10px_15px] list-none space-y-[10px]">
             {SHOP_CATEGORIES.map((cat, idx) => (
@@ -167,6 +170,7 @@ export function ShopSidebar() {
                 <div className="checkbox flex items-center">
                   <input
                     type="checkbox"
+                    suppressHydrationWarning
                     id={`cat-side-new-${cat.id}`}
                     defaultChecked={idx < 4}
                     className="w-[13px] h-[13px] border-[#e0dcdc] accent-primary rounded-full cursor-pointer"
@@ -178,24 +182,28 @@ export function ShopSidebar() {
               </li>
             ))}
           </ul>
-          <div className="loadMore px-[15px] pb-[18px] text-[12px] uppercase text-[#333] font-bold cursor-pointer hover:text-primary transition-colors">4 More</div>
+          <div className="loadMore px-[15px] pb-[18px] text-[12px] uppercase text-[#333] font-bold cursor-pointer hover:text-primary transition-colors">Xem thêm 4 sản phẩm</div>
         </div>
       </div>
 
       {/* 4. Men Category */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Men</h5>
+          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Sản phẩm Nam</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter">
           <div className="search_tag p-[8px_10px_0] relative">
             <input
               type="text"
-              placeholder="search"
+              placeholder="tìm kiếm"
+              suppressHydrationWarning
               className="w-full border-0 border-b border-[#e0dcdc] px-[9px] pb-[7px] text-[12px] text-[#888888] focus:border-primary outline-none"
             />
-            <button className="absolute right-[19px] top-[10px] flaticon-magnifying-glass text-[12px] text-[#888888]"></button>
+            <button 
+              suppressHydrationWarning
+              className="absolute right-[19px] top-[10px] flaticon-magnifying-glass text-[12px] text-[#888888]"
+            ></button>
           </div>
           <ul className="men m-0 p-[12px_10px_15px] list-none space-y-[10px]">
             {["T-Shirts", "Outerwear", "Basics", "Activewear"].map((cat, idx) => (
@@ -204,6 +212,7 @@ export function ShopSidebar() {
                   <input
                     type="checkbox"
                     id={`men-side-new-${cat}`}
+                    suppressHydrationWarning
                     defaultChecked={true}
                     className="w-[13px] h-[13px] border-[#e0dcdc] accent-primary rounded-full cursor-pointer"
                   />
@@ -214,14 +223,14 @@ export function ShopSidebar() {
               </li>
             ))}
           </ul>
-          <div className="loadMore px-[15px] pb-[18px] text-[12px] uppercase text-[#333] font-bold cursor-pointer hover:text-primary transition-colors">4 More</div>
+          <div className="loadMore px-[15px] pb-[18px] text-[12px] uppercase text-[#333] font-bold cursor-pointer hover:text-primary transition-colors">Xem thêm 4 sản phẩm</div>
         </div>
       </div>
 
       {/* 5. Accessories */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Accessories</h5>
+          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Phụ kiện</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter pt-[9px] px-[10px] pb-[12px]">
@@ -229,7 +238,12 @@ export function ShopSidebar() {
             {["Glasses", "Handbags", "Apparel", "Shoes"].map(item => (
               <li key={item}>
                 <div className="checkbox flex items-center">
-                  <input type="checkbox" id={`acc-side-new-${item}`} className="w-[13px] h-[13px] border-[#e0dcdc] accent-primary rounded-full cursor-pointer" />
+                  <input 
+                    type="checkbox" 
+                    id={`acc-side-new-${item}`} 
+                    suppressHydrationWarning
+                    className="w-[13px] h-[13px] border-[#e0dcdc] accent-primary rounded-full cursor-pointer" 
+                  />
                   <label htmlFor={`acc-side-new-${item}`} className="ml-[10px] text-[14px] text-[#666] hover:text-primary cursor-pointer transition-colors leading-none">{item}</label>
                 </div>
               </li>
@@ -241,7 +255,7 @@ export function ShopSidebar() {
       {/* 6. Price Slider */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Price</h5>
+          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Giá cả</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter pt-[22px] px-[30px] pb-[39px]">
@@ -263,6 +277,7 @@ export function ShopSidebar() {
                   max={maxLimit} 
                   value={minPrice} 
                   onChange={handleMinChange}
+                  suppressHydrationWarning
                   className="dual-range-input absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30"
                 />
                 <input 
@@ -271,6 +286,7 @@ export function ShopSidebar() {
                   max={maxLimit} 
                   value={maxPrice} 
                   onChange={handleMaxChange}
+                  suppressHydrationWarning
                   className="dual-range-input absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30"
                 />
 
@@ -286,11 +302,12 @@ export function ShopSidebar() {
               </div>
 
               <div className="range_value overflow-hidden">
-                <p className="range_title float-left text-[14px] font-bold text-[#333] mr-[5px] mb-0">Price:</p>
+                <p className="range_title float-left text-[14px] font-bold text-[#333] mr-[5px] mb-0">Giá:</p>
                 <input 
                   type="text" 
                   value={`$${minPrice} - $${maxPrice}`} 
                   readOnly 
+                  suppressHydrationWarning
                   className="float-left border-0 !p-0 bg-transparent text-[#333] font-bold text-[14px] w-[110px] -mt-[3px] focus:outline-none"
                 />
               </div>
@@ -301,17 +318,21 @@ export function ShopSidebar() {
       {/* 7. Size Selection */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Size</h5>
+          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Kích cỡ</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter">
           <div className="search_tag p-[8px_10px_0] relative">
             <input
               type="text"
-              placeholder="search"
+              placeholder="tìm kiếm"
+              suppressHydrationWarning
               className="w-full border-0 border-b border-[#e0dcdc] px-[9px] pb-[7px] text-[12px] text-[#888888] focus:border-primary outline-none"
             />
-            <button className="absolute right-[19px] top-[10px] flaticon-magnifying-glass text-[12px] text-[#888888]"></button>
+            <button 
+              suppressHydrationWarning
+              className="absolute right-[19px] top-[10px] flaticon-magnifying-glass text-[12px] text-[#888888]"
+            ></button>
           </div>
           <ul className="size m-0 p-[12px_10px_15px] list-none space-y-[10px]">
             {["XL", "S", "M", "L", "XL", "XXL", "XXXL", "UK 6"].slice(0, 4).map((size) => (
@@ -320,6 +341,7 @@ export function ShopSidebar() {
                   <input
                     type="checkbox"
                     id={`size-side-new-${size}`}
+                    suppressHydrationWarning
                     defaultChecked={true}
                     className="w-[13px] h-[13px] border-[#e0dcdc] accent-primary rounded-full cursor-pointer"
                   />
@@ -330,24 +352,28 @@ export function ShopSidebar() {
               </li>
             ))}
           </ul>
-          <div className="loadMore px-[15px] pb-[18px] text-[12px] uppercase text-[#333] font-bold cursor-pointer hover:text-primary transition-colors">4 More</div>
+          <div className="loadMore px-[15px] pb-[18px] text-[12px] uppercase text-[#333] font-bold cursor-pointer hover:text-primary transition-colors">Xem thêm 4 sản phẩm</div>
         </div>
       </div>
 
       {/* 8. Color Selection */}
       <div className="category_list color_box border border-[#e0dcdc] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Color</h5>
+          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Màu sắc</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter">
           <div className="search_tag p-[8px_10px_0] relative">
             <input
               type="text"
-              placeholder="search"
+              placeholder="tìm kiếm"
+              suppressHydrationWarning
               className="w-full border-0 border-b border-[#e0dcdc] px-[9px] pb-[7px] text-[12px] text-[#888888] focus:border-primary outline-none"
             />
-            <button className="absolute right-[19px] top-[10px] flaticon-magnifying-glass text-[12px] text-[#888888]"></button>
+            <button 
+              suppressHydrationWarning
+              className="absolute right-[19px] top-[10px] flaticon-magnifying-glass text-[12px] text-[#888888]"
+            ></button>
           </div>
           <ul className="color m-0 p-[12px_10px_15px] flex flex-wrap gap-[10px] list-none">
             {SHOP_COLORS.map((color, idx) => (
@@ -356,6 +382,7 @@ export function ShopSidebar() {
                   <input
                     type="checkbox"
                     id={`color-side-new-${color.id}`}
+                    suppressHydrationWarning
                     className="peer hidden"
                     defaultChecked={idx < 3}
                   />
