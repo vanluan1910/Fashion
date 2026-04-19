@@ -5,7 +5,7 @@ import Link from "next/link";
 const COLLECTIONS = [
   { id: 1, title: "Thời trang Nữ", image: "/images/women.png", link: "/category/women" },
   { id: 2, title: "Thời trang Nam", image: "/images/men.png", link: "/category/men" },
-  { id: 3, title: "Phụ kiện cao cấp", image: "/images/products.png", link: "/products" },
+  { id: 3, title: "Phụ kiện cao cấp", image: "/images/products.png", link: "/category/accessories" },
 ];
 
 export function CollectionGrid() {

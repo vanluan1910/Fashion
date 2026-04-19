@@ -7,11 +7,11 @@ import Link from "next/link";
 import { ProductCard } from "./ProductCard";
 import { SHOP_PRODUCTS } from "../constants/shop-data";
 
-export function ProductGrid() {
+export function ProductGrid({ category }: { category?: string }) {
   const [columns, setColumns] = useState(3);
   const searchParams = useSearchParams();
   const idParam = searchParams.get("id");
-  const categoryFilter = searchParams.get("category");
+  const categoryFilter = category || searchParams.get("category");
   const saleFilter = searchParams.get("sale");
 
   // Filter products based on category and sale status

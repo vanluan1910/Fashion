@@ -11,7 +11,7 @@ export function SummerSale() {
         <div className="summer_collection_section text-center relative z-10">
           <h2 className="title_h2 text-[48px] font-semibold text-[#333] capitalize mb-[38px] font-sans tracking-normal">Giảm giá mùa hè</h2>
           <Link 
-            href="/shop" 
+            href="/shop?sale=true" 
             className="background-btn inline-block px-[35px] py-[15px] bg-[#f74f2e] text-white border border-transparent hover:bg-[#d12807] hover:border-[#d12807] transition-all duration-300 text-[14px] font-bold capitalize font-sans decoration-none tracking-widest"
           >
             MUA NGAY <i className="flaticon-arrows ml-[3px] text-[12px]"></i>

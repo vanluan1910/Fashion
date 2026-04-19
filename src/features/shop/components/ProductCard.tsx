@@ -52,7 +52,6 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       quantity: 1,
       size: selectedSize
     });
-    router.push("/cart");
   };
 
   return (
@@ -80,13 +79,13 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
               onClick={handleAddToCart}
               className="inline-flex items-center justify-center py-[4px] px-[28px] bg-[#f74f2e] text-white text-[14px] font-bold uppercase hover:bg-[#d12807] transition-all duration-200 text-center leading-normal"
             >
-              Add To Bag <i className="flaticon-arrows ml-2 text-[12px]"></i>
+              Thêm vào giỏ <i className="flaticon-arrows ml-2 text-[12px]"></i>
             </button>
             <Link 
-                href="/shop"
+              href={`/product/${product.id}`}
               className="inline-flex items-center justify-center py-[4px] px-[28px] border border-[#f74f2e] text-[#f74f2e] text-[14px] font-bold uppercase bg-transparent hover:bg-[#f74f2e] hover:text-white transition-all duration-200 text-center leading-normal"
             >
-              Xem nhanh <i className="flaticon-arrows ml-2 text-[12px]"></i>
+              Xem chi tiết <i className="flaticon-arrows ml-2 text-[12px]"></i>
             </Link>
           </div>
         </div>

@@ -4,6 +4,8 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useCart } from "@/core/providers/CartProvider";
+import { useWishlist } from "@/core/providers/WishlistProvider";
 
 interface Product {
   id: number;
@@ -15,22 +17,25 @@ interface Product {
   isSoldOut?: boolean;
   oldPrice?: number;
   sizes?: string[];
+  colors?: string[];
 }
 
 const SAMPLE_PRODUCTS: Product[] = [
-  { id: 1, title: "Silk Dress", price: 59.95, image: "/images/f_product1.png", sizes: ["xs", "s", "m", "l", "xl"] },
-  { id: 2, title: "Premium Party Suit", price: 79.95, image: "/images/f_product2.png", sizes: ["s", "m", "l"] },
-  { id: 3, title: "Silk Party Dress", price: 99.95, image: "/images/f_product3.png", isNew: true, sizes: ["l"] },
-  { id: 4, title: "Jeans Pant", price: 39.95, image: "/images/f_product4.png", isSale: true, sizes: ["m"] },
-  { id: 5, title: "Man T-Shirt", price: 19.95, image: "/images/f_product5.png", isNew: true, sizes: ["m", "l"] },
-  { id: 6, title: "Flower Floral Dupioni Dress", price: 79.95, image: "/images/f_product6.png", isSoldOut: true },
-  { id: 7, title: "Check Shirt", price: 29.95, image: "/images/f_product7.png", isSale: true, oldPrice: 39.95, sizes: ["m"] },
-  { id: 8, title: "Black Dotted Dress", price: 29.95, image: "/images/f_product8.png", sizes: ["l"] },
+  { id: 1, title: "Silk Dress", price: 59.95, image: "/images/f_product1.png", sizes: ["xs", "s", "m", "l", "xl"], colors: ["#fbcee0", "#9cb3f1", "#333"] },
+  { id: 2, title: "Premium Party Suit", price: 79.95, image: "/images/f_product2.png", sizes: ["s", "m", "l"], colors: ["#333", "#fda430"] },
+  { id: 3, title: "Silk Party Dress", price: 99.95, image: "/images/f_product3.png", isNew: true, sizes: ["l"], colors: ["#fbcee0"] },
+  { id: 4, title: "Jeans Pant", price: 39.95, image: "/images/f_product4.png", isSale: true, sizes: ["m"], colors: ["#9cb3f1"] },
+  { id: 5, title: "Man T-Shirt", price: 19.95, image: "/images/f_product5.png", isNew: true, sizes: ["m", "l"], colors: ["#333", "#eee"] },
+  { id: 6, title: "Flower Floral Dupioni Dress", price: 79.95, image: "/images/f_product6.png", isSoldOut: true, colors: ["#fbcee0"] },
+  { id: 7, title: "Check Shirt", price: 29.95, image: "/images/f_product7.png", isSale: true, oldPrice: 39.95, sizes: ["m"], colors: ["#333"] },
+  { id: 8, title: "Black Dotted Dress", price: 29.95, image: "/images/f_product8.png", sizes: ["l"], colors: ["#333"] },
 ];
 
 import { QuickViewModal } from "./QuickViewModal";
 
 export function FeaturedProducts({ title }: { title: string }) {
+  const { addToCart } = useCart();
+  const { addToWishlist, isInWishlist, removeFromWishlist } = useWishlist();
   const [selectedProduct, setSelectedProduct] = React.useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
@@ -93,19 +98,27 @@ export function FeaturedProducts({ title }: { title: string }) {
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 flex flex-col items-center justify-center">
                       {!product.isSoldOut ? (
                         <div className="flex flex-col space-y-[11px] w-full items-center transform translate-y-4 group-hover:-translate-y-2 transition-transform duration-200">
-                          <Link 
-                            href="/cart"
+                          <button 
+                            onClick={() => addToCart({
+                              id: product.id,
+                              name: product.title,
+                              price: product.price,
+                              image: product.image,
+                              quantity: 1,
+                              size: product.sizes?.[0]
+                            })}
                             className="inline-flex items-center justify-center py-[4px] px-[28px] bg-[#f74f2e] text-white text-[14px] font-bold capitalize hover:bg-[#d12807] transition-all duration-200 text-center leading-normal"
+                            suppressHydrationWarning
                           >
                             Thêm vào giỏ <i className="flaticon-arrows ml-2 text-[12px]"></i>
-                          </Link>
-                          <button 
-                            onClick={() => handleQuickView(product)}
+                          </button>
+                          <Link 
+                            href={`/product/${product.id}`}
                             className="inline-flex items-center justify-center py-[4px] px-[28px] border border-[#f74f2e] text-[#f74f2e] text-[14px] font-bold capitalize bg-transparent hover:bg-[#f74f2e] hover:text-white transition-all duration-200 text-center leading-normal"
                             suppressHydrationWarning
                           >
-                            Xem nhanh <i className="flaticon-arrows ml-2 text-[12px]"></i>
-                          </button>
+                            Xem chi tiết <i className="flaticon-arrows ml-2 text-[12px]"></i>
+                          </Link>
                         </div>
                       ) : (
                         <span className="inline-table py-[4px] px-[28px] bg-[#333] text-white text-[14px] font-bold capitalize text-center transform translate-y-4 group-hover:-translate-y-2 transition-transform duration-200">
@@ -116,7 +129,21 @@ export function FeaturedProducts({ title }: { title: string }) {
 
                     {/* Wishlist Heart - Snappy 0.2s Transition */}
                     <button 
-                      className="absolute bottom-4 right-4 w-9 h-9 bg-white rounded-full flex items-center justify-center text-[#333] hover:bg-[#f74f2e] hover:text-white transition-all duration-200 shadow-md z-20 opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0"
+                      onClick={() => {
+                        if (isInWishlist(product.id)) {
+                          removeFromWishlist(product.id);
+                        } else {
+                          addToWishlist({
+                            id: product.id,
+                            name: product.title,
+                            price: product.price,
+                            image: product.image
+                          });
+                        }
+                      }}
+                      className={`absolute bottom-4 right-4 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 shadow-md z-20 opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 ${
+                        isInWishlist(product.id) ? "bg-[#f74f2e] text-white" : "bg-white text-[#333] hover:bg-[#f74f2e] hover:text-white"
+                      }`}
                       suppressHydrationWarning
                     >
                       <i className="flaticon-heart text-[16px]"></i>

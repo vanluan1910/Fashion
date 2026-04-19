@@ -8,30 +8,31 @@ interface BreadcrumbProps {
 
 export function Breadcrumb({ title, items }: BreadcrumbProps) {
   return (
-    <section className="bg-input py-12 px-4 md:px-8">
-      <div className="container mx-auto">
-        <nav className="flex mb-4" aria-label="Breadcrumb">
-          <ol className="inline-flex items-center space-x-1 md:space-x-3 text-xs uppercase tracking-widest font-medium">
-            <li className="inline-flex items-center">
-              <Link href="/" className="text-muted-foreground hover:text-primary transition-colors">
-                Home
-              </Link>
+    <section className="bg-[#f9f9f9] border-t border-[#eee] py-[24px] mb-[60px] font-sans">
+      <div className="max-w-[1170px] mx-auto px-[15px]">
+        <nav aria-label="breadcrumb">
+          <ol className="flex items-center space-x-2 text-[14px] mb-[4px] p-0 list-none bg-transparent">
+            <li className="flex items-center">
+              <Link href="/" className="text-[#f74f2e] hover:text-[#333] transition-colors">Trang chủ</Link>
+              <span className="flaticon-arrows-4 ml-2 text-[15px] text-[#d5d5d5] leading-none"></span>
             </li>
             {items.map((item, index) => (
-              <li key={index} className="inline-flex items-center">
-                <span className="mx-2 text-muted-foreground">/</span>
+              <li key={index} className="flex items-center">
                 {item.href ? (
-                  <Link href={item.href} className="text-muted-foreground hover:text-primary transition-colors">
-                    {item.label}
-                  </Link>
+                  <>
+                    <Link href={item.href} className="text-[#f74f2e] hover:text-[#333] transition-colors">
+                      {item.label}
+                    </Link>
+                    <span className="flaticon-arrows-4 ml-2 text-[15px] text-[#d5d5d5] leading-none"></span>
+                  </>
                 ) : (
-                  <span className="text-primary">{item.label}</span>
+                  <span className="text-[#888888] capitalize ml-2">{item.label}</span>
                 )}
               </li>
             ))}
           </ol>
         </nav>
-        <h1 className="text-4xl md:text-5xl font-light uppercase tracking-tight text-foreground">
+        <h1 className="title_h1 text-[32px] font-normal capitalize text-[#333] m-0 leading-tight">
           {title}
         </h1>
       </div>
