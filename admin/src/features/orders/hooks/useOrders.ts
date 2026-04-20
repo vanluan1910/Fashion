@@ -64,6 +64,11 @@ export const useOrders = () => {
     };
   }, [orders]);
 
+  const addOrder = (orderData: Omit<Order, "id" | "date">) => {
+    orderService.createOrder(orderData);
+    refreshOrders();
+  };
+
   return {
     orders: filteredOrders,
     searchQuery,
@@ -77,6 +82,7 @@ export const useOrders = () => {
     toggleSelectAll,
     updateStatus,
     deleteOrder,
+    addOrder,
     stats,
     totalCount: orders.length
   };

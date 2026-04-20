@@ -42,5 +42,22 @@ export const orderService = {
     const orders = orderService.getOrders();
     const filtered = orders.filter(o => o.id !== id);
     orderService.saveOrders(filtered);
+  },
+
+  createOrder: (orderData: Omit<Order, "id" | "date">) => {
+    const orders = orderService.getOrders();
+    const newOrder: Order = {
+      ...orderData,
+      id: `#ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+      date: new Date().toLocaleDateString("vi-VN", {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      })
+    };
+    
+    const updatedOrders = [newOrder, ...orders];
+    orderService.saveOrders(updatedOrders);
+    return newOrder;
   }
 };
