@@ -75,7 +75,7 @@ export default function AddProductPage() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] gap-3">
-        <Loader2 className="animate-spin text-[#845adf]" size={40} />
+        <Loader2 className="animate-spin text-[#f74f2e]" size={40} />
         <p className="text-[#666] font-medium">Đang nạp dữ liệu chỉnh sửa...</p>
       </div>
     );
@@ -86,7 +86,7 @@ export default function AddProductPage() {
       <div className="flex items-center gap-4">
         <button 
           onClick={() => router.push("/products")}
-          className="p-2 hover:bg-[#845adf]/10 text-[#845adf] rounded-xl transition-all"
+          className="p-2 hover:bg-[#f74f2e]/10 text-[#f74f2e] rounded-xl transition-all"
         >
           <ArrowLeft size={24} />
         </button>

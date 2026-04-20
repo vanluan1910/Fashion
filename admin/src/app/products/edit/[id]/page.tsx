@@ -70,7 +70,7 @@ export default function EditProductPage() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] gap-3">
-        <Loader2 className="animate-spin text-[#845adf]" size={40} />
+        <Loader2 className="animate-spin text-[#f74f2e]" size={40} />
         <p className="text-[#666] font-medium">Đang tải dữ liệu sản phẩm...</p>
       </div>
     );
@@ -80,7 +80,7 @@ export default function EditProductPage() {
     return (
       <div className="text-center py-20 bg-white rounded-2xl border border-[#eee] shadow-sm">
         <h2 className="text-xl font-bold text-[#333] mb-4">Ố cửa! Không tìm thấy sản phẩm</h2>
-        <Link href="/products" className="text-[#845adf] font-bold hover:underline">Quay lại danh sách</Link>
+        <Link href="/products" className="text-[#f74f2e] font-bold hover:underline">Quay lại danh sách</Link>
       </div>
     );
   }
@@ -90,13 +90,13 @@ export default function EditProductPage() {
       <div className="flex items-center gap-4">
         <button 
           onClick={() => router.push("/products")}
-          className="p-2 hover:bg-[#845adf]/10 text-[#845adf] rounded-xl transition-all"
+          className="p-2 hover:bg-[#f74f2e]/10 text-[#f74f2e] rounded-xl transition-all"
         >
           <ArrowLeft size={24} />
         </button>
         <div>
           <h1 className="text-2xl font-extrabold text-[#333] tracking-tight">Chỉnh sửa sản phẩm</h1>
-          <p className="text-[13px] text-[#666] font-medium mt-1">Cập nhật thông tin chi tiết cho mã sản phẩm: <span className="text-[#845adf] font-bold">{decodeURIComponent(id)}</span></p>
+          <p className="text-[13px] text-[#666] font-medium mt-1">Cập nhật thông tin chi tiết cho mã sản phẩm: <span className="text-[#f74f2e] font-bold">{decodeURIComponent(id)}</span></p>
         </div>
       </div>
 

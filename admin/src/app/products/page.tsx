@@ -71,7 +71,7 @@ export default function ProductsPage() {
           <button className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#eee] rounded-xl text-[13px] font-bold text-[#555] hover:bg-[#fcfcff] transition-all shadow-sm">
             <Download size={18} /> Xuất báo cáo
           </button>
-          <Link href="/products/add" className="flex items-center gap-2 px-6 py-2.5 bg-[#845adf] text-white rounded-xl text-[13px] font-bold hover:bg-[#7248c8] transition-all shadow-lg shadow-[#845adf]/20">
+          <Link href="/products/add" className="flex items-center gap-2 px-6 py-2.5 bg-[#f74f2e] text-white rounded-xl text-[13px] font-bold hover:bg-[#d24327] transition-all shadow-lg shadow-[#f74f2e]/20">
             <Plus size={18} /> Thêm sản phẩm
           </Link>
         </div>
@@ -85,7 +85,7 @@ export default function ProductsPage() {
             <input 
               type="text" 
               placeholder="Tìm kiếm theo tên hoặc mã SP..." 
-              className="w-full pl-10 pr-4 py-2.5 bg-[#f3f4f9] border-none rounded-xl text-[14px] focus:ring-2 focus:ring-[#845adf] transition-all font-medium"
+              className="w-full pl-10 pr-4 py-2.5 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-bold placeholder:text-[#aaa] focus:ring-2 focus:ring-[#f74f2e] transition-all"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />

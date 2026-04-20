@@ -47,7 +47,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         {/* Logo Section */}
         <div className="h-[70px] flex items-center justify-between px-6 border-b border-white/10">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#845adf] rounded flex items-center justify-center font-bold text-lg">
+            <div className="w-8 h-8 bg-[#f74f2e] rounded flex items-center justify-center font-bold text-lg">
               A
             </div>
             <span className="text-xl font-bold tracking-tight uppercase">Atelier Admin</span>
@@ -76,7 +76,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 className={`
                   flex items-center gap-3 px-3 py-3 rounded-lg text-[14px] font-medium transition-all
                   ${isActive 
-                    ? "bg-[#845adf] text-white" 
+                    ? "bg-[#f74f2e] text-white" 
                     : "text-white/70 hover:bg-white/5 hover:text-white"}
                 `}
               >
@@ -87,19 +87,6 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           })}
         </nav>
 
-        {/* Pro Banner Sidebar (Simplified version of Yoha style) */}
-        <div className="absolute bottom-6 left-4 right-4">
-          <div className="bg-gradient-to-br from-[#845adf] to-[#5c67f7] p-5 rounded-xl text-center relative overflow-hidden group">
-            <div className="relative z-10">
-              <p className="text-xs font-medium text-white/80 mb-2">Bạn cần thêm tính năng?</p>
-              <h6 className="text-[13px] font-bold mb-3">Nâng cấp lên PRO</h6>
-              <button className="w-full py-2 bg-white text-[#845adf] text-[12px] font-bold rounded-lg hover:bg-white/90 transition-colors">
-                Xem bản Pro
-              </button>
-            </div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
-          </div>
-        </div>
       </aside>
     </>
   );

@@ -40,7 +40,7 @@ export default function YouTubeComponent({ videoID, format, nodeKey }: YouTubeCo
       <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
         <button
           onClick={handleRemove}
-          className="bg-[#845adf] text-white p-2.5 rounded-full hover:bg-red-600 transition-all shadow-lg active:scale-95"
+          className="bg-[#f74f2e] text-white p-2.5 rounded-full hover:bg-red-600 transition-all shadow-lg active:scale-95"
           title="Xóa video này"
         >
           <Trash2 size={18} />

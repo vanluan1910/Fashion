@@ -83,18 +83,18 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditing
               required 
               type="text" 
               placeholder="Nhập tên sản phẩm..." 
-              className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-medium focus:ring-2 focus:ring-[#845adf]" 
+              className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-medium focus:ring-2 focus:ring-[#f74f2e]" 
               value={formData.name}
               onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
             />
-            <p className="text-[11px] text-[#845adf] font-semibold">*Tên sản phẩm không nên vượt quá 30 ký tự</p>
+            <p className="text-[11px] text-[#f74f2e] font-semibold">*Tên sản phẩm không nên vượt quá 30 ký tự</p>
           </div>
 
           <div className="grid grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="text-[13px] font-bold text-[#555] tracking-tight">Danh mục</label>
               <select 
-                className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-medium focus:ring-2 focus:ring-[#845adf] cursor-pointer"
+                className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-medium focus:ring-2 focus:ring-[#f74f2e] cursor-pointer"
                 value={formData.category}
                 onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
               >
@@ -105,7 +105,7 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditing
             </div>
             <div className="space-y-2">
               <label className="text-[13px] font-bold text-[#555] tracking-tight">Giới tính</label>
-              <select className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-medium focus:ring-2 focus:ring-[#845adf] cursor-pointer">
+              <select className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-medium focus:ring-2 focus:ring-[#f74f2e] cursor-pointer">
                 <option>Nam</option>
                 <option>Nữ</option>
                 <option>Unisex</option>
@@ -118,7 +118,7 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditing
             <textarea 
               rows={6} 
               placeholder="Nhập mô tả ngắn gọn..." 
-              className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-medium focus:ring-2 focus:ring-[#845adf] focus:bg-white transition-colors"
+              className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-medium focus:ring-2 focus:ring-[#f74f2e] focus:bg-white transition-colors"
             ></textarea>
           </div>
         </div>
@@ -153,11 +153,11 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditing
                 </div>
               ) : (
                 <>
-                  <div className="p-4 bg-[#845adf]/10 rounded-full text-[#845adf] group-hover:scale-110 transition-transform">
+                  <div className="p-4 bg-[#f74f2e]/10 rounded-full text-[#f74f2e] group-hover:scale-110 transition-transform">
                     <Upload size={32} />
                   </div>
                   <div className="text-[15px] text-center font-medium text-[#666]">
-                    Kéo thả ảnh hoặc <span className="text-[#845adf] font-bold underline">Duyệt file</span>
+                    Kéo thả ảnh hoặc <span className="text-[#f74f2e] font-bold underline">Duyệt file</span>
                   </div>
                 </>
               )}
@@ -177,7 +177,7 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditing
               required 
               type="text" 
               placeholder="VD: 1.500.000" 
-              className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#845adf]" 
+              className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#f74f2e]" 
               value={formData.price}
               onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
             />
@@ -186,7 +186,7 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditing
           <div className="space-y-2">
             <label className="text-[13px] font-bold text-[#555] tracking-tight">Tình trạng kho</label>
             <select 
-              className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-medium focus:ring-2 focus:ring-[#845adf] cursor-pointer"
+              className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-medium focus:ring-2 focus:ring-[#f74f2e] cursor-pointer"
               value={formData.status}
               onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value }))}
             >
@@ -200,7 +200,7 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditing
 
         <button 
           type="submit"
-          className="w-full py-4 bg-[#845adf] text-white rounded-2xl text-[15px] font-bold hover:bg-[#7248c8] shadow-xl shadow-[#845adf]/30 flex items-center justify-center gap-3 transition-all hover:scale-[1.02]"
+          className="w-full py-4 bg-[#f74f2e] text-white rounded-2xl text-[15px] font-bold hover:bg-[#d24327] shadow-xl shadow-[#f74f2e]/30 flex items-center justify-center gap-3 transition-all hover:scale-[1.02]"
         >
           {isEditing ? <Save size={22} /> : <CheckCircle2 size={22} />} 
           {isEditing ? "Cập nhật sản phẩm" : "Hoàn tất và đăng bán"}

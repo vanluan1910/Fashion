@@ -106,7 +106,7 @@ export default function ToolbarPlugin() {
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
               placeholder="https://example.com/image.jpg"
-              className="bg-white px-4 py-3 rounded-xl border border-[#ddd] text-[13px] text-[#333] font-bold focus:outline-none focus:ring-2 focus:ring-[#845adf]/20 focus:border-[#845adf] transition-all"
+              className="bg-white px-4 py-3 rounded-xl border border-[#ddd] text-[13px] text-[#333] font-bold focus:outline-none focus:ring-2 focus:ring-[#f74f2e]/20 focus:border-[#f74f2e] transition-all"
               autoFocus
             />
           </div>
@@ -133,9 +133,9 @@ export default function ToolbarPlugin() {
               />
               <label 
                 htmlFor="lexical-image-upload"
-                className="flex-1 bg-[#845adf]/5 border-2 border-dashed border-[#845adf]/20 rounded-2xl px-4 py-8 text-[13px] font-extrabold text-[#845adf] flex flex-col items-center justify-center gap-3 cursor-pointer hover:bg-[#845adf]/10 transition-all border-[#845adf]/30"
+                className="flex-1 bg-[#f74f2e]/5 border-2 border-dashed border-[#f74f2e]/20 rounded-2xl px-4 py-8 text-[13px] font-extrabold text-[#f74f2e] flex flex-col items-center justify-center gap-3 cursor-pointer hover:bg-[#f74f2e]/10 transition-all border-[#f74f2e]/30"
               >
-                <div className="p-3 bg-white rounded-full shadow-sm text-[#845adf]">
+                <div className="p-3 bg-white rounded-full shadow-sm text-[#f74f2e]">
                   <Upload size={24} />
                 </div>
                 <span>Chọn tệp ảnh từ máy tính</span>
@@ -164,7 +164,7 @@ export default function ToolbarPlugin() {
                   setIsImageModalOpen(false);
                 }
               }}
-              className="!py-2.5 !px-8 !text-[12px] !rounded-lg shadow-lg shadow-[#845adf]/20"
+              className="!py-2.5 !px-8 !text-[12px] !rounded-lg shadow-lg shadow-[#f74f2e]/20"
             >
               Chèn vào bài viết
             </Button>
@@ -186,10 +186,10 @@ export default function ToolbarPlugin() {
               value={youtubeUrl}
               onChange={(e) => setYoutubeUrl(e.target.value)}
               placeholder="https://www.youtube.com/watch?v=..."
-              className="bg-white px-4 py-3 rounded-xl border border-[#ddd] text-[13px] text-[#333] font-bold focus:outline-none focus:ring-2 focus:ring-[#845adf]/20 focus:border-[#845adf] transition-all"
+              className="bg-white px-4 py-3 rounded-xl border border-[#ddd] text-[13px] text-[#333] font-bold focus:outline-none focus:ring-2 focus:ring-[#f74f2e]/20 focus:border-[#f74f2e] transition-all"
               autoFocus
             />
-            <p className="text-[11px] text-[#845adf] font-bold mt-1 tracking-tight">Hỗ trợ các liên kết: youtube.com, youtu.be...</p>
+            <p className="text-[11px] text-[#f74f2e] font-bold mt-1 tracking-tight">Hỗ trợ các liên kết: youtube.com, youtu.be...</p>
           </div>
 
           <div className="flex justify-end gap-3 mt-4">
@@ -230,7 +230,7 @@ function ToolbarButton({ icon, onClick, title }: { icon: React.ReactNode; onClic
       type="button"
       onClick={onClick}
       title={title}
-      className="p-2 hover:bg-[#845adf]/10 rounded-xl transition-colors flex items-center justify-center text-[#666] hover:text-[#845adf] group"
+      className="p-2 hover:bg-[#f74f2e]/10 rounded-xl transition-colors flex items-center justify-center text-[#666] hover:text-[#f74f2e] group"
     >
       <div className="group-hover:scale-110 transition-transform">{icon}</div>
     </button>

@@ -21,10 +21,10 @@ export default function Button({
   const baseStyles = "inline-flex items-center justify-center rounded-xl font-bold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
   
   const variants = {
-    primary: "bg-[#845adf] text-white hover:bg-[#7248c8] shadow-lg shadow-[#845adf]/20 focus:ring-[#845adf]",
+    primary: "bg-[#f74f2e] text-white hover:bg-[#d24327] shadow-lg shadow-[#f74f2e]/20 focus:ring-[#f74f2e]",
     secondary: "bg-[#f3f4f9] text-[#333] hover:bg-[#e8e9f3] focus:ring-[#f3f4f9]",
     outline: "border border-[#eee] bg-white text-[#555] hover:bg-[#fcfcff] focus:ring-[#eee]",
-    ghost: "text-[#666] hover:bg-[#845adf10] hover:text-[#845adf]",
+    ghost: "text-[#666] hover:bg-[#f74f2e10] hover:text-[#f74f2e]",
     danger: "bg-red-500 text-white hover:bg-red-600 shadow-lg shadow-red-500/20 focus:ring-red-500"
   };
   

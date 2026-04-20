@@ -28,7 +28,7 @@ export default function AdminLayout({
         </main>
 
         <footer className="h-14 flex items-center justify-center text-[12px] text-[#999] border-t border-[#eee] bg-white lg:bg-transparent">
-          <p>© 2024. Được xây dựng bởi <span className="font-bold text-[#845adf]">Antigravity</span>. Tất cả quyền được bảo lưu.</p>
+          <p>© 2024. Được xây dựng bởi <span className="font-bold text-[#f74f2e]">Antigravity</span>. Tất cả quyền được bảo lưu.</p>
         </footer>
       </div>
     </div>

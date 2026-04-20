@@ -67,7 +67,7 @@ export default function DashboardPage() {
           <Link href="/reports" className="px-4 py-2 bg-white border border-[#eee] rounded-lg font-bold text-[#333] hover:bg-[#f3f4f9] transition-all shadow-sm">
             Xuất báo cáo
           </Link>
-          <Link href="/orders" className="px-4 py-2 bg-[#845adf] text-white rounded-lg font-medium hover:bg-[#7248c8] transition-all">
+          <Link href="/orders" className="px-4 py-2 bg-[#f74f2e] text-white rounded-lg font-medium hover:bg-[#d24327] transition-all">
             Lịch sử giao dịch
           </Link>
         </div>
@@ -127,7 +127,7 @@ export default function DashboardPage() {
         <div className="bg-white p-6 rounded-xl border border-[#f1f1f1] shadow-sm">
           <div className="flex items-center justify-between mb-6">
             <h4 className="text-[16px] font-bold text-[#333]">Đơn hàng gần đây</h4>
-            <Link href="/orders" className="text-[#845adf] text-[12px] font-bold hover:underline">
+            <Link href="/orders" className="text-[#f74f2e] text-[12px] font-bold hover:underline">
               Xem tất cả
             </Link>
           </div>
@@ -135,7 +135,7 @@ export default function DashboardPage() {
             {RECENT_ORDERS.map((order, idx) => (
               <div key={idx} className="flex items-center justify-between pb-4 border-b border-[#f9f9f9] last:border-0 last:pb-0">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-[#f3f4f9] rounded-full flex items-center justify-center text-[#845adf] font-bold text-[12px]">
+                  <div className="w-10 h-10 bg-[#f3f4f9] rounded-full flex items-center justify-center text-[#f74f2e] font-bold text-[12px]">
                     {order.customer.charAt(0)}
                   </div>
                   <div>

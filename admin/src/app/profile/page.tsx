@@ -121,7 +121,7 @@ export default function ProfilePage() {
              <button 
                onClick={handleSave}
                disabled={isSaving}
-               className="flex items-center gap-2 px-6 py-2.5 bg-[#845adf] text-white font-bold text-[13px] rounded-xl hover:bg-[#7248c8] disabled:opacity-70 transition-all shadow-lg shadow-[#845adf]/20"
+               className="flex items-center gap-2 px-6 py-2.5 bg-[#f74f2e] text-white font-bold text-[13px] rounded-xl hover:bg-[#d24327] disabled:opacity-70 transition-all shadow-lg shadow-[#f74f2e]/20"
              >
                {isSaving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />} 
                Lưu thay đổi
@@ -134,11 +134,11 @@ export default function ProfilePage() {
         {/* Left Column: Profile Card */}
         <div className="lg:col-span-1 space-y-6">
           <div className="bg-white p-8 rounded-2xl border border-[#eee] shadow-sm text-center relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-full h-2 bg-[#845adf]"></div>
+            <div className="absolute top-0 left-0 w-full h-2 bg-[#f74f2e]"></div>
             <input type="file" ref={avatarInputRef} onChange={handleAvatarChange} accept="image/*" className="hidden" />
 
             <div className="relative inline-block mb-6 mt-2">
-              <div className="w-32 h-32 bg-[#845adf]/10 rounded-full flex items-center justify-center text-[#845adf] text-5xl font-black overflow-hidden border-4 border-white shadow-xl">
+              <div className="w-32 h-32 bg-[#f74f2e]/10 rounded-full flex items-center justify-center text-[#f74f2e] text-5xl font-black overflow-hidden border-4 border-white shadow-xl">
                 {profile.avatar ? (
                   <img src={profile.avatar} alt="Avatar" className="w-full h-full object-cover" />
                 ) : (
@@ -147,13 +147,13 @@ export default function ProfilePage() {
               </div>
               <button 
                 onClick={() => avatarInputRef.current?.click()}
-                className="absolute bottom-1 right-1 p-2.5 bg-white border border-[#eee] rounded-full text-[#845adf] shadow-lg hover:bg-[#845adf] hover:text-white transition-all transform hover:scale-110"
+                className="absolute bottom-1 right-1 p-2.5 bg-white border border-[#eee] rounded-full text-[#f74f2e] shadow-lg hover:bg-[#f74f2e] hover:text-white transition-all transform hover:scale-110"
               >
                 <Camera size={18} />
               </button>
             </div>
             <h4 className="text-xl font-extrabold text-[#333] tracking-tight">{profile.name}</h4>
-            <p className="text-[13px] text-[#845adf] font-bold uppercase tracking-wider mt-1">Quản trị viên hệ thống</p>
+            <p className="text-[13px] text-[#f74f2e] font-bold uppercase tracking-wider mt-1">Quản trị viên hệ thống</p>
             
             <div className="mt-6 pt-6 border-t border-[#f1f1f1] flex flex-col gap-3">
               <div className="flex items-center justify-between text-[13px]">
@@ -176,7 +176,7 @@ export default function ProfilePage() {
              <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#eee]">
                <h5 className="font-extrabold text-[18px] text-[#333] tracking-tight">Cài đặt thông tin chi tiết</h5>
                {!isEditing && (
-                  <button onClick={() => setIsEditing(true)} className="text-[13px] font-bold text-[#845adf] hover:underline">
+                  <button onClick={() => setIsEditing(true)} className="text-[13px] font-bold text-[#f74f2e] hover:underline">
                     Chỉnh sửa
                   </button>
                )}
@@ -190,11 +190,11 @@ export default function ProfilePage() {
                        type="text" 
                        value={profile.name}
                        onChange={(e) => setProfile({...profile, name: e.target.value})}
-                       className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#845adf] transition-all"
+                       className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#f74f2e] transition-all"
                      />
                    ) : (
-                     <div className="flex items-center gap-3 p-4 bg-[#fcfcff] border border-[#f1f1f1] rounded-xl text-[14px] text-[#333] font-bold group hover:border-[#845adf]/30 transition-all">
-                        <User size={18} className="text-[#845adf] opacity-40 group-hover:opacity-100 transition-opacity" /> {profile.name}
+                     <div className="flex items-center gap-3 p-4 bg-[#fcfcff] border border-[#f1f1f1] rounded-xl text-[14px] text-[#333] font-bold group hover:border-[#f74f2e]/30 transition-all">
+                        <User size={18} className="text-[#f74f2e] opacity-40 group-hover:opacity-100 transition-opacity" /> {profile.name}
                      </div>
                    )}
                 </div>
@@ -205,11 +205,11 @@ export default function ProfilePage() {
                        type="email" 
                        value={profile.email}
                        onChange={(e) => setProfile({...profile, email: e.target.value})}
-                       className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#845adf] transition-all"
+                       className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#f74f2e] transition-all"
                      />
                    ) : (
-                     <div className="flex items-center gap-3 p-4 bg-[#fcfcff] border border-[#f1f1f1] rounded-xl text-[14px] text-[#333] font-bold group hover:border-[#845adf]/30 transition-all">
-                        <Mail size={18} className="text-[#845adf] opacity-40 group-hover:opacity-100 transition-opacity" /> {profile.email}
+                     <div className="flex items-center gap-3 p-4 bg-[#fcfcff] border border-[#f1f1f1] rounded-xl text-[14px] text-[#333] font-bold group hover:border-[#f74f2e]/30 transition-all">
+                        <Mail size={18} className="text-[#f74f2e] opacity-40 group-hover:opacity-100 transition-opacity" /> {profile.email}
                      </div>
                    )}
                 </div>
@@ -220,11 +220,11 @@ export default function ProfilePage() {
                        type="text" 
                        value={profile.phone}
                        onChange={(e) => setProfile({...profile, phone: e.target.value})}
-                       className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#845adf] transition-all"
+                       className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#f74f2e] transition-all"
                      />
                    ) : (
-                     <div className="flex items-center gap-3 p-4 bg-[#fcfcff] border border-[#f1f1f1] rounded-xl text-[14px] text-[#333] font-bold group hover:border-[#845adf]/30 transition-all">
-                        <Smartphone size={18} className="text-[#845adf] opacity-40 group-hover:opacity-100 transition-opacity" /> {profile.phone}
+                     <div className="flex items-center gap-3 p-4 bg-[#fcfcff] border border-[#f1f1f1] rounded-xl text-[14px] text-[#333] font-bold group hover:border-[#f74f2e]/30 transition-all">
+                        <Smartphone size={18} className="text-[#f74f2e] opacity-40 group-hover:opacity-100 transition-opacity" /> {profile.phone}
                      </div>
                    )}
                 </div>
@@ -235,11 +235,11 @@ export default function ProfilePage() {
                        type="text" 
                        value={profile.location}
                        onChange={(e) => setProfile({...profile, location: e.target.value})}
-                       className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#845adf] transition-all"
+                       className="w-full p-4 bg-[#f3f4f9] border-none rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#f74f2e] transition-all"
                      />
                    ) : (
-                     <div className="flex items-center gap-3 p-4 bg-[#fcfcff] border border-[#f1f1f1] rounded-xl text-[14px] text-[#333] font-bold group hover:border-[#845adf]/30 transition-all">
-                        <MapPin size={18} className="text-[#845adf] opacity-40 group-hover:opacity-100 transition-opacity" /> {profile.location}
+                     <div className="flex items-center gap-3 p-4 bg-[#fcfcff] border border-[#f1f1f1] rounded-xl text-[14px] text-[#333] font-bold group hover:border-[#f74f2e]/30 transition-all">
+                        <MapPin size={18} className="text-[#f74f2e] opacity-40 group-hover:opacity-100 transition-opacity" /> {profile.location}
                      </div>
                    )}
                 </div>
@@ -248,7 +248,7 @@ export default function ProfilePage() {
 
           <form onSubmit={handleUpdatePassword} className="bg-white p-8 rounded-2xl border border-[#eee] shadow-sm">
              <h5 className="font-extrabold text-[18px] mb-8 text-[#333] tracking-tight flex items-center gap-2 pb-4 border-b border-[#eee]">
-               <Lock size={20} className="text-[#845adf]" /> Bảo mật & Thay đổi mật khẩu
+               <Lock size={20} className="text-[#f74f2e]" /> Bảo mật & Thay đổi mật khẩu
              </h5>
              
              <div className="space-y-6">
@@ -259,7 +259,7 @@ export default function ProfilePage() {
                       value={passwordData.currentPassword}
                       onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})}
                       placeholder="••••••••"
-                      className="w-full p-4 bg-[#fcfcff] border border-[#eee] rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#845adf] transition-all"
+                      className="w-full p-4 bg-[#fcfcff] border border-[#eee] rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#f74f2e] transition-all"
                    />
                 </div>
 
@@ -271,7 +271,7 @@ export default function ProfilePage() {
                         value={passwordData.newPassword}
                         onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})}
                         placeholder="••••••••"
-                        className="w-full p-4 bg-[#fcfcff] border border-[#eee] rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#845adf] transition-all"
+                        className="w-full p-4 bg-[#fcfcff] border border-[#eee] rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#f74f2e] transition-all"
                      />
                   </div>
                   <div className="space-y-2">
@@ -281,7 +281,7 @@ export default function ProfilePage() {
                         value={passwordData.confirmPassword}
                         onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})}
                         placeholder="••••••••"
-                        className="w-full p-4 bg-[#fcfcff] border border-[#eee] rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#845adf] transition-all"
+                        className="w-full p-4 bg-[#fcfcff] border border-[#eee] rounded-xl text-[14px] text-[#333] font-bold focus:ring-2 focus:ring-[#f74f2e] transition-all"
                      />
                   </div>
                 </div>

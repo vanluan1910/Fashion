@@ -98,7 +98,7 @@ export default function ImageComponent({
 
   return (
     <figure 
-      className={`my-4 relative inline-block max-w-full transition-all duration-300 ${isSelected ? 'ring-4 ring-[#845adf]/20 rounded-xl' : ''}`}
+      className={`my-4 relative inline-block max-w-full transition-all duration-300 ${isSelected ? 'ring-4 ring-[#f74f2e]/20 rounded-xl' : ''}`}
       draggable={false}
       onMouseDown={(e) => {
         if (e.button === 0) {
@@ -121,7 +121,7 @@ export default function ImageComponent({
           maxWidth: '100%',
           display: 'block',
           borderRadius: '8px',
-          border: isSelected ? '3px solid #845adf' : '3px solid transparent',
+          border: isSelected ? '3px solid #f74f2e' : '3px solid transparent',
           boxShadow: isSelected ? '0 10px 25px rgba(132, 90, 223, 0.4)' : 'none',
           cursor: 'pointer',
           userSelect: 'none',
@@ -132,7 +132,7 @@ export default function ImageComponent({
         <button
           type="button"
           onMouseDown={startResize}
-          className="absolute bottom-0 right-0 h-8 w-8 rounded-tl-xl bg-[#845adf] text-white flex items-center justify-center shadow-lg cursor-se-resize z-10"
+          className="absolute bottom-0 right-0 h-8 w-8 rounded-tl-xl bg-[#f74f2e] text-white flex items-center justify-center shadow-lg cursor-se-resize z-10"
           title="Kéo để đổi kích thước ảnh"
         >
           <Maximize size={16} />

@@ -35,7 +35,7 @@ export default function ProductTable({
             <th className="p-4 w-10">
               <input 
                 type="checkbox" 
-                className="rounded border-[#ddd] text-[#845adf] focus:ring-[#845adf] cursor-pointer"
+                className="rounded border-[#ddd] text-[#f74f2e] focus:ring-[#f74f2e] cursor-pointer"
                 checked={isAllSelected}
                 onChange={toggleSelectAll}
               />
@@ -54,7 +54,7 @@ export default function ProductTable({
               <td className="p-4">
                 <input 
                   type="checkbox" 
-                  className="rounded border-[#ddd] text-[#845adf] focus:ring-[#845adf] cursor-pointer"
+                  className="rounded border-[#ddd] text-[#f74f2e] focus:ring-[#f74f2e] cursor-pointer"
                   checked={selectedProducts.includes(product.id)}
                   onChange={() => toggleSelectProduct(product.id)}
                 />
@@ -71,7 +71,7 @@ export default function ProductTable({
                 </div>
               </td>
               <td className="p-4">
-                <span className="px-3 py-1 bg-[#845adf10] text-[#845adf] text-[11px] font-bold rounded-lg uppercase tracking-wide">
+                <span className="px-3 py-1 bg-[#f74f2e10] text-[#f74f2e] text-[11px] font-bold rounded-lg uppercase tracking-wide">
                   {product.category}
                 </span>
               </td>
@@ -80,7 +80,7 @@ export default function ProductTable({
                 <div className="flex flex-col items-center">
                   <span className="text-[14px] font-bold text-[#333]">{product.stock}</span>
                   <div className="w-16 h-1 bg-[#eee] rounded-full mt-1 overflow-hidden">
-                    <div className="h-full bg-[#845adf]" style={{ width: `${Math.min(product.stock, 100)}%` }}></div>
+                    <div className="h-full bg-[#f74f2e]" style={{ width: `${Math.min(product.stock, 100)}%` }}></div>
                   </div>
                 </div>
               </td>

@@ -40,7 +40,7 @@ export function Header({ onToggleSidebar, isSidebarOpen }: HeaderProps) {
         <div className="flex items-center gap-4">
           <button 
             onClick={onToggleSidebar}
-            className="p-2 text-[#333] hover:bg-[#f3f4f9] rounded-lg transition-colors border border-transparent active:border-[#845adf]"
+            className="p-2 text-[#333] hover:bg-[#f3f4f9] rounded-lg transition-colors border border-transparent active:border-[#f74f2e]"
           >
             <Menu size={20} />
           </button>
@@ -49,9 +49,9 @@ export function Header({ onToggleSidebar, isSidebarOpen }: HeaderProps) {
             <input 
               type="text" 
               placeholder="Tìm kiếm nhanh..."
-              className="w-full h-11 pl-10 pr-4 bg-[#f3f4f9] border border-transparent rounded-lg text-[14px] text-[#333] font-medium placeholder:text-[#999] focus:bg-white focus:border-[#845adf] focus:ring-4 focus:ring-[#845adf]/5 transition-all outline-none"
+              className="w-full h-11 pl-10 pr-4 bg-[#f3f4f9] border border-transparent rounded-lg text-[14px] text-[#333] font-medium placeholder:text-[#999] focus:bg-white focus:border-[#f74f2e] focus:ring-4 focus:ring-[#f74f2e]/5 transition-all outline-none"
             />
-            <Search size={16} className="absolute left-3 text-[#999] group-focus-within:text-[#845adf]" />
+            <Search size={16} className="absolute left-3 text-[#999] group-focus-within:text-[#f74f2e]" />
           </div>
         </div>
 
@@ -164,7 +164,7 @@ export function Header({ onToggleSidebar, isSidebarOpen }: HeaderProps) {
                   <Link 
                     href="/notifications"
                     onClick={() => setIsNotificationsOpen(false)}
-                    className="block w-full p-3 text-[12px] font-bold text-center text-[#845adf] bg-[#fcfcff] hover:bg-[#f3f4f9] transition-colors border-t border-[#eee]"
+                    className="block w-full p-3 text-[12px] font-bold text-center text-[#f74f2e] bg-[#fcfcff] hover:bg-[#f3f4f9] transition-colors border-t border-[#eee]"
                   >
                     Xem tất cả thông báo
                   </Link>
@@ -183,7 +183,7 @@ export function Header({ onToggleSidebar, isSidebarOpen }: HeaderProps) {
                 <p className="text-[14px] font-bold text-[#333] leading-none mb-1">Quản Trị Viên</p>
                 <p className="text-[11px] text-[#999] uppercase font-medium">Administrator</p>
               </div>
-              <div className="w-9 h-9 bg-[#845adf] rounded-full flex items-center justify-center text-white overflow-hidden border border-[#eee]">
+              <div className="w-9 h-9 bg-[#f74f2e] rounded-full flex items-center justify-center text-white overflow-hidden border border-[#eee]">
                 <User size={20} />
               </div>
             </div>

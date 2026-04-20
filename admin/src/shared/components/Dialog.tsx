@@ -30,7 +30,7 @@ export default function Dialog({
     success: <CheckCircle2 size={40} className="text-green-500" />,
     warning: <AlertTriangle size={40} className="text-orange-500" />,
     info: <Info size={40} className="text-blue-500" />,
-    confirm: <HelpCircle size={40} className="text-[#845adf]" />,
+    confirm: <HelpCircle size={40} className="text-[#f74f2e]" />,
   };
 
   return (
@@ -54,7 +54,7 @@ export default function Dialog({
               </button>
               <button 
                 onClick={() => { onConfirm?.(); onClose(); }}
-                className="flex-1 px-4 py-2.5 bg-[#845adf] text-white rounded-xl text-[13px] font-bold hover:bg-[#7248c8] shadow-lg shadow-[#845adf]/20 transition-all tracking-tight"
+                className="flex-1 px-4 py-2.5 bg-[#f74f2e] text-white rounded-xl text-[13px] font-bold hover:bg-[#d24327] shadow-lg shadow-[#f74f2e]/20 transition-all tracking-tight"
               >
                 {confirmText}
               </button>
@@ -62,7 +62,7 @@ export default function Dialog({
           ) : (
             <button 
               onClick={onClose}
-              className="w-full max-w-[150px] px-6 py-2.5 bg-[#845adf] text-white rounded-xl text-[13px] font-bold hover:bg-[#7248c8] shadow-lg shadow-[#845adf]/20 transition-all tracking-tight"
+              className="w-full max-w-[150px] px-6 py-2.5 bg-[#f74f2e] text-white rounded-xl text-[13px] font-bold hover:bg-[#d24327] shadow-lg shadow-[#f74f2e]/20 transition-all tracking-tight"
             >
               Đã hiểu
             </button>

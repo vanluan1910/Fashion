@@ -115,7 +115,7 @@ export default function EditorContent({ initialValue, onChange, placeholder }: E
   };
 
   return (
-    <div className="relative border border-[#eee] rounded-2xl bg-white overflow-hidden focus-within:ring-2 focus-within:ring-[#845adf]/10 transition-all shadow-sm">
+    <div className="relative border border-[#eee] rounded-2xl bg-white overflow-hidden focus-within:ring-2 focus-within:ring-[#f74f2e]/10 transition-all shadow-sm">
       <LexicalComposer initialConfig={initialConfig}>
         <ToolbarPlugin />
         <div className="relative min-h-[300px] p-6 text-[14px] font-medium text-[#333] font-sans">

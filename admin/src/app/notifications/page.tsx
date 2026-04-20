@@ -46,7 +46,7 @@ export default function NotificationsPage() {
         {/* Toolbar */}
         <div className="p-4 border-b border-[#f1f1f1] flex items-center justify-between">
            <div className="flex items-center gap-2">
-              <button className="px-4 py-2 bg-[#845adf] text-white rounded-lg text-[13px] font-bold">Tất cả</button>
+              <button className="px-4 py-2 bg-[#f74f2e] text-white rounded-lg text-[13px] font-bold">Tất cả</button>
               <button className="px-4 py-2 text-[#999] hover:text-[#333] font-medium">Chưa đọc</button>
            </div>
            <button className="text-[#999] p-2 hover:bg-[#f3f4f9] rounded-lg"><Filter size={18} /></button>
@@ -75,7 +75,7 @@ export default function NotificationsPage() {
 
         {/* More */}
         <div className="p-6 bg-[#fcfcff] text-center">
-           <button className="text-[13px] font-bold text-[#845adf] hover:underline">Tải thêm thông báo cũ hơn</button>
+           <button className="text-[13px] font-bold text-[#f74f2e] hover:underline">Tải thêm thông báo cũ hơn</button>
         </div>
       </div>
     </div>
