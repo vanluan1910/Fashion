@@ -1,0 +1,138 @@
+"use client";
+
+import React, { useState } from "react";
+import { 
+  Plus, 
+  Search, 
+  Filter, 
+  Download,
+} from "lucide-react";
+import Link from "next/link";
+import { useProducts } from "@/features/products/hooks/useProducts";
+import ProductTable from "@/features/products/components/ProductTable";
+import Dialog from "@/shared/components/Dialog";
+
+export default function ProductsPage() {
+  const {
+    filteredProducts,
+    searchTerm,
+    setSearchTerm,
+    selectedCategory,
+    setSelectedCategory,
+    selectedProducts,
+    toggleSelectAll,
+    toggleSelectProduct,
+    deleteProduct,
+    products
+  } = useProducts();
+
+  const [dialogConfig, setDialogConfig] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    type: "success" | "warning" | "info" | "confirm";
+    onConfirm?: () => void;
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "info"
+  });
+
+  const triggerDialog = (config: Omit<typeof dialogConfig, "isOpen">) => {
+    setDialogConfig({ ...config, isOpen: true });
+  };
+
+  const handleDeleteRequest = (id: string) => {
+    triggerDialog({
+      title: "Xác nhận xóa?",
+      message: "Sản phẩm này sẽ bị gỡ bỏ vĩnh viễn khỏi hệ thống. Hành động này không thể hoàn tác.",
+      type: "confirm",
+      onConfirm: () => {
+        deleteProduct(id);
+        triggerDialog({
+          title: "Đã xóa thành công!",
+          message: "Dữ liệu sản phẩm đã được gỡ bỏ hoàn tất.",
+          type: "success"
+        });
+      }
+    });
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header Section */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-extrabold text-[#333] tracking-tight">Quản lý sản phẩm</h1>
+          <p className="text-[13px] text-[#666] font-medium mt-1">Xem, lọc và quản lý danh mục sản phẩm của bạn.</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <button className="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#eee] rounded-xl text-[13px] font-bold text-[#555] hover:bg-[#fcfcff] transition-all shadow-sm">
+            <Download size={18} /> Xuất báo cáo
+          </button>
+          <Link href="/products/add" className="flex items-center gap-2 px-6 py-2.5 bg-[#845adf] text-white rounded-xl text-[13px] font-bold hover:bg-[#7248c8] transition-all shadow-lg shadow-[#845adf]/20">
+            <Plus size={18} /> Thêm sản phẩm
+          </Link>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl shadow-sm border border-[#eee] overflow-hidden">
+        {/* Filters & Search */}
+        <div className="p-4 border-b border-[#eee] flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#fcfcff]">
+          <div className="relative w-full md:w-96">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#999]" size={18} />
+            <input 
+              type="text" 
+              placeholder="Tìm kiếm theo tên hoặc mã SP..." 
+              className="w-full pl-10 pr-4 py-2.5 bg-[#f3f4f9] border-none rounded-xl text-[14px] focus:ring-2 focus:ring-[#845adf] transition-all font-medium"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className="flex items-center gap-3">
+             <div className="flex items-center gap-2 px-3 py-2 bg-[#f3f4f9] rounded-xl border-none">
+                <Filter size={16} className="text-[#666]" />
+                <select 
+                  className="bg-transparent border-none text-[13px] font-bold text-[#555] focus:ring-0 outline-none cursor-pointer"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                   <option>Tất cả</option>
+                   <option>Thời trang nam</option>
+                   <option>Thời trang nữ</option>
+                   <option>Phụ kiện</option>
+                </select>
+             </div>
+             <p className="text-[13px] text-[#999] font-bold ml-2">Đã chọn: {selectedProducts.length}</p>
+          </div>
+        </div>
+
+        {/* Product Table Component */}
+        <ProductTable 
+          products={filteredProducts}
+          selectedProducts={selectedProducts}
+          toggleSelectProduct={toggleSelectProduct}
+          toggleSelectAll={toggleSelectAll}
+          isAllSelected={selectedProducts.length === filteredProducts.length && filteredProducts.length > 0}
+          onDelete={handleDeleteRequest}
+        />
+
+        {/* Pagination Summary */}
+        <div className="p-4 border-t border-[#f1f1f1] flex items-center justify-between bg-[#fcfcff]">
+          <p className="text-[13px] text-[#555] font-bold tracking-tight">
+            Hiển thị {filteredProducts.length} của {products.length} sản phẩm
+          </p>
+          <div className="flex items-center gap-2">
+            {/* Pagination logic would go here */}
+          </div>
+        </div>
+      </div>
+
+      <Dialog 
+        {...dialogConfig} 
+        onClose={() => setDialogConfig(prev => ({ ...prev, isOpen: false }))} 
+      />
+    </div>
+  );
+}
