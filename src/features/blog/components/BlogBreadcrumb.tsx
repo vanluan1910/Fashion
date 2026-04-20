@@ -4,32 +4,44 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-export function BlogBreadcrumb() {
+interface BlogBreadcrumbProps {
+  name?: string;
+}
+
+export function BlogBreadcrumb({ name }: BlogBreadcrumbProps) {
   return (
-    <section className="bg-[#f7f7f7] py-[60px] mb-[60px] overflow-hidden">
+    <section className="bg-[#f9f9f9] border-t border-[#eee] py-[24px] mb-[60px] overflow-hidden">
       <div className="max-w-[1170px] mx-auto px-[15px]">
         {/* Replicating the "wow fadeIn" effect from blogs.html:L363 */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: "linear" }}
+           initial={{ opacity: 0 }}
+           whileInView={{ opacity: 1 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.8, ease: "linear" }}
         >
-          <nav aria-label="breadcrumb" className="mb-[15px]">
-            <ol className="flex items-center list-none p-0 m-0 text-[14px] uppercase font-medium">
+          <nav aria-label="breadcrumb" className="mb-[4px]">
+            <ol className="flex items-center list-none p-0 m-0 text-[14px] uppercase font-medium tracking-wider">
               <li className="flex items-center">
-                <Link href="/" className="text-[#333] hover:text-primary transition-colors">
+                <Link href="/" className="text-[#f74f2e] hover:text-[#333] transition-colors">
                   Trang chủ
                 </Link>
-                <i className="flaticon-arrows-4 mx-[10px] text-[10px] text-[#333]"></i>
+                <span className="mx-2 text-[#d5d5d5] font-light">/</span>
               </li>
-              <li className="text-[#999] active" aria-current="page">
-                Tin tức
+              <li className="flex items-center">
+                <Link href="/blog" className={`${name ? "text-[#f74f2e] hover:text-[#333]" : "text-[#888888]"} transition-colors`}>
+                  Tin tức
+                </Link>
+                {name && <span className="mx-2 text-[#d5d5d5] font-light">/</span>}
               </li>
+              {name && (
+                <li className="text-[#888888] truncate max-w-[200px] md:max-w-none" aria-current="page">
+                  {name}
+                </li>
+              )}
             </ol>
           </nav>
-          <h1 className="text-[40px] font-normal text-[#333] capitalize m-0" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Tin tức & Sự kiện
+          <h1 className="text-[32px] font-normal text-[#333] m-0 font-sans capitalize leading-tight">
+            {name || "Tin tức"}
           </h1>
         </motion.div>
       </div>
