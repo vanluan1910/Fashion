@@ -3,9 +3,30 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { BlogCard } from "./BlogCard";
-import { BLOG_POSTS } from "../constants/blog-data";
+import { getBlogsData, type Blog } from "../services/blogService";
 
 export function BlogGrid() {
+  const [blogs, setBlogs] = React.useState<Blog[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchBlogs = async () => {
+      setIsLoading(true);
+      const data = await getBlogsData();
+      setBlogs(data);
+      setIsLoading(false);
+    };
+    fetchBlogs();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="py-20 text-center text-[#999] italic">
+        Đang cập nhật tin tức mới nhất từ hệ thống...
+      </div>
+    );
+  }
+
   return (
     <section className="pb-[100px] overflow-hidden">
       {/* Replicating the "wow fadeIn" for the entire section: blogs.html:L363 */}
@@ -17,7 +38,7 @@ export function BlogGrid() {
         transition={{ duration: 1.3, ease: "linear" }}
       >
         <div className="flex flex-wrap -mx-[15px]">
-          {BLOG_POSTS.map((post, idx) => {
+          {blogs.length > 0 ? blogs.map((post, idx) => {
             // Replicating blogs.html stagger: timeLeft for left col, fadeInRight for right col
             // data-wow-duration="1300ms" as seen in blogs.html:L366-L379
             const isLeft = idx % 2 === 0;
@@ -34,7 +55,11 @@ export function BlogGrid() {
                 <BlogCard post={post} />
               </motion.div>
             );
-          })}
+          }) : (
+            <div className="w-full text-center py-20 text-[#999] italic">
+              Hiện tại chưa có bài viết nào trong bản tin.
+            </div>
+          )}
         </div>
         
       </motion.div>

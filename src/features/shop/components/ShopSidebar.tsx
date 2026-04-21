@@ -20,176 +20,154 @@ const CloseIcon = ({ className = "w-3 h-3" }: { className?: string }) => (
   </svg>
 );
 
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCurrency } from "@/core/providers/CurrencyProvider";
+
 export function ShopSidebar() {
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(700);
-  const minLimit = 0;
-  const maxLimit = 1000;
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { currency } = useCurrency();
+
+  // Mặc định giới hạn (VND: 10tr, USD: 400)
+  const isUSD = currency === "USD";
+  const maxLimit = isUSD ? 500 : 10000000;
+  const step = isUSD ? 10 : 100000;
+
+  const [minPrice, setMinPrice] = useState(Number(searchParams.get("minPrice")) || 0);
+  const [maxPrice, setMaxPrice] = useState(Number(searchParams.get("maxPrice")) || maxLimit);
+
+  const updateUrl = (min: number, max: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("minPrice", min.toString());
+    params.set("maxPrice", max.toString());
+    router.push(`/shop?${params.toString()}`, { scroll: false });
+  };
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.min(Number(e.target.value), maxPrice - 50);
+    const value = Math.min(Number(e.target.value), maxPrice - step);
     setMinPrice(value);
   };
 
   const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.max(Number(e.target.value), minPrice + 50);
+    const value = Math.max(Number(e.target.value), minPrice + step);
     setMaxPrice(value);
   };
+
+  // Chỉ cập nhật URL khi người dùng nhả chuột (tối ưu hiệu năng)
+  // Tự động reset giá trị thanh trượt khi đổi tiền tệ để không bị lệch dải giá
+  React.useEffect(() => {
+    setMinPrice(0);
+    setMaxPrice(maxLimit);
+  }, [currency, maxLimit]);
+
+  const toggleFilter = (key: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    const currentValues = params.get(key)?.split(",") || [];
+    
+    if (currentValues.includes(value.toLowerCase())) {
+      const newValues = currentValues.filter(v => v !== value.toLowerCase());
+      if (newValues.length > 0) params.set(key, newValues.join(","));
+      else params.delete(key);
+    } else {
+      currentValues.push(value.toLowerCase());
+      params.set(key, currentValues.join(","));
+    }
+    
+    router.push(`/shop?${params.toString()}`, { scroll: false });
+  };
+
+  const isChecked = (key: string, value: string) => {
+    return (searchParams.get(key)?.split(",") || []).includes(value.toLowerCase());
+  };
+
+  const clearAll = (key: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete(key);
+    router.push(`/shop?${params.toString()}`, { scroll: false });
+  };
+
+  const { formatPrice } = useCurrency();
 
   return (
     <div className="collection_sidebar">
       <div className="flex items-center justify-between lg:hidden mb-[30px] pb-[20px] border-b border-[#ececec]">
         <h3 className="text-[24px] font-normal text-[#333]">Bộ lọc</h3>
-        <button className="text-[#333]">
+        <button className="text-[#333]" onClick={() => router.back()}>
           <CloseIcon className="w-5 h-5" />
         </button>
       </div>
 
-      {/* 1. Shopping by */}
-      <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
-        <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h2 className="text-[20px] font-bold text-[#333] mb-0 leading-none capitalize">Đang lọc theo</h2>
-          <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
-        </div>
-        
-        <div className="layer-filter shopping_by_select p-[18px_10px_15px] space-y-[15px]">
-          {/* Women Category Select */}
-          <div className="select_category flex flex-col mb-[15px]">
-            <div className="fill_type overflow-hidden mb-[8px]">
-              <p className="fill_name text-[14px] text-[#333] font-normal float-left w-1/2 mb-0">Nữ</p>
-              <a href="#" className="clear text-[#333] text-[14px] text-right float-left w-1/2 capitalize hover:text-primary transition-colors">Xóa</a>
-            </div>
-            <div className="fill_value relative -mt-[7px] block w-[85%] pr-[20px]">
-              {["Tops", "Outerwear", "Bottoms", "Activewear"].map(tag => (
-                <p key={tag} className="text-[14px] text-[#797979] float-left mr-[11px] mb-[8px] leading-normal inline-flex items-center">
-                  {tag} <span className="ml-[6px] cursor-pointer hover:text-primary"><CloseIcon className="w-2 h-2" /></span>
-                </p>
-              ))}
-              <a href="#" className="text-[#797979] hover:text-primary absolute right-0 top-[-4px]">
-                <CloseIcon className="w-3 h-3" />
-              </a>
-            </div>
+      {/* 1. Shopping by (Đang lọc theo) */}
+      {(searchParams.get("category") || searchParams.get("minPrice") || searchParams.get("sale")) && (
+        <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
+          <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
+            <h2 className="text-[18px] font-medium text-[#333] mb-0 leading-none capitalize tracking-tighter" style={{ fontFamily: "'Work Sans', sans-serif" }}>Bộ lọc đang chọn</h2>
           </div>
-
-          {/* Price Select */}
-          <div className="select_category">
-            <div className="fill_type overflow-hidden mb-[8px]">
-              <p className="fill_name text-[14px] text-[#333] font-normal float-left w-1/2 mb-0">Giá</p>
-              <a href="#" className="clear text-[#333] text-[14px] text-right float-left w-1/2 capitalize hover:text-primary transition-colors">Xóa</a>
-            </div>
-            <div className="fill_value relative -mt-[7px] block w-[85%] pr-[20px]">
-              <p className="text-[14px] text-[#797979] mb-[8px] leading-normal">${minPrice} - ${maxPrice}</p>
-              <a href="#" className="text-[#797979] hover:text-primary absolute right-0 top-[-4px]">
-                <CloseIcon className="w-3 h-3" />
-              </a>
-            </div>
-          </div>
-
-          {/* Size Select */}
-          <div className="select_category flex flex-col mb-[15px]">
-            <div className="fill_type overflow-hidden mb-[8px]">
-              <p className="fill_name text-[14px] text-[#333] font-normal float-left w-1/2 mb-0">Kích cỡ</p>
-              <a href="#" className="clear text-[#333] text-[14px] text-right float-left w-1/2 capitalize hover:text-primary transition-colors">Xóa</a>
-            </div>
-            <div className="fill_value relative -mt-[7px] block w-[85%] pr-[20px]">
-              {["XS", "S", "M", "L", "XL"].map(size => (
-                <p key={size} className="text-[14px] text-[#797979] float-left mr-[11px] mb-[8px] leading-normal inline-flex items-center uppercase font-normal">
-                  {size} <span className="ml-[6px] cursor-pointer hover:text-primary"><CloseIcon className="w-2 h-2" /></span>
-                </p>
-              ))}
-              <a href="#" className="text-[#797979] hover:text-primary absolute right-0 top-[-4px]">
-                <CloseIcon className="w-3 h-3" />
-              </a>
-            </div>
-          </div>
-
-           {/* Color Select */}
-          <div className="select_category flex flex-col pb-0 mb-0">
-            <div className="fill_type overflow-hidden mb-[8px]">
-              <p className="fill_name text-[14px] text-[#333] font-normal float-left w-1/2 mb-0">Màu sắc</p>
-              <a href="#" className="clear text-[#333] text-[14px] text-right float-left w-1/2 capitalize hover:text-primary transition-colors">Xóa</a>
-            </div>
-            <div className="fill_value relative block w-[85%] pr-[20px] -mt-[7px]">
-              <p className="float-left mr-[11px] mb-[8px] leading-normal inline-flex items-center text-[#797979]">
-                <span className="w-[13px] h-[13px] bg-[#fbcee0] inline-block mr-[6px]"></span>
-                <span className="cursor-pointer hover:text-primary"><CloseIcon className="w-2 h-2" /></span>
-              </p>
-              <p className="float-left mr-[11px] mb-[8px] leading-normal inline-flex items-center text-[#797979]">
-                <span className="w-[13px] h-[13px] bg-[#9cb3f1] inline-block mr-[6px]"></span>
-                <span className="cursor-pointer hover:text-primary"><CloseIcon className="w-2 h-2" /></span>
-              </p>
-              <p className="float-left mr-[11px] mb-[8px] leading-normal inline-flex items-center text-[#797979]">
-                <span className="w-[13px] h-[13px] bg-[#fda430] inline-block mr-[6px]"></span>
-                <span className="cursor-pointer hover:text-primary"><CloseIcon className="w-2 h-2" /></span>
-              </p>
-              <a href="#" className="text-[#797979] hover:text-primary absolute right-0 top-[-2px]">
-                <CloseIcon className="w-3 h-3" />
-              </a>
-            </div>
-            <a href="#" className="claerall text-uppercase inline-block mt-[15px] text-[15px] font-bold text-[#f74f2e] hover:text-[#333] transition-all">XÓA TẤT CẢ</a>
+          
+          <div className="layer-filter shopping_by_select p-[18px_10px_15px] space-y-[15px]">
+            {searchParams.get("category") && (
+              <div className="flex flex-wrap gap-2">
+                {searchParams.get("category")?.split(",").map(cat => (
+                  <span key={cat} className="bg-gray-100 px-2 py-1 text-[12px] flex items-center gap-1">
+                    {cat} <CloseIcon className="w-2 h-2 cursor-pointer" />
+                  </span>
+                ))}
+              </div>
+            )}
+            <button 
+              onClick={() => router.push("/shop")}
+              className="text-[#f74f2e] font-bold text-[13px] uppercase"
+            >
+              Xóa tất cả
+            </button>
           </div>
         </div>
-      </div>
+      )}
 
-      {/* 2. Availability */}
+      {/* 2. Availability (Trạng thái) */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Trạng thái</h5>
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Trạng thái</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter pt-[9px] px-[10px] pb-[12px]">
-          <ul className="m-0 p-0 list-none space-y-[7px]">
-            <li><a href="#" className="text-[14px] text-[#666] hover:text-primary transition-colors leading-none"> Đang giảm giá</a></li>
-            <li><a href="#" className="text-[14px] text-[#666] hover:text-primary transition-colors leading-none">Còn hàng</a></li>
+          <ul className="m-0 p-0 list-none space-y-[10px]">
+            <li className="flex items-center gap-2 cursor-pointer" onClick={() => toggleFilter("sale", "true")}>
+              <div className={`w-3 h-3 rounded-full border ${isChecked("sale", "true") ? "bg-primary border-primary" : "border-gray-300"}`}></div>
+              <span className={`text-[14px] ${isChecked("sale", "true") ? "text-primary font-bold" : "text-[#666]"}`}>Đang giảm giá</span>
+            </li>
           </ul>
         </div>
       </div>
 
-      {/* 3. Women Category */}
+      {/* 3. Categories (Danh mục) */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Sản phẩm Nữ</h5>
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Danh mục</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
-        <div className="layer-filter">
-          <div className="search_tag p-[8px_10px_0] relative">
-            <input
-              type="text"
-              placeholder="tìm kiếm"
-              suppressHydrationWarning
-              className="w-full border-0 border-b border-[#e0dcdc] px-[9px] pb-[7px] text-[12px] text-[#888888] focus:border-primary outline-none"
-            />
-            <button 
-              suppressHydrationWarning
-              className="absolute right-[19px] top-[10px] flaticon-magnifying-glass text-[12px] text-[#888888]"
-            ></button>
-          </div>
-          <ul className="women m-0 p-[12px_10px_15px] list-none space-y-[10px]">
-            {SHOP_CATEGORIES.map((cat, idx) => (
-              <li key={cat.id}>
-                <div className="checkbox flex items-center">
-                  <input
-                    type="checkbox"
-                    suppressHydrationWarning
-                    id={`cat-side-new-${cat.id}`}
-                    defaultChecked={idx < 4}
-                    className="w-[13px] h-[13px] border-[#e0dcdc] accent-primary rounded-full cursor-pointer"
-                  />
-                  <label htmlFor={`cat-side-new-${cat.id}`} className="ml-[10px] text-[14px] text-[#666] hover:text-primary cursor-pointer transition-colors leading-none">
-                    {cat.name}
-                  </label>
-                </div>
+        <div className="layer-filter pt-[12px] px-[10px] pb-[15px]">
+          <ul className="m-0 p-0 list-none space-y-[10px]">
+            {["Thời trang nam", "Thời trang nữ", "Phụ kiện"].map((cat) => (
+              <li 
+                key={cat} 
+                className="flex items-center gap-2 cursor-pointer group"
+                onClick={() => toggleFilter("category", cat)}
+              >
+                <div className={`w-3 h-3 border ${isChecked("category", cat) ? "bg-primary border-primary" : "border-gray-300"}`}></div>
+                <span className={`text-[14px] transition-colors ${isChecked("category", cat) ? "text-primary font-bold" : "text-[#666] group-hover:text-primary"}`}>
+                  {cat}
+                </span>
               </li>
             ))}
           </ul>
-          <div className="loadMore px-[15px] pb-[18px] text-[12px] uppercase text-[#333] font-bold cursor-pointer hover:text-primary transition-colors">Xem thêm 4 sản phẩm</div>
         </div>
       </div>
 
       {/* 4. Men Category */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Sản phẩm Nam</h5>
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Sản phẩm Nam</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter">
@@ -223,14 +201,14 @@ export function ShopSidebar() {
               </li>
             ))}
           </ul>
-          <div className="loadMore px-[15px] pb-[18px] text-[12px] uppercase text-[#333] font-bold cursor-pointer hover:text-primary transition-colors">Xem thêm 4 sản phẩm</div>
+          <div className="loadMore px-[15px] pb-[18px] text-[12px] text-[#333] font-bold cursor-pointer hover:text-primary transition-colors">Xem thêm 4 sản phẩm</div>
         </div>
       </div>
 
       {/* 5. Accessories */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Phụ kiện</h5>
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Phụ kiện</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter pt-[9px] px-[10px] pb-[12px]">
@@ -255,7 +233,7 @@ export function ShopSidebar() {
       {/* 6. Price Slider */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Giá cả</h5>
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Giá cả</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter pt-[22px] px-[30px] pb-[39px]">
@@ -270,22 +248,26 @@ export function ShopSidebar() {
                   }}
                 ></div>
                 
-                {/* Real hidden inputs for functionality */}
+                 {/* Real hidden inputs for functionality */}
                 <input 
                   type="range" 
-                  min={minLimit} 
+                  min={0} 
                   max={maxLimit} 
+                  step={step}
                   value={minPrice} 
                   onChange={handleMinChange}
+                  onMouseUp={() => updateUrl(minPrice, maxPrice)}
                   suppressHydrationWarning
                   className="dual-range-input absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30"
                 />
                 <input 
                   type="range" 
-                  min={minLimit} 
+                  min={0} 
                   max={maxLimit} 
+                  step={step}
                   value={maxPrice} 
                   onChange={handleMaxChange}
+                  onMouseUp={() => updateUrl(minPrice, maxPrice)}
                   suppressHydrationWarning
                   className="dual-range-input absolute inset-0 w-full h-full opacity-0 cursor-pointer z-30"
                 />
@@ -305,10 +287,10 @@ export function ShopSidebar() {
                 <p className="range_title float-left text-[14px] font-bold text-[#333] mr-[5px] mb-0">Giá:</p>
                 <input 
                   type="text" 
-                  value={`$${minPrice} - $${maxPrice}`} 
+                  value={`${formatPrice(minPrice)} - ${formatPrice(maxPrice)}`} 
                   readOnly 
                   suppressHydrationWarning
-                  className="float-left border-0 !p-0 bg-transparent text-[#333] font-bold text-[14px] w-[110px] -mt-[3px] focus:outline-none"
+                  className="float-left border-0 !p-0 bg-transparent text-[#333] font-bold text-[14px] w-full -mt-[3px] focus:outline-none"
                 />
               </div>
            </div>
@@ -318,89 +300,57 @@ export function ShopSidebar() {
       {/* 7. Size Selection */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Kích cỡ</h5>
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Kích cỡ</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter">
-          <div className="search_tag p-[8px_10px_0] relative">
-            <input
-              type="text"
-              placeholder="tìm kiếm"
-              suppressHydrationWarning
-              className="w-full border-0 border-b border-[#e0dcdc] px-[9px] pb-[7px] text-[12px] text-[#888888] focus:border-primary outline-none"
-            />
-            <button 
-              suppressHydrationWarning
-              className="absolute right-[19px] top-[10px] flaticon-magnifying-glass text-[12px] text-[#888888]"
-            ></button>
-          </div>
           <ul className="size m-0 p-[12px_10px_15px] list-none space-y-[10px]">
-            {["XL", "S", "M", "L", "XL", "XXL", "XXXL", "UK 6"].slice(0, 4).map((size) => (
-              <li key={size}>
-                <div className="checkbox flex items-center uppercase">
-                  <input
-                    type="checkbox"
-                    id={`size-side-new-${size}`}
-                    suppressHydrationWarning
-                    defaultChecked={true}
-                    className="w-[13px] h-[13px] border-[#e0dcdc] accent-primary rounded-full cursor-pointer"
-                  />
-                  <label htmlFor={`size-side-new-${size}`} className="ml-[10px] text-[14px] text-[#666] hover:text-primary cursor-pointer transition-colors leading-none">
-                    {size}
-                  </label>
-                </div>
+            {["XS", "S", "M", "L", "XL", "XXL"].map((size) => (
+              <li 
+                key={size}
+                className="flex items-center gap-2 cursor-pointer group"
+                onClick={() => toggleFilter("size", size)}
+              >
+                <div className={`w-3 h-3 border ${isChecked("size", size) ? "bg-primary border-primary" : "border-gray-300"}`}></div>
+                <span className={`text-[14px] uppercase ${isChecked("size", size) ? "text-primary font-bold" : "text-[#666] group-hover:text-primary"}`}>
+                  {size}
+                </span>
               </li>
             ))}
           </ul>
-          <div className="loadMore px-[15px] pb-[18px] text-[12px] uppercase text-[#333] font-bold cursor-pointer hover:text-primary transition-colors">Xem thêm 4 sản phẩm</div>
         </div>
       </div>
 
       {/* 8. Color Selection */}
       <div className="category_list color_box border border-[#e0dcdc] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-bold uppercase text-[#333] mb-0 leading-none">Màu sắc</h5>
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Màu sắc</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter">
-          <div className="search_tag p-[8px_10px_0] relative">
-            <input
-              type="text"
-              placeholder="tìm kiếm"
-              suppressHydrationWarning
-              className="w-full border-0 border-b border-[#e0dcdc] px-[9px] pb-[7px] text-[12px] text-[#888888] focus:border-primary outline-none"
-            />
-            <button 
-              suppressHydrationWarning
-              className="absolute right-[19px] top-[10px] flaticon-magnifying-glass text-[12px] text-[#888888]"
-            ></button>
-          </div>
           <ul className="color m-0 p-[12px_10px_15px] flex flex-wrap gap-[10px] list-none">
-            {SHOP_COLORS.map((color, idx) => (
-              <li key={color.id} className="w-[34px] h-[34px] border border-[#e0dcdc] flex items-center justify-center p-[2px]">
+            {SHOP_COLORS.map((color) => (
+              <li 
+                key={color.id} 
+                onClick={() => toggleFilter("color", color.name)}
+                className={`w-[34px] h-[34px] border flex items-center justify-center p-[2px] cursor-pointer transition-all ${isChecked("color", color.name) ? "border-primary scale-110 shadow-sm" : "border-[#e0dcdc] hover:border-gray-400"}`}
+              >
                 <div className="relative w-full h-full flex items-center justify-center">
-                  <input
-                    type="checkbox"
-                    id={`color-side-new-${color.id}`}
-                    suppressHydrationWarning
-                    className="peer hidden"
-                    defaultChecked={idx < 3}
-                  />
-                  <label
-                    htmlFor={`color-side-new-${color.id}`}
-                    className="w-[28px] h-[28px] block cursor-pointer transition-all relative"
+                  <div
+                    className="w-full h-full block relative"
                     style={{ backgroundColor: color.hex }}
                     title={color.name}
                   >
-                    <span className="absolute inset-0 flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity">
-                      <span className="w-[5px] h-[10px] border-white border-b-[1.5px] border-r-[1.5px] rotate-45 mb-[1px]"></span>
-                    </span>
-                  </label>
+                    {isChecked("color", color.name) && (
+                      <span className="absolute inset-0 flex items-center justify-center">
+                        <span className="w-[5px] h-[10px] border-white border-b-[1.5px] border-r-[1.5px] rotate-45 mb-[1px]"></span>
+                      </span>
+                    )}
+                  </div>
                 </div>
               </li>
             ))}
           </ul>
-          <div className="loadMore px-[15px] pb-[18px] ml-[5px] text-[12px] uppercase text-[#333] font-bold cursor-pointer hover:text-primary transition-colors">2 More</div>
         </div>
       </div>
     </div>

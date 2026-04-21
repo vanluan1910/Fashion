@@ -11,6 +11,11 @@ interface ProductTabsProps {
 
 export function ProductTabs({ product }: ProductTabsProps) {
   const [activeTab, setActiveTab] = useState("description");
+  const [isMounted, setIsMounted] = useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const tabs = [
     { id: "description", label: "Mô tả sản phẩm" },
@@ -19,14 +24,17 @@ export function ProductTabs({ product }: ProductTabsProps) {
     { id: "features", label: "Tính năng bổ sung" },
   ];
 
+  if (!isMounted) return null;
+
   return (
-    <div className="bg-white border border-gray-100 mt-12 font-sans">
+    <div className="bg-white border border-gray-100 mt-12 font-sans" suppressHydrationWarning={true}>
       <div className="border-b border-gray-100 overflow-x-auto no-scrollbar">
         <ul className="flex min-w-max">
           {tabs.map((tab) => (
             <li key={tab.id}>
               <button
                 onClick={() => setActiveTab(tab.id)}
+                suppressHydrationWarning={true}
                 className={`px-8 py-5 text-[14px] font-bold uppercase tracking-widest transition-all relative ${
                   activeTab === tab.id ? "text-primary" : "text-[#666] hover:text-[#333]"
                 }`}

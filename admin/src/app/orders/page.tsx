@@ -215,13 +215,23 @@ export default function OrdersPage() {
                       className="rounded border-[#ddd] accent-[#f74f2e] cursor-pointer w-4 h-4" 
                     />
                   </td>
-                  <td className="p-5 font-black text-[#f74f2e] text-[14px]">{order.id}</td>
+                  <td className="p-5 font-black text-[#f74f2e] text-[14px]">#{order.id}</td>
                   <td className="p-5">
-                    <p className="font-extrabold text-[#333] text-[14px]">{order.customer}</p>
-                    <p className="text-[11px] text-[#999] font-black uppercase mt-1 tracking-wider">{order.items} sản phẩm • {order.payment}</p>
+                    <p className="font-extrabold text-[#333] text-[14px]">{order.customerName}</p>
+                    <p className="text-[11px] text-[#999] font-black uppercase mt-1 tracking-wider">{order.itemsCount || 0} sản phẩm • {order.payment || "COD"}</p>
                   </td>
-                  <td className="p-5 text-[14px] font-bold text-[#666]">{order.date}</td>
-                  <td className="p-5 font-black text-[#333] text-[16px] tracking-tight">{order.amount}</td>
+                  <td className="p-5 text-[14px] font-bold text-[#666]">
+                    {new Date(order.date).toLocaleDateString('vi-VN', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric'
+                    })}
+                  </td>
+                  <td className="p-5 font-black text-[#333] text-[16px] tracking-tight">
+                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.total)}
+                  </td>
                   <td className="p-5">
                     <div className="flex justify-center relative">
                       <button 

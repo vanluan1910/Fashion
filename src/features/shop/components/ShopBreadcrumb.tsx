@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function ShopBreadcrumb() {
   return (
-    <section className="bg-[#f9f9f9] border-t border-[#eee] py-[24px] mb-[60px]">
+    <section className="bg-[#f9f9f9] border-t border-[#eee] py-[12px] mb-[10px]">
       <div className="max-w-[1170px] mx-auto px-[15px]">
         <nav aria-label="breadcrumb">
           <ol className="flex items-center space-x-2 text-[14px] mb-[4px] p-0 list-none bg-transparent">

@@ -5,63 +5,65 @@ import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ProductCard } from "./ProductCard";
-import { SHOP_PRODUCTS } from "../constants/shop-data";
+import { getproductsData } from "../../products/services/productsService";
 
 export function ProductGrid({ category }: { category?: string }) {
+  const [products, setProducts] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [columns, setColumns] = useState(3);
   const searchParams = useSearchParams();
   const idParam = searchParams.get("id");
-  const categoryFilter = category || searchParams.get("category");
-  const saleFilter = searchParams.get("sale");
+  const categoryFilter = (category ? [category.toLowerCase()] : searchParams.get("category")?.toLowerCase().split(",")) || [];
+  const saleFilter = searchParams.get("sale") === "true";
+  const sizeFilter = searchParams.get("size")?.toLowerCase().split(",") || [];
+  const colorFilter = searchParams.get("color")?.toLowerCase().split(",") || [];
+  const minPriceFilter = Number(searchParams.get("minPrice")) || 0;
+  const maxPriceFilter = Number(searchParams.get("maxPrice")) || 999999999;
 
-  // Filter products based on category and sale status
-  const filteredProducts = SHOP_PRODUCTS.filter((product) => {
-    // A. Ưu tiên lọc theo ID (nếu có từ tìm kiếm)
-    if (idParam) {
-      return product.id === parseInt(idParam);
-    }
+  React.useEffect(() => {
+    const loadProducts = async () => {
+      setIsLoading(true);
+      const data = await getproductsData();
+      setProducts(data);
+      setIsLoading(false);
+    };
+    loadProducts();
+  }, []);
 
-    const cat = product.category.toLowerCase();
-    const filter = categoryFilter ? categoryFilter.toLowerCase() : null;
-    const isSale = saleFilter === "true";
+  // Filter products based on URL params
+  const filteredProducts = products.filter((product) => {
+    // 1. Lọc theo ID (Nếu là kết quả tìm kiếm đích danh)
+    if (idParam) return String(product.id) === idParam;
 
-    // 1. Lọc theo Sale (nếu có tham số sale=true)
-    if (isSale && product.label !== "sale") {
+    // 2. Lọc theo Khoảng giá
+    const price = Number(product.price);
+    if (price < minPriceFilter || price > maxPriceFilter) return false;
+
+    // 3. Lọc theo Danh mục (Hỗ trợ chọn nhiều mục)
+    const productCat = String(product.category || "").toLowerCase();
+    if (categoryFilter.length > 0 && !categoryFilter.some(filter => productCat.includes(filter))) {
       return false;
     }
 
-    // 2. Lọc theo Category
-    if (!filter) return true;
+    // 4. Lọc theo Trạng thái Giảm giá
+    if (saleFilter && !product.label?.toLowerCase().includes("sale")) return false;
 
-    const subCat = product.subCategory?.toLowerCase() || "";
-
-    // A. Lọc theo giới tính (Gốc)
-    if (filter === "men") {
-      return cat === "men";
-    }
-    
-    if (filter === "women") {
-      return cat === "women";
+    // 5. Lọc theo Kích cỡ
+    if (sizeFilter.length > 0) {
+      const productSizes = (product.sizes || []).map((s: string) => s.toLowerCase());
+      if (!sizeFilter.some(s => productSizes.includes(s))) return false;
     }
 
-    // B. Lọc theo danh mục phụ cụ thể
-    if (cat === filter || subCat === filter) {
-      return true;
-    }
-
-    // C. Nhóm bổ trợ (Nếu lọc theo các từ khóa khác)
-    const categoryGroups: Record<string, string[]> = {
-      accessories: ["accessories", "handbags", "shoes", "jewelry", "hats"],
-      outerwear: ["jackets", "outerwear", "coats"],
-      bottoms: ["jeans", "pants", "skirts", "shorts", "bottoms"]
-    };
-
-    if (categoryGroups[filter]) {
-      return categoryGroups[filter].includes(cat) || categoryGroups[filter].includes(subCat);
-    }
-    
-    return cat === filter || subCat === filter;
+    return true;
   });
+
+  if (isLoading) {
+    return (
+      <div className="flex-1 py-20 text-center text-[#999] italic">
+        Đang tải danh sách sản phẩm từ kho...
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 overflow-hidden">
@@ -109,8 +111,9 @@ export function ProductGrid({ category }: { category?: string }) {
 
         <div className="short_by show_product ml-auto mb-[10px]">
           <div className="form-group flex items-center mb-0 text-right">
-            <label className="text-[16px] font-bold text-[#333] mr-[17px] uppercase mb-0 whitespace-nowrap">Hiển thị :</label>
+            <label className="text-[16px] font-bold text-[#333] mr-[17px] mb-0 whitespace-nowrap">Hiển thị :</label>
             <select 
+              suppressHydrationWarning
               className="form-control border border-[#ececec] bg-transparent text-[16px] text-[#666] outline-none cursor-pointer hover:text-primary px-[15px] h-[45px] leading-normal appearance-none min-w-[92px] rounded-none bg-no-repeat"
               style={{ backgroundImage: 'url("/images/shot_arrow.svg")', backgroundPosition: '74% 48%' }}
             >

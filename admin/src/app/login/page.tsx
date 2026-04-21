@@ -70,7 +70,7 @@ export default function LoginPage() {
            <div className="relative z-10 space-y-4">
               <div className="flex items-center gap-2 py-2 px-4 bg-white/5 rounded-xl border border-white/5 w-fit backdrop-blur-md">
                  <ShieldCheck className="text-[#f74f2e]" size={18} />
-                 <span className="text-[11px] font-black uppercase tracking-wider">Bảo mật Secure</span>
+                 <span className="text-[11px] font-black uppercase tracking-wider">Bảo mật An toàn</span>
               </div>
               <div className="text-[10px] text-white/20 font-bold uppercase tracking-widest whitespace-nowrap">© 2024 Atelier Global.</div>
            </div>

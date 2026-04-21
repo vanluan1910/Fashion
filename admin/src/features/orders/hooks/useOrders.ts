@@ -10,11 +10,16 @@ export const useOrders = () => {
   const [selectedOrderIds, setSelectedOrderIds] = useState<string[]>([]);
 
   useEffect(() => {
-    setOrders(orderService.getOrders());
+    const fetchOrders = async () => {
+      const data = await orderService.getOrders();
+      setOrders(Array.isArray(data) ? data : []);
+    };
+    fetchOrders();
   }, []);
 
-  const refreshOrders = () => {
-    setOrders(orderService.getOrders());
+  const refreshOrders = async () => {
+    const data = await orderService.getOrders();
+    setOrders(Array.isArray(data) ? data : []);
   };
 
   const updateStatus = (id: string, status: OrderStatus) => {
@@ -30,11 +35,11 @@ export const useOrders = () => {
   const filteredOrders = useMemo(() => {
     return orders.filter(order => {
       const matchesSearch = 
-        order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        order.customer.toLowerCase().includes(searchQuery.toLowerCase());
+        String(order.id).toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (order.customerName && order.customerName.toLowerCase().includes(searchQuery.toLowerCase()));
       
       const matchesTab = activeTab === "Tất cả" || order.status === activeTab;
-      const matchesPayment = paymentFilter === "Tất cả" || order.payment === paymentFilter;
+      const matchesPayment = true; // Payment filter disabled until column is added to DB
 
       return matchesSearch && matchesTab && matchesPayment;
     });

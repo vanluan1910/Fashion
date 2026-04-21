@@ -7,14 +7,13 @@ export const metadata: Metadata = {
   description: "Explore high-end leather handbags and premium fashion items at Yoha Store.",
 };
 
-import { SHOP_PRODUCTS } from "@/features/shop/constants/shop-data";
+import { getProductById } from "@/features/products/services/productsService";
 import { notFound } from "next/navigation";
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const productId = parseInt(id);
   
-  const product = SHOP_PRODUCTS.find((p) => p.id === productId);
+  const product = await getProductById(id);
 
   if (!product) {
     notFound();

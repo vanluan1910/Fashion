@@ -9,7 +9,8 @@ import {
   User, 
   Globe, 
   Maximize, 
-  Grid
+  Grid,
+  LogOut
 } from "lucide-react";
 
 interface HeaderProps {
@@ -23,12 +24,47 @@ export function Header({ onToggleSidebar, isSidebarOpen }: HeaderProps) {
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isGridOpen, setIsGridOpen] = useState(false);
 
+  const handleLogout = () => {
+    localStorage.removeItem("atelier_admin_auth");
+    localStorage.removeItem("atelier_admin_user");
+    window.location.href = "/login";
+  };
+
   const handleFullscreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
     } else if (document.exitFullscreen) {
       document.exitFullscreen();
     }
+  };
+
+  const [recentSignups, setRecentSignups] = useState<any[]>([]);
+
+  React.useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/auth/recent-signups");
+        const result = await response.json();
+        if (result.success) {
+          setRecentSignups(result.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch notifications", error);
+      }
+    };
+
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 30000); // 30s
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = Math.floor((now.getTime() - date.getTime()) / 60000);
+    if (diff < 1) return "Vừa xong";
+    if (diff < 60) return `${diff} phút trước`;
+    return `${Math.floor(diff / 60)} giờ trước`;
   };
 
   return (
@@ -128,7 +164,11 @@ export function Header({ onToggleSidebar, isSidebarOpen }: HeaderProps) {
               className="p-2 text-[#333] hover:bg-[#f3f4f9] rounded-lg transition-colors relative"
             >
               <Bell size={18} />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-[#f74f2e] rounded-full border-2 border-white"></span>
+              {recentSignups.length > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-[#f74f2e] text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-white px-1">
+                  {recentSignups.length}
+                </span>
+              )}
             </button>
             {isNotificationsOpen && (
               <>
@@ -136,30 +176,33 @@ export function Header({ onToggleSidebar, isSidebarOpen }: HeaderProps) {
                 <div className="absolute right-0 mt-2 w-[300px] bg-white rounded-xl shadow-xl border border-[#eee] z-20 overflow-hidden animate-in fade-in zoom-in duration-200">
                   <div className="p-4 border-b border-[#eee] flex items-center justify-between">
                     <h5 className="font-bold text-[14px]">Thông báo mới</h5>
-                    <span className="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">4 Mới</span>
+                    <span className="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">
+                      {recentSignups.length} Mới
+                    </span>
                   </div>
                   <div className="max-h-[300px] overflow-y-auto">
-                    {[
-                      { title: "Đơn hàng mới #9821", time: "2 phút trước", icon: "🛒", href: "/orders" },
-                      { title: "Khách mới đăng ký", time: "15 phút trước", icon: "👤", href: "/customers" },
-                      { title: "Bình luận cần duyệt", time: "1 giờ trước", icon: "💬", href: "/blog" },
-                      { title: "Kho hàng sắp hết", time: "3 giờ trước", icon: "⚠️", href: "/products" },
-                    ].map((n, i) => (
-                      <Link 
-                        key={i} 
-                        href={n.href}
-                        onClick={() => setIsNotificationsOpen(false)}
-                        className="block p-4 hover:bg-[#f3f4f9] cursor-pointer border-b border-[#f9f9f9] last:border-0"
-                      >
-                        <div className="flex gap-3">
-                          <span className="text-xl">{n.icon}</span>
-                          <div>
-                            <p className="text-[13px] font-medium text-[#333]">{n.title}</p>
-                            <p className="text-[11px] text-[#999]">{n.time}</p>
+                    {recentSignups.length > 0 ? (
+                      recentSignups.map((n, i) => (
+                        <Link 
+                          key={i} 
+                          href="/customers"
+                          onClick={() => setIsNotificationsOpen(false)}
+                          className="block p-4 hover:bg-[#f3f4f9] cursor-pointer border-b border-[#f9f9f9] last:border-0"
+                        >
+                          <div className="flex gap-3">
+                            <span className="text-xl">👤</span>
+                            <div>
+                              <p className="text-[13px] font-medium text-[#333]">Khách mới: {n.full_name}</p>
+                              <p className="text-[11px] text-[#999]">{formatTime(n.created_at)}</p>
+                            </div>
                           </div>
-                        </div>
-                      </Link>
-                    ))}
+                        </Link>
+                      ))
+                    ) : (
+                      <div className="p-10 text-center text-[#999] text-[13px] italic">
+                        Không có hoạt động mới
+                      </div>
+                    )}
                   </div>
                   <Link 
                     href="/notifications"
@@ -211,13 +254,12 @@ export function Header({ onToggleSidebar, isSidebarOpen }: HeaderProps) {
                     <Globe size={16} /> Cài đặt chung
                   </Link>
                   <div className="border-t border-[#eee] mt-2 pt-2">
-                    <Link 
-                      href="/" 
-                      onClick={() => setIsProfileOpen(false)}
-                      className="w-full text-left px-4 py-2 text-[13px] text-red-600 hover:bg-red-50 flex items-center gap-2 font-bold"
+                    <button 
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-[13px] text-red-600 hover:bg-red-50 flex items-center gap-2 font-bold transition-colors"
                     >
-                       Đăng xuất
-                    </Link>
+                       <LogOut size={16} /> Đăng xuất
+                    </button>
                   </div>
                 </div>
               </>

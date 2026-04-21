@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"next dev\" \"npm run dev --prefix admin\"",
+    "dev": "concurrently \"next dev\" \"npm run dev --prefix admin\" \"npm run dev --prefix backend\"",
     "build": "next build",
     "vercel-build": "next build",
     "start": "next start",

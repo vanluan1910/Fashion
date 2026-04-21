@@ -4,10 +4,13 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useCart } from "@/core/providers/CartProvider";
 import { useCurrency } from "@/core/providers/CurrencyProvider";
+import { orderService } from "../services/orderService";
+import { useAuth } from "@/core/providers/AuthProvider";
 
 export function CheckoutForm({ onSuccess }: { onSuccess?: () => void }) {
   const { cartItems, cartTotal, clearCart } = useCart();
   const { formatPrice } = useCurrency();
+  const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [orderSummary, setOrderSummary] = React.useState({ items: [] as any[], total: 0 });
@@ -21,15 +24,30 @@ export function CheckoutForm({ onSuccess }: { onSuccess?: () => void }) {
     // Lưu lại thông tin đơn hàng hiện tại trước khi xóa giỏ hàng
     setOrderSummary({ items: [...cartItems], total: cartTotal });
     
-    // Giả lập gọi API đặt hàng
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Xóa giỏ hàng sau khi đặt hàng thành công
-    clearCart();
+    // Gọi API lưu đơn hàng vào Database
+    const result = await orderService.createOrder({
+      items: [...cartItems],
+      total: cartTotal + 10,
+      customerInfo: {
+        firstName: (e.currentTarget.elements.namedItem("FirstName") as HTMLInputElement).value,
+        lastName: (e.currentTarget.elements.namedItem("LastName") as HTMLInputElement).value,
+        address: (e.currentTarget.elements.namedItem("Address") as HTMLInputElement).value,
+        city: (e.currentTarget.elements.namedItem("City") as HTMLInputElement).value,
+        phone: (e.currentTarget.elements.namedItem("Phone") as HTMLInputElement).value,
+        email: (e.currentTarget.elements.namedItem("Email") as HTMLInputElement).value,
+      }
+    }, user?.id || 3);
+
+    if (result.success) {
+      // Xóa giỏ hàng sau khi đặt hàng thành công
+      clearCart();
+      setIsSuccess(true);
+      if (onSuccess) onSuccess();
+    } else {
+      alert("Đặt hàng thất bại. Vui lòng thử lại sau.");
+    }
     
     setIsSubmitting(false);
-    setIsSuccess(true);
-    if (onSuccess) onSuccess();
     
     // Cuộn lên đầu trang để xem thông báo thành công
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -102,22 +120,22 @@ export function CheckoutForm({ onSuccess }: { onSuccess?: () => void }) {
 
             <div className="mb-4">
               <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 font-sans text-left">Địa chỉ <span className="text-[#f74f2e]">*</span></label>
-              <input type="text" placeholder="Số nhà và tên đường" className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors mb-4" required suppressHydrationWarning />
+              <input type="text" name="Address" placeholder="Số nhà và tên đường" className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors mb-4" required suppressHydrationWarning />
             </div>
 
             <div className="mb-4">
               <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 font-sans text-left">Thành phố <span className="text-[#f74f2e]">*</span></label>
-              <input type="text" className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors" required suppressHydrationWarning />
+              <input type="text" name="City" className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors" required suppressHydrationWarning />
             </div>
 
             <div className="flex flex-wrap -mx-[10px]">
               <div className="w-full md:w-1/2 px-[10px] mb-4">
                 <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 font-sans text-left">Số điện thoại <span className="text-[#f74f2e]">*</span></label>
-                <input type="tel" className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors" required suppressHydrationWarning />
+                <input type="tel" name="Phone" className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors" required suppressHydrationWarning />
               </div>
               <div className="w-full md:w-1/2 px-[10px] mb-4">
                 <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 font-sans text-left">Địa chỉ Email <span className="text-[#f74f2e]">*</span></label>
-                <input type="email" className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors" required suppressHydrationWarning />
+                <input type="email" name="Email" className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors" required suppressHydrationWarning />
               </div>
             </div>
           </div>

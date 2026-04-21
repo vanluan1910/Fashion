@@ -27,6 +27,24 @@ class ProductsController {
       res.status(400).json({ success: false, message: error.message });
     }
   }
+
+  async update(req, res) {
+    try {
+      const result = await productsService.update(req.params.id, req.body);
+      res.json({ success: true, data: result });
+    } catch (error) {
+      res.status(400).json({ success: false, message: error.message });
+    }
+  }
+
+  async remove(req, res) {
+    try {
+      const result = await productsService.delete(req.params.id);
+      res.json({ success: true, data: result });
+    } catch (error) {
+      res.status(400).json({ success: false, message: error.message });
+    }
+  }
 }
 
 module.exports = new ProductsController();

@@ -123,7 +123,7 @@ export function Header() {
                     { label: "Giỏ hàng của bạn", href: "/cart" },
                     { label: "Tin tức thời trang", href: "/blog" },
                     { label: "Sản phẩm yêu thích", href: "/wishlist" },
-                    { label: "Tài khoản của tôi", href: "/login" },
+                    { label: "Tài khoản của tôi", href: isAuthenticated ? "/account" : "/login" },
                     { label: "Thanh toán", href: "/checkout" }
                   ].map((item, idx) => (
                     <li key={idx} className="mb-[12px] group/item">
@@ -156,7 +156,7 @@ export function Header() {
                     <i className="flaticon-social !text-[20px]"></i>
                   </button>
                   <ul className="absolute top-full right-0 w-[160px] bg-white border border-[#eee] shadow-lg z-[150] list-none p-2 m-0 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                    <li className="p-2 hover:bg-gray-50 cursor-pointer text-[13px] border-b border-gray-100"><Link href="/account">Tài khoản</Link></li>
+                    <li className="p-2 hover:bg-gray-50 cursor-pointer text-[13px] border-b border-gray-100"><Link href={isAuthenticated ? "/account" : "/login"}>Tài khoản</Link></li>
                     <li className="p-2 hover:bg-gray-50 cursor-pointer text-[13px] text-red-500" onClick={logout}>Đăng xuất</li>
                   </ul>
                 </div>

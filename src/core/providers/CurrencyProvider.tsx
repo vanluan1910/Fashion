@@ -14,12 +14,14 @@ const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined
 
 export const CurrencyProvider = ({ children }: { children: React.ReactNode }) => {
   const [currency, setCurrencyState] = useState<Currency>("VND");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const savedCurrency = localStorage.getItem("currency") as Currency;
     if (savedCurrency) {
       setCurrencyState(savedCurrency);
     }
+    setMounted(true);
   }, []);
 
   const setCurrency = (newCurrency: Currency) => {
@@ -28,17 +30,18 @@ export const CurrencyProvider = ({ children }: { children: React.ReactNode }) =>
   };
 
   const formatPrice = (price: number) => {
+    // Luôn trả về chuỗi rỗng hoặc giá trị mặc định khi chưa nạp xong ở Client
+    // Điều này ngăn chặn lỗi Hydration do sai khác giữa Server và Client
+    if (!mounted) return ""; 
+
     if (currency === "USD") {
-      // Giả sử giá gốc trong data là VND, chia cho 25000 để ra USD
-      // Nếu giá trong data là USD sẵn (như hiện tại đang để số nhỏ 45.00), 
-      // chúng ta sẽ coi đó là USD và nhân lên cho VND.
-      
-      // Dựa trên dữ liệu hiện tại (ví dụ: 45.00), có vẻ bạn đang dùng giá USD làm gốc.
-      return `$${price.toFixed(2)}`;
+      // Giá gốc trong Database hiện tại là VND (ví dụ: 1.500.000)
+      // Chuyển từ VND sang USD (chia 25000)
+      const usdPrice = price / 25000;
+      return `$${usdPrice.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     } else {
-      // Đổi từ USD sang VND (nhân 25000)
-      const vndPrice = price * 25000;
-      return `${vndPrice.toLocaleString("vi-VN")}đ`;
+      // Giá gốc là VND, chỉ cần định dạng
+      return `${price.toLocaleString("vi-VN")}đ`;
     }
   };
 

@@ -4,29 +4,12 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-
-const BLOGS = [
-  {
-    id: 1,
-    title: "Xu hướng thời trang mùa hè 2026",
-    date: "21 Tháng 3, 2026",
-    author: "Quản trị viên",
-    image: "/images/blog1.png",
-    excerpt: "Khám phá những xu hướng thời trang mới nhất sẽ làm mưa làm gió trong mùa hè năm nay...",
-    link: "/blog/1"
-  },
-  {
-    id: 2,
-    title: "Cách phối đồ sang trọng cho quý cô",
-    date: "21 Tháng 3, 2026",
-    author: "Quản trị viên",
-    image: "/images/blog2.png",
-    excerpt: "Nâng tầm phong cách cá nhân với những bí quyết phối đồ tinh tế và đẳng cấp từ chuyên gia...",
-    link: "/blog/2"
-  }
-];
+import { BLOG_POSTS } from "../constants/blog-data";
 
 export function LatestBlog() {
+  // Lấy 2 bài viết mới nhất để hiển thị
+  const latestPosts = BLOG_POSTS.slice(0, 2);
+
   return (
     <section className="pt-[60px] bg-white overflow-hidden pb-[40px]">
       <div className="max-w-[1170px] mx-auto px-[15px]">
@@ -35,7 +18,7 @@ export function LatestBlog() {
         </h3>
         
         <div className="flex flex-wrap -mx-[15px]">
-          {BLOGS.map((blog, index) => {
+          {latestPosts.map((blog, index) => {
             const isSlideFromLeft = index % 2 === 0;
             
             return (
@@ -48,13 +31,13 @@ export function LatestBlog() {
                 transition={{ duration: 1.3, ease: "easeOut" }}
               >
                 <div className="flex flex-col group">
-                  <Link href={blog.link} className="relative block overflow-hidden mb-5">
+                  <Link href={`/blog/${blog.slug}`} className="relative block overflow-hidden mb-5">
                     <Image
                       src={blog.image}
                       alt={blog.title}
                       width={570}
                       height={350}
-                      className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
+                      className="w-full h-[350px] object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </Link>
                   
@@ -64,8 +47,8 @@ export function LatestBlog() {
                       <span className="relative ml-4 w-2 h-2 bg-[#f74f2e] rotate-45 transform"></span>
                     </span>
                     
-                    <Link href={blog.link} className="block mb-4">
-                      <h5 className="text-[20px] font-bold text-[#333] hover:text-[#f74f2e] transition-colors leading-tight" style={{ fontFamily: "'Work Sans', sans-serif" }}>
+                    <Link href={`/blog/${blog.slug}`} className="block mb-4">
+                      <h5 className="text-[20px] font-bold text-[#333] hover:text-[#f74f2e] transition-colors leading-tight line-clamp-1" style={{ fontFamily: "'Work Sans', sans-serif" }}>
                         {blog.title}
                       </h5>
                     </Link>

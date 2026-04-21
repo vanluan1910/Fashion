@@ -7,35 +7,36 @@ export const useBlogPosts = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("Tất cả danh mục");
 
+  const fetchPosts = async () => {
+    const data = await blogService.getPosts();
+    setPosts(data);
+  };
+
   useEffect(() => {
-    setPosts(blogService.getPosts());
+    fetchPosts();
   }, []);
 
-  const refreshPosts = () => {
-    setPosts(blogService.getPosts());
+  const addPost = async (post: Omit<BlogPost, "id" | "date" | "views">) => {
+    await blogService.addPost(post);
+    await fetchPosts();
   };
 
-  const addPost = (post: Omit<BlogPost, "id" | "date" | "views">) => {
-    blogService.addPost(post);
-    refreshPosts();
+  const updatePost = async (id: string, updates: Partial<BlogPost>) => {
+    await blogService.updatePost(id, updates);
+    await fetchPosts();
   };
 
-  const updatePost = (id: string, updates: Partial<BlogPost>) => {
-    blogService.updatePost(id, updates);
-    refreshPosts();
-  };
-
-  const toggleStatus = (id: string) => {
+  const toggleStatus = async (id: string) => {
     const post = posts.find(p => p.id === id);
     if (post) {
       const newStatus = post.status === "Đã xuất bản" ? "Bản nháp" : "Đã xuất bản";
-      updatePost(id, { status: newStatus });
+      await updatePost(id, { status: newStatus });
     }
   };
 
-  const deletePost = (id: string) => {
-    blogService.deletePost(id);
-    refreshPosts();
+  const deletePost = async (id: string) => {
+    await blogService.deletePost(id);
+    await fetchPosts();
   };
 
   const filteredPosts = useMemo(() => {

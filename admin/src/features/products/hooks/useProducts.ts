@@ -12,13 +12,20 @@ export function useProducts() {
 
   // Load products from service on mount
   useEffect(() => {
-    setProducts(productService.getProducts());
+    const loadProducts = async () => {
+      const data = await productService.getProducts();
+      setProducts(data);
+    };
+    loadProducts();
   }, []);
 
   const filteredProducts = useMemo(() => {
     return products.filter(product => {
-      const matchesSearch = (product.name?.toLowerCase() || "").includes(searchTerm.toLowerCase()) || 
-                          (product.id?.toLowerCase() || "").includes(searchTerm.toLowerCase());
+      const productName = String(product.name || "").toLowerCase();
+      const productId = String(product.id || "").toLowerCase();
+      const term = searchTerm.toLowerCase();
+
+      const matchesSearch = productName.includes(term) || productId.includes(term);
       const matchesCategory = selectedCategory === "Tất cả" || product.category === selectedCategory;
       return matchesSearch && matchesCategory;
     });
@@ -28,7 +35,7 @@ export function useProducts() {
     if (selectedProducts.length === filteredProducts.length) {
       setSelectedProducts([]);
     } else {
-      setSelectedProducts(filteredProducts.map(p => p.id));
+      setSelectedProducts(filteredProducts.map(p => String(p.id)));
     }
   };
 
@@ -40,10 +47,11 @@ export function useProducts() {
     }
   };
 
-  const deleteProduct = (id: string) => {
-    const updated = products.filter(p => p.id !== id);
-    setProducts(updated);
-    productService.saveProducts(updated);
+  const deleteProduct = async (id: string) => {
+    const success = await productService.deleteProduct(id);
+    if (success) {
+      setProducts(prev => prev.filter(p => String(p.id) !== id));
+    }
   };
 
   return {

@@ -107,6 +107,7 @@ export function ProductDetailInfo({ product }: ProductDetailInfoProps) {
                   <button
                     key={color}
                     onClick={() => setSelectedColor(color)}
+                    suppressHydrationWarning={true}
                     className={`px-4 py-2 text-[12px] border transition-all ${
                       selectedColor === color
                         ? "border-[#f74f2e] bg-[#f74f2e] text-white"
@@ -123,6 +124,7 @@ export function ProductDetailInfo({ product }: ProductDetailInfoProps) {
           <div className="flex gap-4 pt-4">
             <button 
               onClick={handleAddToCart}
+              suppressHydrationWarning={true}
               className={`flex-grow font-bold py-3 uppercase tracking-widest text-[13px] transition-all duration-300 ${
                 isAdded ? "bg-green-600 text-white" : "bg-[#f74f2e] text-white hover:bg-[#333]"
               }`}
@@ -131,6 +133,7 @@ export function ProductDetailInfo({ product }: ProductDetailInfoProps) {
             </button>
             <button 
               onClick={handleBuyNow}
+              suppressHydrationWarning={true}
               className="flex-grow border border-[#f74f2e] text-[#f74f2e] font-bold py-3 uppercase tracking-widest text-[13px] hover:bg-[#f74f2e] hover:text-white transition-colors"
             >
               Mua Ngay
@@ -164,6 +167,7 @@ export function ProductDetailInfo({ product }: ProductDetailInfoProps) {
                     <div className="flex items-center border border-gray-200 w-fit">
                       <button 
                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        suppressHydrationWarning={true}
                         className="px-4 py-1 hover:bg-gray-50 text-[#f74f2e] border-r border-gray-200 font-bold text-lg leading-none"
                       >
                         -
@@ -176,6 +180,7 @@ export function ProductDetailInfo({ product }: ProductDetailInfoProps) {
                       />
                       <button 
                         onClick={() => setQuantity(quantity + 1)}
+                        suppressHydrationWarning={true}
                         className="px-4 py-1 hover:bg-gray-50 text-[#f74f2e] border-l border-gray-200 font-bold text-lg leading-none"
                       >
                         +

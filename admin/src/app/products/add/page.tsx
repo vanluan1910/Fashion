@@ -31,18 +31,21 @@ export default function AddProductPage() {
 
   useEffect(() => {
     if (editId) {
-      setLoading(true);
-      const foundProduct = productService.getProductById(editId);
-      if (foundProduct) {
-        setInitialData(foundProduct);
-      } else {
-        triggerDialog({
-          title: "Không tìm thấy!",
-          message: "Sản phẩm cần chỉnh sửa không tồn tại hoặc đã bị xóa.",
-          type: "warning"
-        });
-      }
-      setLoading(false);
+      const loadProduct = async () => {
+        setLoading(true);
+        const foundProduct = await productService.getProductById(editId);
+        if (foundProduct) {
+          setInitialData(foundProduct);
+        } else {
+          triggerDialog({
+            title: "Không tìm thấy!",
+            message: "Sản phẩm cần chỉnh sửa không tồn tại hoặc đã bị xóa.",
+            type: "warning"
+          });
+        }
+        setLoading(false);
+      };
+      loadProduct();
     }
   }, [editId]);
 
@@ -50,25 +53,29 @@ export default function AddProductPage() {
     setDialogConfig({ ...config, isOpen: true });
   };
 
-  const handleFormSubmit = (data: any) => {
+  const handleFormSubmit = async (data: any) => {
     if (editId) {
       // Edit Mode
-      productService.updateProduct(editId, data);
-      triggerDialog({
-        title: "Đã cập nhật!",
-        message: "Thông tin sản phẩm đã được cập nhật thành công.",
-        type: "success",
-        onConfirm: () => router.push("/products")
-      });
+      const success = await productService.updateProduct(editId, data);
+      if (success) {
+        triggerDialog({
+          title: "Đã cập nhật!",
+          message: "Thông tin sản phẩm đã được cập nhật thành công.",
+          type: "success",
+          onConfirm: () => router.push("/products")
+        });
+      }
     } else {
       // Create Mode
-      productService.addProduct(data);
-      triggerDialog({
-        title: "Đã thêm mới!",
-        message: "Sản phẩm mới đã được đăng bán thành công trên hệ thống.",
-        type: "success",
-        onConfirm: () => router.push("/products")
-      });
+      const result = await productService.addProduct(data);
+      if (result) {
+        triggerDialog({
+          title: "Đã thêm mới!",
+          message: "Sản phẩm mới đã được đăng bán thành công trên hệ thống.",
+          type: "success",
+          onConfirm: () => router.push("/products")
+        });
+      }
     }
   };
 

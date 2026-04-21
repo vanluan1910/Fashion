@@ -10,7 +10,7 @@ interface BlogBreadcrumbProps {
 
 export function BlogBreadcrumb({ name }: BlogBreadcrumbProps) {
   return (
-    <section className="bg-[#f9f9f9] border-t border-[#eee] py-[24px] mb-[60px] overflow-hidden">
+    <section className="bg-[#f9f9f9] border-t border-[#eee] py-[12px] mb-[10px] overflow-hidden">
       <div className="max-w-[1170px] mx-auto px-[15px]">
         {/* Replicating the "wow fadeIn" effect from blogs.html:L363 */}
         <motion.div

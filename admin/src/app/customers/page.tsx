@@ -60,8 +60,8 @@ export default function CustomersPage() {
 
   // New Customer Form State
   const [newCustomer, setNewCustomer] = useState<Omit<Customer, "id" | "joined">>({
-    name: "", email: "", phone: "", city: "TP. Hồ Chí Minh", orders: 0, spent: "0đ", status: "Hoạt động", isVIP: false,
-  });
+    full_name: "", email: "", phone: "", city: "TP. Hồ Chí Minh", orders: 0, spent: "0đ", status: "Hoạt động", isVIP: false,
+  } as any);
 
   const [dialogConfig, setDialogConfig] = useState<{
     isOpen: boolean;
@@ -92,13 +92,13 @@ export default function CustomersPage() {
 
   const handleCreateCustomer = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newCustomer.name || !newCustomer.email) {
+    if (!newCustomer.full_name || !newCustomer.email) {
       triggerDialog({ title: "Thiếu thông tin!", message: "Vui lòng nhập ít nhất Tên và Email để đăng ký khách hàng.", type: "warning" });
       return;
     }
     addCustomer(newCustomer);
     setIsAddModalOpen(false);
-    setNewCustomer({ name: "", email: "", phone: "", city: "TP. Hồ Chí Minh", orders: 0, spent: "0đ", status: "Hoạt động", isVIP: false });
+    setNewCustomer({ full_name: "", email: "", phone: "", city: "TP. Hồ Chí Minh", orders: 0, spent: "0đ", status: "Hoạt động", isVIP: false } as any);
     triggerDialog({ title: "Thành công!", message: "Khách hàng mới đã được thêm vào hệ thống.", type: "success" });
   };
 
@@ -237,19 +237,19 @@ export default function CustomersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-[#f1f1f1]">
-              {customers.length > 0 ? customers.map((customer) => (
-                <tr key={customer.id} className="hover:bg-[#fcfcff]/50 transition-colors group">
+              {customers.length > 0 ? customers.map((customer, index) => (
+                <tr key={customer.account_id || customer.id || index} className="hover:bg-[#fcfcff]/50 transition-colors group">
                   <td className="p-5">
                     <div className="flex items-center gap-5">
                       <div className="w-14 h-14 bg-[#f74f2e]/10 text-[#f74f2e] rounded-2xl flex items-center justify-center font-black text-xl relative shadow-sm group-hover:rotate-3 transition-transform">
-                        {customer.name.charAt(0)}
+                        {(customer.full_name || customer.name || "?").charAt(0)}
                         {customer.isVIP && (
                           <div className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-yellow-400 text-white flex items-center justify-center rounded-full text-[10px] shadow-md border-2 border-white animate-bounce-slow" title="Thành viên VIP">★</div>
                         )}
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <p className="font-extrabold text-[#333] text-[15px]">{customer.name}</p>
+                          <p className="font-extrabold text-[#333] text-[15px]">{customer.full_name || customer.name}</p>
                           {customer.isVIP && <span className="text-[9px] bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-lg font-black uppercase tracking-wider border border-yellow-200">VIP Member</span>}
                         </div>
                         <div className="flex items-center gap-4 mt-1.5">
@@ -277,7 +277,7 @@ export default function CustomersPage() {
                         onClick={() => handleViewDetail(customer)}
                         title="Xem hồ sơ" className="p-2.5 text-[#777] hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all"><ExternalLink size={20} /></button>
                       <button 
-                        onClick={() => handleDeleteRequest(customer.id, customer.name)}
+                        onClick={() => handleDeleteRequest(customer.account_id || customer.id, customer.full_name || customer.name)}
                         title="Xóa khách hàng" className="p-2.5 text-[#777] hover:bg-red-50 hover:text-red-600 rounded-xl transition-all"><Trash2 size={20} /></button>
                     </div>
                   </td>
@@ -402,7 +402,7 @@ export default function CustomersPage() {
               <div className="space-y-2 select-none">
                  <label className="text-[13px] font-bold text-[#333] ml-1">Họ và tên khách hàng</label>
                  <div className="relative">
-                    <input type="text" value={newCustomer.name} onChange={(e) => setNewCustomer({...newCustomer, name: e.target.value})} placeholder="VD: Nguyễn Văn A" className="w-full h-11 pl-11 pr-4 bg-[#f3f4f9] border-transparent rounded-xl text-[14px] text-[#333] font-bold placeholder:text-[#aaa] focus:ring-2 focus:ring-[#f74f2e] outline-none" />
+                    <input type="text" value={newCustomer.full_name} onChange={(e) => setNewCustomer({...newCustomer, full_name: e.target.value})} placeholder="VD: Nguyễn Văn A" className="w-full h-11 pl-11 pr-4 bg-[#f3f4f9] border-transparent rounded-xl text-[14px] text-[#333] font-bold placeholder:text-[#aaa] focus:ring-2 focus:ring-[#f74f2e] outline-none" />
                     <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999]" />
                  </div>
               </div>
@@ -450,10 +450,10 @@ export default function CustomersPage() {
         {selectedCustomer && (
           <div className="space-y-6 pt-2">
             <div className="flex items-start gap-6 pb-6 border-b border-[#eee]">
-               <div className="w-24 h-24 bg-[#f74f2e]/10 text-[#f74f2e] rounded-3xl flex items-center justify-center text-4xl font-black">{selectedCustomer.name.charAt(0)}</div>
+               <div className="w-24 h-24 bg-[#f74f2e]/10 text-[#f74f2e] rounded-3xl flex items-center justify-center text-4xl font-black">{(selectedCustomer.full_name || selectedCustomer.name || "?").charAt(0)}</div>
                <div className="flex-1">
                   <div className="flex items-center gap-3">
-                    <h3 className="text-2xl font-black text-[#333] tracking-tight">{selectedCustomer.name}</h3>
+                    <h3 className="text-2xl font-black text-[#333] tracking-tight">{selectedCustomer.full_name || selectedCustomer.name}</h3>
                     {selectedCustomer.isVIP && <span className="px-3 py-1 bg-yellow-400 text-white text-[10px] font-black rounded-full uppercase">VIP Member</span>}
                   </div>
                   <div className="grid grid-cols-2 gap-4 mt-4">

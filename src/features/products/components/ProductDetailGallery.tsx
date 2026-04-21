@@ -25,7 +25,7 @@ export function ProductDetailGallery({ images }: ProductDetailGalleryProps) {
           >
             <div className="relative w-[80px] h-[80px] md:w-full md:h-[90px]">
               <Image 
-                src={img.startsWith('/') ? img : `/${img}`} 
+                src={img.startsWith('http') || img.startsWith('/') || img.startsWith('data:') ? img : `/${img}`} 
                 alt={`Thumbnail ${index + 1}`} 
                 fill 
                 className="object-cover"
@@ -47,7 +47,7 @@ export function ProductDetailGallery({ images }: ProductDetailGalleryProps) {
             className="w-full h-full"
           >
             <Image
-              src={images[activeIndex].startsWith('/') ? images[activeIndex] : `/${images[activeIndex]}`}
+              src={images[activeIndex].startsWith('http') || images[activeIndex].startsWith('/') || images[activeIndex].startsWith('data:') ? images[activeIndex] : `/${images[activeIndex]}`}
               alt="Main product image"
               fill
               className="object-cover hover:scale-105 transition-transform duration-500"

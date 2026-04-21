@@ -71,7 +71,7 @@ export default function ProductTable({
                 </div>
               </td>
               <td className="p-4">
-                <span className="px-3 py-1 bg-[#f74f2e10] text-[#f74f2e] text-[11px] font-bold rounded-lg uppercase tracking-wide">
+                <span className="px-3 py-1 bg-[#f74f2e10] text-[#f74f2e] text-[11px] font-bold rounded-lg tracking-wide">
                   {product.category}
                 </span>
               </td>

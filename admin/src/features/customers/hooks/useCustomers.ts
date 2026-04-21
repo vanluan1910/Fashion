@@ -13,16 +13,21 @@ export const useCustomers = () => {
   const [minOrders, setMinOrders] = useState<number | "">("");
 
   useEffect(() => {
-    setCustomers(customerService.getCustomers());
+    const fetchCustomers = async () => {
+      const data = await customerService.getCustomers();
+      setCustomers(Array.isArray(data) ? data : []);
+    };
+    fetchCustomers();
   }, []);
 
-  const refreshCustomers = () => {
-    setCustomers(customerService.getCustomers());
+  const refreshCustomers = async () => {
+    const data = await customerService.getCustomers();
+    setCustomers(Array.isArray(data) ? data : []);
   };
 
-  const addCustomer = (customer: Omit<Customer, "id" | "joined">) => {
-    customerService.addCustomer(customer);
-    refreshCustomers();
+  const addCustomer = async (customer: Omit<Customer, "id" | "joined">) => {
+    await customerService.addCustomer(customer);
+    await refreshCustomers();
   };
 
   const deleteCustomer = (id: string) => {
@@ -34,9 +39,9 @@ export const useCustomers = () => {
     return customers.filter(customer => {
       // 1. Search Query
       const matchesSearch = 
-        customer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        customer.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        customer.phone.includes(searchQuery);
+        (customer.full_name || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (customer.email || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (customer.phone || "").includes(searchQuery);
       
       // 2. Membership Filter
       const matchesMembership = 
@@ -48,11 +53,11 @@ export const useCustomers = () => {
       const matchesCity = cityFilter === "Tất cả" || customer.city === cityFilter;
 
       // 4. Spent Filter
-      const spentValue = parseInt(customer.spent.replace(/\D/g, '')) || 0;
+      const spentValue = parseInt((customer.spent || "0").replace(/\D/g, '')) || 0;
       const matchesSpent = minSpent === "" || spentValue >= minSpent;
 
       // 5. Orders Filter
-      const matchesOrders = minOrders === "" || customer.orders >= minOrders;
+      const matchesOrders = minOrders === "" || (customer.orders || 0) >= minOrders;
 
       return matchesSearch && matchesMembership && matchesCity && matchesSpent && matchesOrders;
     });

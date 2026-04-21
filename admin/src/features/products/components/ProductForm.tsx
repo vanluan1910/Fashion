@@ -61,10 +61,11 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditing
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const priceStr = String(formData.price || "");
     onSubmit({
       ...formData,
       image: imagePreview || "https://images.unsplash.com/photo-1598033129183-c4f50c717658?q=80&w=200&auto=format&fit=crop",
-      price: formData.price.includes("đ") ? formData.price : `${formData.price}đ`
+      price: priceStr.includes("đ") ? priceStr : `${priceStr}đ`
     });
   };
 

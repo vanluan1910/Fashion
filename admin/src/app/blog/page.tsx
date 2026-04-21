@@ -194,7 +194,7 @@ export default function BlogManagementPage() {
                 <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-[12px] text-[#999] font-medium">
                   <span className="flex items-center gap-1.5"><User size={14} /> {post.author}</span>
                   <span className="flex items-center gap-1.5"><Calendar size={14} /> {post.date}</span>
-                  <span className="flex items-center gap-1.5"><Eye size={14} /> {post.views.toLocaleString()} xem</span>
+                  <span className="flex items-center gap-1.5"><Eye size={14} /> {(post.views || 0).toLocaleString()} xem</span>
                 </div>
               </div>
 
