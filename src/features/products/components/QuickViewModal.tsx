@@ -199,12 +199,13 @@ export function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps
                                             <button 
                                                 type="button"
                                                 onClick={handleAddToWishlist}
-                                                className={`wishlist_btn border-btn text-uppercase py-3 px-6 text-[13px] font-bold transition-all inline-block border ${
-                                                    isInWishlist(product.id) ? "bg-[#333] text-white" : "hover:bg-[#333] hover:text-white border-[#eee]"
+                                                className={`wishlist_btn w-[45px] h-[45px] rounded-full flex items-center justify-center transition-all border ${
+                                                    isInWishlist(product.id) ? "bg-[#f74f2e] text-white border-[#f74f2e]" : "hover:bg-[#f3f4f9] hover:text-[#f74f2e] border-[#eee] text-[#333]"
                                                 }`} 
+                                                title={isInWishlist(product.id) ? "Bỏ yêu thích" : "Thêm vào yêu thích"}
                                                 suppressHydrationWarning
                                             >
-                                                {isInWishlist(product.id) ? "Đã yêu thích" : "Yêu thích"}
+                                                <i className="flaticon-heart text-[18px]"></i>
                                             </button>
                                             <button 
                                                 type="button"

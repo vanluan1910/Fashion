@@ -41,7 +41,8 @@ export default function ProductTable({
               />
             </th>
             <th className="p-4 text-[13px] font-bold text-[#333] uppercase tracking-wider">Sản phẩm</th>
-            <th className="p-4 text-[13px] font-bold text-[#333] uppercase tracking-wider">Danh mục</th>
+            <th className="p-4 text-[13px] font-bold text-[#333] uppercase tracking-wider text-center">Danh mục</th>
+            <th className="p-4 text-[13px] font-bold text-[#333] uppercase tracking-wider text-center">Loại</th>
             <th className="p-4 text-[13px] font-bold text-[#333] uppercase tracking-wider">Giá bán</th>
             <th className="p-4 text-[13px] font-bold text-[#333] uppercase tracking-wider text-center">Tồn kho</th>
             <th className="p-4 text-[13px] font-bold text-[#333] uppercase tracking-wider">Trạng thái</th>
@@ -70,9 +71,14 @@ export default function ProductTable({
                   </div>
                 </div>
               </td>
-              <td className="p-4">
-                <span className="px-3 py-1 bg-[#f74f2e10] text-[#f74f2e] text-[11px] font-bold rounded-lg tracking-wide">
+              <td className="p-4 text-center">
+                <span className="px-3 py-1 bg-[#f74f2e10] text-[#f74f2e] text-[11px] font-bold rounded-lg tracking-wide inline-block">
                   {product.category}
+                </span>
+              </td>
+              <td className="p-4 text-center">
+                <span className="text-[13px] text-[#666] font-medium">
+                  {product.subCategory || "---"}
                 </span>
               </td>
               <td className="p-4 text-[14px] font-bold text-[#333] tracking-tight">{product.price}</td>

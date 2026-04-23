@@ -8,6 +8,7 @@ export function useProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Tất cả");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("Tất cả loại");
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
   // Load products from service on mount
@@ -23,13 +24,16 @@ export function useProducts() {
     return products.filter(product => {
       const productName = String(product.name || "").toLowerCase();
       const productId = String(product.id || "").toLowerCase();
+      const productSubCategory = String(product.subCategory || "").toLowerCase();
       const term = searchTerm.toLowerCase();
 
-      const matchesSearch = productName.includes(term) || productId.includes(term);
+      const matchesSearch = productName.includes(term) || productId.includes(term) || productSubCategory.includes(term);
       const matchesCategory = selectedCategory === "Tất cả" || product.category === selectedCategory;
-      return matchesSearch && matchesCategory;
+      const matchesSubCategory = selectedSubCategory === "Tất cả loại" || product.subCategory === selectedSubCategory;
+      
+      return matchesSearch && matchesCategory && matchesSubCategory;
     });
-  }, [searchTerm, selectedCategory, products]);
+  }, [searchTerm, selectedCategory, selectedSubCategory, products]);
 
   const toggleSelectAll = () => {
     if (selectedProducts.length === filteredProducts.length) {
@@ -61,6 +65,8 @@ export function useProducts() {
     setSearchTerm,
     selectedCategory,
     setSelectedCategory,
+    selectedSubCategory,
+    setSelectedSubCategory,
     selectedProducts,
     toggleSelectAll,
     toggleSelectProduct,

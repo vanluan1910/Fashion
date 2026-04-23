@@ -24,6 +24,20 @@ export default function NotificationsPage() {
   const [notifications, setNotifications] = React.useState<any[]>([]);
   const [filter, setFilter] = React.useState<"all" | "unread">("all");
   const [isLoading, setIsLoading] = React.useState(true);
+  
+  // Custom Modal State
+  const [modal, setModal] = React.useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    type: "info" | "confirm";
+    onConfirm?: () => void;
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    type: "info"
+  });
 
   React.useEffect(() => {
     const fetchNotifications = async () => {
@@ -55,6 +69,35 @@ export default function NotificationsPage() {
   const unreadCount = notifications.filter(n => n.unread).length;
   const filteredList = filter === "all" ? notifications : notifications.filter(n => n.unread);
 
+  const handleMarkAsRead = (id: number) => {
+    setNotifications(prev => prev.map(n => 
+      n.account_id === id ? { ...n, unread: false } : n
+    ));
+  };
+
+  const handleMarkAllAsRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, unread: false })));
+    setModal({
+      isOpen: true,
+      title: "Thành công",
+      message: "Đã đánh dấu tất cả thông báo là đã đọc!",
+      type: "info"
+    });
+  };
+
+  const handleClearHistory = () => {
+    setModal({
+      isOpen: true,
+      title: "Xác nhận xóa",
+      message: "Bạn có chắc chắn muốn xóa toàn bộ lịch sử thông báo không? Hành động này không thể hoàn tác.",
+      type: "confirm",
+      onConfirm: () => {
+        setNotifications([]);
+        setModal(prev => ({ ...prev, isOpen: false }));
+      }
+    });
+  };
+
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -70,15 +113,21 @@ export default function NotificationsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[#333]">Trung tâm báo cáo & Thông báo</h1>
-          <p className="text-[#888] text-[13px]">Xem toàn bộ các hoạt động gần đây của hệ thống.</p>
+          <h1 className="text-2xl font-bold text-[#222]">Trung tâm báo cáo & Thông báo</h1>
+          <p className="text-[#444] text-[13px] font-medium">Xem toàn bộ các hoạt động gần đây của hệ thống.</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-[#eee] rounded-lg text-[13px] font-medium hover:bg-[#f9f9f9]">
-            <Check size={16} />
+          <button 
+            onClick={handleMarkAllAsRead}
+            className="flex items-center gap-2 px-4 py-2 bg-white border border-[#ddd] rounded-lg text-[13px] font-semibold text-[#333] hover:bg-[#f9f9f9] transition-all shadow-sm"
+          >
+            <Check size={16} className="text-green-600" />
             Đánh dấu đã đọc tất cả
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 border border-red-100 rounded-lg text-[13px] font-bold hover:bg-red-100 transition-all">
+          <button 
+            onClick={handleClearHistory}
+            className="flex items-center gap-2 px-4 py-2 bg-white border border-[#ddd] rounded-lg text-[13px] font-semibold text-red-600 hover:bg-red-50 transition-all shadow-sm"
+          >
             <Trash2 size={16} />
             Xóa lịch sử
           </button>
@@ -108,29 +157,46 @@ export default function NotificationsPage() {
                 )}
               </button>
            </div>
-           <button className="text-[#999] p-2 hover:bg-[#f3f4f9] rounded-lg"><Filter size={18} /></button>
+           <div className="flex items-center gap-2">
+              {unreadCount > 0 && (
+                <button 
+                  onClick={handleMarkAllAsRead}
+                  className="text-[12px] font-bold text-[#f74f2e] hover:underline px-3"
+                >
+                  Đánh dấu tất cả là đã đọc
+                </button>
+              )}
+              <button className="text-[#999] p-2 hover:bg-[#f3f4f9] rounded-lg"><Filter size={18} /></button>
+           </div>
         </div>
 
         {/* List */}
         <div className="divide-y divide-[#f9f9f9]">
           {isLoading ? (
-            <div className="p-20 text-center text-[#999] italic">Đang tải dữ liệu...</div>
+            <div className="p-20 text-center text-[#999] italic flex flex-col items-center gap-4">
+              <div className="w-8 h-8 border-4 border-[#f74f2e] border-t-transparent rounded-full animate-spin"></div>
+              Đang tải dữ liệu...
+            </div>
           ) : filteredList.length > 0 ? (
             filteredList.map((notif) => (
-              <div key={notif.account_id} className="p-5 flex items-start gap-4 transition-all hover:bg-[#fcfcff] cursor-pointer">
-                <div className="w-10 h-10 bg-green-100 text-green-600 rounded-full flex items-center justify-center shrink-0">
+              <div 
+                key={notif.account_id} 
+                onClick={() => handleMarkAsRead(notif.account_id)}
+                className={`p-5 flex items-start gap-4 transition-all hover:bg-[#fcfcff] cursor-pointer ${notif.unread ? "bg-[#fff9f8]" : ""}`}
+              >
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${notif.unread ? "bg-green-100 text-green-600" : "bg-gray-100 text-gray-400"}`}>
                   <UserPlus size={18} />
                 </div>
                 <div className="flex-grow">
                   <div className="flex items-center justify-between mb-1">
-                    <p className={`text-[14px] ${notif.unread ? "font-bold text-[#333]" : "text-[#555]"}`}>
-                      Khách hàng mới: <span className="text-[#f74f2e]">{notif.full_name}</span> đã đăng ký tài khoản.
+                    <p className={`text-[14px] ${notif.unread ? "font-bold text-[#333]" : "text-[#777]"}`}>
+                      Khách hàng mới: <span className={notif.unread ? "text-[#f74f2e]" : "text-[#999]"}>{notif.full_name}</span> đã đăng ký tài khoản.
                     </p>
                     <span className="text-[12px] text-[#999]">{formatTime(notif.created_at)}</span>
                   </div>
                   <div className="flex items-center justify-between">
                      <p className="text-[12px] text-[#999]">Thông báo tự động từ hệ thống tài khoản.</p>
-                     {notif.unread && <span className="w-2.5 h-2.5 bg-red-500 rounded-full shadow-[0_0_8px_rgba(239,68,68,0.5)]"></span>}
+                     {notif.unread && <span className="w-2.5 h-2.5 bg-[#f74f2e] rounded-full shadow-[0_0_8px_rgba(247,79,46,0.5)]"></span>}
                   </div>
                 </div>
               </div>
@@ -145,6 +211,47 @@ export default function NotificationsPage() {
            <button className="text-[13px] font-bold text-[#f74f2e] hover:underline">Tải thêm thông báo cũ hơn</button>
         </div>
       </div>
+
+      {/* Custom Modal / Dialog */}
+      {modal.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm transition-all animate-in fade-in duration-200">
+           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200">
+              <div className="p-8">
+                 <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-6 ${modal.type === 'confirm' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
+                    {modal.type === 'confirm' ? <AlertTriangle size={24} /> : <Check size={24} />}
+                 </div>
+                 <h3 className="text-[20px] font-black text-[#222] mb-3 tracking-tight">{modal.title}</h3>
+                 <p className="text-[#555] text-[14px] font-semibold leading-relaxed mb-8">{modal.message}</p>
+                 
+                 <div className="flex items-center gap-3">
+                    {modal.type === 'confirm' ? (
+                       <>
+                          <button 
+                            onClick={() => setModal(prev => ({ ...prev, isOpen: false }))}
+                            className="flex-1 py-3 px-4 bg-[#f3f4f9] text-[#666] font-black text-[13px] rounded-xl hover:bg-[#eee] transition-all uppercase tracking-widest"
+                          >
+                             Hủy bỏ
+                          </button>
+                          <button 
+                            onClick={modal.onConfirm}
+                            className="flex-1 py-3 px-4 bg-red-600 text-white font-black text-[13px] rounded-xl hover:bg-red-700 transition-all shadow-lg shadow-red-600/20 uppercase tracking-widest"
+                          >
+                             Xác nhận xóa
+                          </button>
+                       </>
+                    ) : (
+                       <button 
+                        onClick={() => setModal(prev => ({ ...prev, isOpen: false }))}
+                        className="w-full py-3 px-4 bg-[#222] text-white font-black text-[13px] rounded-xl hover:bg-[#333] transition-all shadow-lg shadow-black/10 uppercase tracking-widest"
+                       >
+                         Đóng lại
+                       </button>
+                    )}
+                 </div>
+              </div>
+           </div>
+        </div>
+      )}
     </div>
   );
 }

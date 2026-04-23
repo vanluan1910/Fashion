@@ -7,6 +7,9 @@ export interface Product {
   status: "Còn hàng" | "Hết hàng" | "Cần nhập thêm" | string;
   image: string;
   features?: string;
+  oldPrice?: string;
+  description?: string;
+  subCategory?: string;
 }
 
 export interface ProductFormData {
@@ -22,4 +25,6 @@ export interface ProductFormData {
   status: string;
   availability: string;
   image: string | null;
+  oldPrice: string;
+  subCategory: string;
 }

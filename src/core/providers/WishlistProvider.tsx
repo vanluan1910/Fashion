@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { getproductsData } from "@/features/products/services/productsService";
 
 interface WishlistItem {
   id: number;
@@ -24,20 +25,31 @@ export default function WishlistProvider({ children }: { children: React.ReactNo
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const savedWishlist = localStorage.getItem("wishlist");
-    if (savedWishlist) {
-      try {
-        setWishlistItems(JSON.parse(savedWishlist));
-      } catch (e) {
-        console.error("Failed to parse wishlist", e);
+    const loadWishlist = async () => {
+      const savedWishlistIds = localStorage.getItem("wishlist");
+      if (savedWishlistIds) {
+        try {
+          const ids = JSON.parse(savedWishlistIds) as number[];
+          if (ids.length > 0) {
+            // Lấy toàn bộ sản phẩm để "hydrate" dữ liệu cho danh sách yêu thích
+            const allProducts = await getproductsData();
+            const filtered = allProducts.filter(p => ids.includes(p.id));
+            setWishlistItems(filtered);
+          }
+        } catch (e) {
+          console.error("Failed to parse wishlist ids", e);
+        }
       }
-    }
-    setIsLoaded(true);
+      setIsLoaded(true);
+    };
+    loadWishlist();
   }, []);
 
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem("wishlist", JSON.stringify(wishlistItems));
+      // Chỉ lưu danh sách ID vào localStorage để tránh lỗi QuotaExceeded (do ảnh Base64 quá nặng)
+      const ids = wishlistItems.map(item => item.id);
+      localStorage.setItem("wishlist", JSON.stringify(ids));
     }
   }, [wishlistItems, isLoaded]);
 

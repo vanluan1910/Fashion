@@ -40,11 +40,15 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       <div className="max-w-[1170px] mx-auto px-[15px] pb-[100px]">
         <div className="flex flex-col lg:flex-row gap-[30px]">
           <aside className="w-full lg:w-[270px] flex-shrink-0">
-            <ShopSidebar />
+            <React.Suspense fallback={<div className="h-40 bg-gray-50 animate-pulse rounded-lg" />}>
+              <ShopSidebar />
+            </React.Suspense>
           </aside>
 
           <main className="flex-1">
-            <ProductGrid category={slug} />
+            <React.Suspense fallback={<div className="py-20 text-center text-[#999] italic">Đang lọc sản phẩm...</div>}>
+              <ProductGrid category={slug} />
+            </React.Suspense>
           </main>
         </div>
       </div>

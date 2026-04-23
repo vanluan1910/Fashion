@@ -1,6 +1,12 @@
 @import "tailwindcss";
+@source "../features/**/*.{ts,tsx}";
+@source "../shared/**/*.{ts,tsx}";
+@source "../core/**/*.{ts,tsx}";
+@source "./**/*.{ts,tsx}";
+
 
 @theme {
+
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-background: var(--background);

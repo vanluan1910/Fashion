@@ -8,7 +8,7 @@ interface BreadcrumbProps {
 
 export function Breadcrumb({ title, items }: BreadcrumbProps) {
   return (
-    <section className="bg-[#f9f9f9] border-t border-[#eee] py-[24px] mb-[60px] font-sans">
+    <section className="bg-[#f9f9f9] border-t border-[#eee] py-[15px] mb-[15px] font-sans">
       <div className="max-w-[1170px] mx-auto px-[15px]">
         <nav aria-label="breadcrumb">
           <ol className="flex items-center space-x-2 text-[14px] mb-[4px] p-0 list-none bg-transparent">

@@ -35,6 +35,13 @@ export function ShopSidebar() {
 
   const [minPrice, setMinPrice] = useState(Number(searchParams.get("minPrice")) || 0);
   const [maxPrice, setMaxPrice] = useState(Number(searchParams.get("maxPrice")) || maxLimit);
+  const [menSearch, setMenSearch] = useState("");
+  
+  const menSubCategories = ["T-Shirts", "Shirts", "Jackets", "Sweaters", "Jeans", "Suits"];
+  const womenSubCategories = ["Dresses", "Skirts"];
+  const accessoriesSubs = ["Handbags", "Shoes", "Hats", "Accessories"];
+
+  const filteredMenSubs = menSubCategories.filter(s => s.toLowerCase().includes(menSearch.toLowerCase()));
 
   const updateUrl = (min: number, max: number) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -53,7 +60,6 @@ export function ShopSidebar() {
     setMaxPrice(value);
   };
 
-  // Chỉ cập nhật URL khi người dùng nhả chuột (tối ưu hiệu năng)
   // Tự động reset giá trị thanh trượt khi đổi tiền tệ để không bị lệch dải giá
   React.useEffect(() => {
     setMinPrice(0);
@@ -105,15 +111,24 @@ export function ShopSidebar() {
           </div>
           
           <div className="layer-filter shopping_by_select p-[18px_10px_15px] space-y-[15px]">
-            {searchParams.get("category") && (
-              <div className="flex flex-wrap gap-2">
-                {searchParams.get("category")?.split(",").map(cat => (
-                  <span key={cat} className="bg-gray-100 px-2 py-1 text-[12px] flex items-center gap-1">
-                    {cat} <CloseIcon className="w-2 h-2 cursor-pointer" />
-                  </span>
-                ))}
-              </div>
-            )}
+            <div className="flex flex-wrap gap-2">
+              {searchParams.get("category") && searchParams.get("category")?.split(",").map(cat => (
+                <span key={cat} className="bg-gray-100 px-2 py-1 text-[12px] flex items-center gap-1 group">
+                  {cat} 
+                  <button onClick={() => toggleFilter("category", cat)}>
+                    <CloseIcon className="w-2 h-2 cursor-pointer text-gray-400 group-hover:text-red-500" />
+                  </button>
+                </span>
+              ))}
+              {searchParams.get("sale") === "true" && (
+                <span className="bg-gray-100 px-2 py-1 text-[12px] flex items-center gap-1 group">
+                  Đang giảm giá 
+                  <button onClick={() => toggleFilter("sale", "true")}>
+                    <CloseIcon className="w-2 h-2 cursor-pointer text-gray-400 group-hover:text-red-500" />
+                  </button>
+                </span>
+              )}
+            </div>
             <button 
               onClick={() => router.push("/shop")}
               className="text-[#f74f2e] font-bold text-[13px] uppercase"
@@ -148,15 +163,25 @@ export function ShopSidebar() {
         </div>
         <div className="layer-filter pt-[12px] px-[10px] pb-[15px]">
           <ul className="m-0 p-0 list-none space-y-[10px]">
-            {["Thời trang nam", "Thời trang nữ", "Phụ kiện"].map((cat) => (
+            {[
+              { label: "Thời trang nam", value: "Thời trang nam" },
+              { label: "Thời trang nữ", value: "Thời trang nữ" },
+              { label: "Phụ kiện", value: "Phụ kiện" }
+            ].map((cat) => (
               <li 
-                key={cat} 
+                key={cat.value} 
                 className="flex items-center gap-2 cursor-pointer group"
-                onClick={() => toggleFilter("category", cat)}
+                onClick={() => toggleFilter("category", cat.value)}
               >
-                <div className={`w-3 h-3 border ${isChecked("category", cat) ? "bg-primary border-primary" : "border-gray-300"}`}></div>
-                <span className={`text-[14px] transition-colors ${isChecked("category", cat) ? "text-primary font-bold" : "text-[#666] group-hover:text-primary"}`}>
-                  {cat}
+                <div className={`w-3.5 h-3.5 border rounded-sm flex items-center justify-center transition-all ${isChecked("category", cat.value) ? "bg-primary border-primary" : "border-gray-300 group-hover:border-primary"}`}>
+                  {isChecked("category", cat.value) && (
+                    <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </div>
+                <span className={`text-[14px] transition-colors ${isChecked("category", cat.value) ? "text-primary font-bold" : "text-[#666] group-hover:text-primary"}`}>
+                  {cat.label}
                 </span>
               </li>
             ))}
@@ -175,6 +200,8 @@ export function ShopSidebar() {
             <input
               type="text"
               placeholder="tìm kiếm"
+              value={menSearch}
+              onChange={(e) => setMenSearch(e.target.value)}
               suppressHydrationWarning
               className="w-full border-0 border-b border-[#e0dcdc] px-[9px] pb-[7px] text-[12px] text-[#888888] focus:border-primary outline-none"
             />
@@ -184,45 +211,98 @@ export function ShopSidebar() {
             ></button>
           </div>
           <ul className="men m-0 p-[12px_10px_15px] list-none space-y-[10px]">
-            {["T-Shirts", "Outerwear", "Basics", "Activewear"].map((cat, idx) => (
+            {filteredMenSubs.map((cat) => (
               <li key={cat}>
-                <div className="checkbox flex items-center">
-                  <input
-                    type="checkbox"
-                    id={`men-side-new-${cat}`}
-                    suppressHydrationWarning
-                    defaultChecked={true}
-                    className="w-[13px] h-[13px] border-[#e0dcdc] accent-primary rounded-full cursor-pointer"
-                  />
-                  <label htmlFor={`men-side-new-${cat}`} className="ml-[10px] text-[14px] text-[#666] hover:text-primary cursor-pointer transition-colors leading-none">
-                    {cat}
-                  </label>
+                <div 
+                  className="flex items-center gap-2 cursor-pointer group"
+                  onClick={() => toggleFilter("subCategory", cat)}
+                >
+                  <div className={`w-3.5 h-3.5 border rounded-sm flex items-center justify-center transition-all ${isChecked("subCategory", cat) ? "bg-primary border-primary" : "border-gray-300 group-hover:border-primary"}`}>
+                    {isChecked("subCategory", cat) && (
+                      <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+                  <span className={`text-[14px] transition-colors ${isChecked("subCategory", cat) ? "text-primary font-bold" : "text-[#666] group-hover:text-primary"}`}>
+                    {cat === "T-Shirts" ? "Áo thun (T-Shirts)" : 
+                     cat === "Shirts" ? "Áo sơ mi (Shirts)" : 
+                     cat === "Jackets" ? "Áo khoác (Jackets)" : 
+                     cat === "Sweaters" ? "Áo len (Sweaters)" : 
+                     cat === "Jeans" ? "Quần Jeans" : 
+                     cat === "Suits" ? "Bộ Suit / Vest" : cat}
+                  </span>
+                </div>
+              </li>
+            ))}
+            {filteredMenSubs.length === 0 && (
+              <li className="text-[12px] text-[#999] italic px-[10px]">Không tìm thấy mục này</li>
+            )}
+          </ul>
+          <div 
+            onClick={() => toggleFilter("category", "Thời trang nam")}
+            className="loadMore px-[15px] pb-[18px] text-[12px] text-[#333] font-bold cursor-pointer hover:text-primary transition-colors"
+          >
+            Xem tất cả sản phẩm Nam
+          </div>
+        </div>
+      </div>
+
+      {/* 5. Women Category */}
+      <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
+        <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Sản phẩm Nữ</h5>
+          <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
+        </div>
+        <div className="layer-filter pt-[12px] px-[10px] pb-[15px]">
+          <ul className="m-0 p-0 list-none space-y-[10px]">
+            {womenSubCategories.map((cat) => (
+              <li key={cat}>
+                <div 
+                  className="flex items-center gap-2 cursor-pointer group"
+                  onClick={() => toggleFilter("subCategory", cat)}
+                >
+                  <div className={`w-3.5 h-3.5 border rounded-sm flex items-center justify-center transition-all ${isChecked("subCategory", cat) ? "bg-primary border-primary" : "border-gray-300 group-hover:border-primary"}`}>
+                    {isChecked("subCategory", cat) && (
+                      <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+                  <span className={`text-[14px] transition-colors ${isChecked("subCategory", cat) ? "text-primary font-bold" : "text-[#666] group-hover:text-primary"}`}>
+                    {cat === "Dresses" ? "Váy liền (Dresses)" : cat === "Skirts" ? "Chân váy (Skirts)" : cat}
+                  </span>
                 </div>
               </li>
             ))}
           </ul>
-          <div className="loadMore px-[15px] pb-[18px] text-[12px] text-[#333] font-bold cursor-pointer hover:text-primary transition-colors">Xem thêm 4 sản phẩm</div>
         </div>
       </div>
 
-      {/* 5. Accessories */}
+      {/* 6. Accessories */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
           <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Phụ kiện</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
-        <div className="layer-filter pt-[9px] px-[10px] pb-[12px]">
+        <div className="layer-filter pt-[12px] px-[10px] pb-[15px]">
           <ul className="m-0 p-0 list-none space-y-[10px]">
-            {["Glasses", "Handbags", "Apparel", "Shoes"].map(item => (
-              <li key={item}>
-                <div className="checkbox flex items-center">
-                  <input 
-                    type="checkbox" 
-                    id={`acc-side-new-${item}`} 
-                    suppressHydrationWarning
-                    className="w-[13px] h-[13px] border-[#e0dcdc] accent-primary rounded-full cursor-pointer" 
-                  />
-                  <label htmlFor={`acc-side-new-${item}`} className="ml-[10px] text-[14px] text-[#666] hover:text-primary cursor-pointer transition-colors leading-none">{item}</label>
+            {accessoriesSubs.map(cat => (
+              <li key={cat}>
+                <div 
+                  className="flex items-center gap-2 cursor-pointer group"
+                  onClick={() => toggleFilter("subCategory", cat)}
+                >
+                  <div className={`w-3.5 h-3.5 border rounded-sm flex items-center justify-center transition-all ${isChecked("subCategory", cat) ? "bg-primary border-primary" : "border-gray-300 group-hover:border-primary"}`}>
+                    {isChecked("subCategory", cat) && (
+                      <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+                  <span className={`text-[14px] transition-colors ${isChecked("subCategory", cat) ? "text-primary font-bold" : "text-[#666] group-hover:text-primary"}`}>
+                    {cat === "Handbags" ? "Túi xách (Handbags)" : cat === "Shoes" ? "Giày dép (Shoes)" : cat === "Hats" ? "Mũ nón (Hats)" : cat === "Accessories" ? "Phụ kiện khác" : cat}
+                  </span>
                 </div>
               </li>
             ))}

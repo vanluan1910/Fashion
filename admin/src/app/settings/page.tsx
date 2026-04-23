@@ -7,7 +7,6 @@ import {
   Bell, 
   Image as ImageIcon,
   Save,
-  RotateCcw,
   Users,
   Camera,
   Play,
@@ -59,14 +58,7 @@ export default function SettingsPage() {
     }, 800);
   };
 
-  const handleReset = () => {
-    setSettings(settingsService.getSettings());
-    triggerDialog({
-      title: "Đã hoàn tác",
-      message: "Dữ liệu đã được khôi phục về trạng thái lưu gần nhất.",
-      type: "info"
-    });
-  };
+
 
   if (!settings) return null;
 
@@ -241,23 +233,7 @@ export default function SettingsPage() {
             </div>
           )}
 
-          {/* Action Buttons Shadow Footer */}
-          <div className="flex items-center justify-end gap-3 pt-4">
-             <button 
-               onClick={handleReset}
-               className="flex items-center gap-2 px-6 py-2.5 bg-white border border-[#eee] text-[#666] font-bold text-[13px] rounded-xl hover:bg-[#fcfcff] transition-all"
-             >
-                <RotateCcw size={18} /> Hủy bỏ
-             </button>
-             <button 
-               onClick={handleSave}
-               disabled={isSaving}
-               className="flex items-center gap-2 px-10 py-2.5 bg-[#333] text-white font-bold text-[13px] rounded-xl hover:bg-black transition-all shadow-lg shadow-black/10 active:scale-95 disabled:opacity-50"
-             >
-                {isSaving ? <span className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></span> : <Save size={18} />}
-                Lưu cài đặt
-             </button>
-          </div>
+
         </div>
       </div>
 

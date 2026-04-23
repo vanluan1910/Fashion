@@ -11,7 +11,7 @@ export default function ShopPage() {
     <div className="bg-white">
       <ShopBreadcrumb />
 
-      <div className="max-w-[1170px] mx-auto px-[15px] pb-[100px] overflow-hidden">
+      <div className="max-w-[1170px] mx-auto px-[15px] pb-[60px] overflow-hidden">
         <div className="flex flex-col lg:flex-row gap-[30px]">
           {/* Sidebar - fadeInLeft equivalent (1.3s duration) */}
           <motion.div
@@ -21,7 +21,9 @@ export default function ShopPage() {
             viewport={{ once: true }}
             transition={{ duration: 1.3, ease: "easeOut" }}
           >
-            <ShopSidebar />
+            <React.Suspense fallback={<div className="h-40 bg-gray-50 animate-pulse rounded-lg" />}>
+              <ShopSidebar />
+            </React.Suspense>
           </motion.div>
 
           {/* Product Grid - fadeInRight equivalent (1.3s duration) */}
@@ -32,7 +34,9 @@ export default function ShopPage() {
             viewport={{ once: true }}
             transition={{ duration: 1.3, ease: "easeOut" }}
           >
-            <ProductGrid />
+            <React.Suspense fallback={<div className="py-20 text-center text-[#999] italic">Đang chuẩn bị sản phẩm...</div>}>
+              <ProductGrid />
+            </React.Suspense>
           </motion.div>
         </div>
       </div>

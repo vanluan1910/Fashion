@@ -14,7 +14,7 @@ class ProductsService {
     if (!item) {
       throw new Error('Không tìm thấy sản phẩm này');
     }
-    
+
     // Lấy thêm ảnh và biến thể
     const [images, variants] = await Promise.all([
       productsRepo.findImages(id),
@@ -31,27 +31,29 @@ class ProductsService {
   }
 
   async create(data) {
-    const { name, price, description, category, image } = data;
+    const { name, price, description, category, subCategory, image, status, oldPrice } = data;
 
     // 1. Ánh xạ danh mục (Map category name to ID)
     let category_id = 1; // Mặc định
-    if (category === "Thời trang nam") category_id = 1;
-    else if (category === "Thời trang nữ") category_id = 2;
-    else if (category === "Phụ kiện") category_id = 3;
+    const cat = String(category).toLowerCase();
+    if (cat === "thời trang nam" || cat === "men") category_id = 1;
+    else if (cat === "thời trang nữ" || cat === "women") category_id = 2;
+    else if (cat === "phụ kiện" || cat === "accessories") category_id = 3;
 
     // 2. Tạo sản phẩm gốc
     const productId = await productsRepo.create({
       product_name: name,
-      base_price: parseFloat(price) || 0,
+      base_price: parseFloat(String(price).replace(/[^0-9.]/g, '')) || 0,
+      old_price: oldPrice ? parseFloat(String(oldPrice).replace(/[^0-9.]/g, '')) : null,
       description: description,
       category_id: category_id,
+      sub_category: subCategory,
+      status: status || "Còn hàng",
       created_at: new Date()
     });
 
     // 3. Lưu ảnh nếu có
     if (image) {
-      // Giả sử repository có hàm saveImage, nếu không tôi sẽ tạo câu lệnh trực tiếp
-      // Ở đây tôi dùng productsRepo để thực hiện chèn ảnh
       await db.query('INSERT INTO product_images (product_id, image_url, is_primary) VALUES (?, ?, ?)', [productId, image, 1]);
     }
 
@@ -59,32 +61,34 @@ class ProductsService {
   }
 
   async update(id, data) {
-    const { name, price, description, category, image } = data;
+    const { name, price, description, category, subCategory, image, status, oldPrice } = data;
 
     // 1. Ánh xạ danh mục
     let category_id = 1;
-    if (category === "Thời trang nam") category_id = 1;
-    else if (category === "Thời trang nữ") category_id = 2;
-    else if (category === "Phụ kiện") category_id = 3;
+    const cat = String(category).toLowerCase();
+    if (cat === "thời trang nam" || cat === "men") category_id = 1;
+    else if (cat === "thời trang nữ" || cat === "women") category_id = 2;
+    else if (cat === "phụ kiện" || cat === "accessories") category_id = 3;
 
     // 2. Cập nhật thông tin cơ bản
     const updateData = {
       product_name: name,
       base_price: parseFloat(String(price).replace(/[^0-9.]/g, '')) || 0,
+      old_price: oldPrice ? parseFloat(String(oldPrice).replace(/[^0-9.]/g, '')) : null,
       description: description,
-      category_id: category_id
+      category_id: category_id,
+      sub_category: subCategory,
+      status: status
     };
 
-    const success = await productsRepo.update(id, updateData);
+    await productsRepo.update(id, updateData);
 
     // 3. Cập nhật ảnh nếu có ảnh mới
     if (image && String(image).startsWith('data:image')) {
-      // Xóa ảnh cũ và đặt ảnh mới là primary
       await db.query('UPDATE product_images SET is_primary = 0 WHERE product_id = ?', [id]);
       await db.query('INSERT INTO product_images (product_id, image_url, is_primary) VALUES (?, ?, ?)', [id, image, 1]);
     }
 
-    if (!success) throw new Error('Cập nhật thất bại');
     return { message: 'Cập nhật thành công' };
   }
 

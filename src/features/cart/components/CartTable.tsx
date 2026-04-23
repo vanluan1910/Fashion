@@ -29,7 +29,7 @@ export function CartTable() {
 
   if (cartItems.length === 0) {
     return (
-      <div className="text-center py-[100px] border border-[#eee] bg-[#f9f9f9]">
+      <div className="text-center py-[60px] border border-[#eee] bg-[#f9f9f9]">
         <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
           <i className="flaticon-shopping-bag text-[#aaa] text-[24px]"></i>
         </div>

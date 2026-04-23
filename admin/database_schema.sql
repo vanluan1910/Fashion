@@ -64,6 +64,8 @@ CREATE TABLE IF NOT EXISTS products (
     product_name VARCHAR(200) NOT NULL,
     base_price DECIMAL(15, 2) NOT NULL,
     description TEXT,
+    sub_category VARCHAR(100), -- Thêm cột loại sản phẩm (Áo sơ mi, Quần Jeans...)
+    status VARCHAR(50) DEFAULT 'Còn hàng', -- Thêm cột tình trạng kho
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_product_category FOREIGN KEY (category_id) 
         REFERENCES categories(category_id) ON DELETE SET NULL
@@ -141,4 +143,20 @@ CREATE TABLE IF NOT EXISTS blog_comments (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_comment_post FOREIGN KEY (post_id) 
         REFERENCES blog_posts(post_id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- 11. Table: Product_Reviews (Đánh giá sản phẩm từ khách hàng)
+CREATE TABLE IF NOT EXISTS product_reviews (
+    review_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL,
+    account_id INT NOT NULL,
+    order_id INT, -- Liên kết với đơn hàng đã mua để xác thực
+    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    status ENUM('Hiển thị', 'Ẩn', 'Chờ duyệt') DEFAULT 'Chờ duyệt',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_review_product FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE,
+    CONSTRAINT fk_review_account FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE CASCADE,
+    CONSTRAINT fk_review_order FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE SET NULL
 ) ENGINE=InnoDB;

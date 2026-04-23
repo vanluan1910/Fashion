@@ -16,8 +16,8 @@ export default function CartPage() {
       {/* END Breadcrumb */}
 
       {/* START Cart Section */}
-      <section className="cart_section login_section py-[60px] check_out">
-        <div className="max-w-[1170px] mx-auto px-[15px]">
+      <section className="cart_section login_section pt-0 pb-[60px] check_out">
+        <div className="max-w-[1170px] mx-auto px-[15px] pt-0 pb-0">
           <CartTable />
         </div>
       </section>

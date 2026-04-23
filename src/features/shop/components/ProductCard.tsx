@@ -23,6 +23,14 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     product.sizes && product.sizes.length === 1 ? product.sizes[0] : undefined
   );
 
+  const priceNum = typeof product.price === 'number' ? product.price : parseInt(String(product.price).replace(/\D/g, "")) || 0;
+  const originalPriceRaw = product.originalPrice || (product as any).oldPrice;
+  const originalPriceNum = originalPriceRaw ? (typeof originalPriceRaw === 'number' ? originalPriceRaw : parseInt(String(originalPriceRaw).replace(/\D/g, "")) || 0) : 0;
+
+  const discountPercent = originalPriceNum > priceNum 
+    ? Math.round(((originalPriceNum - priceNum) / originalPriceNum) * 100) 
+    : 0;
+
   const isFavorite = isInWishlist(product.id);
 
   const handleWishlist = (e: React.MouseEvent) => {
@@ -55,7 +63,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   };
 
   return (
-    <div className="featured_content group relative mt-[40px]">
+    <div className="featured_content group relative">
       <div className="featured_img_content relative overflow-hidden bg-white mb-5">
         {/* Main Image Section */}
         <div className="relative w-full" style={{ aspectRatio: '270/340' }}>
@@ -68,6 +76,13 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
           />
         </div>
+
+        {/* Sale Badge */}
+        {discountPercent > 0 && (
+          <div className="absolute top-4 left-4 z-20 bg-primary text-white text-[11px] font-bold px-2 py-1 rounded-sm shadow-sm">
+            -{discountPercent}%
+          </div>
+        )}
 
         {/* Home Collection Style Hover - Heavy White Wipe UP */}
         <div className="absolute bottom-0 left-0 right-0 h-0 group-hover:h-full bg-white/90 opacity-0 group-hover:opacity-100 transition-all duration-400 ease-in-out z-10 pointer-events-none" />
@@ -96,11 +111,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           className={`heart absolute bottom-4 right-4 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 shadow-md z-20 
             ${isFavorite 
               ? "bg-[#f74f2e] text-white opacity-100 transform translate-x-0" 
-              : "bg-white text-[#333] hover:bg-[#f74f2e] hover:text-white opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0"
+              : "bg-white text-[#333] hover:bg-[#f3f4f9] hover:text-[#f74f2e] opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0"
             }`}
         >
           <i className="flaticon-heart text-[16px]"></i>
-          <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#333] text-white text-[10px] uppercase font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Yêu thích</span>
         </button>
       </div>
 
@@ -112,13 +126,13 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </h5>
         </Link>
         <div className="featured_price text-[18px] font-bold text-[#333] mb-3" style={{ fontFamily: "'Work Sans', sans-serif" }}>
-          {product.discount ? (
+          {discountPercent > 0 ? (
             <div className="flex items-center justify-center gap-2">
-              <span className="text-[#999] line-through font-normal text-[14px]">{formatPrice(product.originalPrice || 0)}</span>
-              <span className="text-[#f74f2e]">{formatPrice(product.price)}</span>
+              <span className="text-[#999] line-through font-normal text-[14px]">{formatPrice(originalPriceNum)}</span>
+              <span className="text-[#f74f2e]">{formatPrice(priceNum)}</span>
             </div>
           ) : (
-            <span>{formatPrice(product.price)}</span>
+            <span>{formatPrice(priceNum)}</span>
           )}
         </div>
 

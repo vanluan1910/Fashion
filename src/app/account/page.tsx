@@ -4,9 +4,24 @@ import React from "react";
 import { useAuth } from "@/core/providers/AuthProvider";
 import { AccountBreadcrumb } from "@/features/account/components/AccountBreadcrumb";
 import { motion } from "framer-motion";
-import { FaUser, FaShoppingBag, FaMapMarkerAlt, FaSignOutAlt, FaHeart } from "react-icons/fa";
+import { 
+  FaUser, 
+  FaShoppingBag, 
+  FaMapMarkerAlt, 
+  FaSignOutAlt, 
+  FaHeart,
+  FaTruck,
+  FaBoxOpen,
+  FaCheckCircle,
+  FaClock,
+  FaTimes,
+  FaClipboardList,
+  FaStar,
+  FaRegStar
+} from "react-icons/fa";
 import Link from "next/link";
 import { orderService } from "@/features/checkout/services/orderService";
+import { AnimatePresence } from "framer-motion";
 
 export default function AccountPage() {
   const { user, logout, updateProfile, isAuthenticated, isLoading } = useAuth();
@@ -21,6 +36,15 @@ export default function AccountPage() {
   });
   const [isSaving, setIsSaving] = React.useState(false);
   const [orders, setOrders] = React.useState<any[]>([]);
+  const [selectedOrder, setSelectedOrder] = React.useState<any>(null);
+  const [isTrackingOpen, setIsTrackingOpen] = React.useState(false);
+  
+  // Review states
+  const [isReviewOpen, setIsReviewOpen] = React.useState(false);
+  const [rating, setRating] = React.useState(5);
+  const [hoverRating, setHoverRating] = React.useState(0);
+  const [comment, setComment] = React.useState("");
+  const [isSubmittingReview, setIsSubmittingReview] = React.useState(false);
 
   // Redirect to login if not authenticated (only after loading is finished)
   React.useEffect(() => {
@@ -90,6 +114,23 @@ export default function AccountPage() {
       month: "2-digit",
       year: "numeric"
     });
+  };
+
+  const getStatusInfo = (status: string) => {
+    switch (status) {
+      case "Hoàn thành": 
+        return { color: "text-green-600", bg: "bg-green-50", border: "border-green-100", step: 4 };
+      case "Đang giao hàng": 
+        return { color: "text-orange-600", bg: "bg-orange-50", border: "border-orange-100", step: 3 };
+      case "Đang xử lý": 
+        return { color: "text-blue-600", bg: "bg-blue-50", border: "border-blue-100", step: 2 };
+      case "Đã xác nhận": 
+        return { color: "text-purple-600", bg: "bg-purple-50", border: "border-purple-100", step: 1 };
+      case "Đã hủy": 
+        return { color: "text-red-600", bg: "bg-red-50", border: "border-red-100", step: 0 };
+      default: 
+        return { color: "text-gray-600", bg: "bg-gray-50", border: "border-gray-100", step: 1 };
+    }
   };
 
   return (
@@ -285,15 +326,28 @@ export default function AccountPage() {
                                 <td className="py-5 font-sans font-bold text-[14px] text-primary">{order.id}</td>
                                 <td className="py-5 font-sans text-[14px] text-[#666]">{formatDate(order.date)}</td>
                                 <td className="py-5">
-                                  <span className="px-3 py-1 bg-green-50 text-green-600 text-[10px] font-bold uppercase tracking-[1px] rounded-full">
+                                  <span className={`px-3 py-1 ${getStatusInfo(order.status).bg} ${getStatusInfo(order.status).color} border ${getStatusInfo(order.status).border} text-[10px] font-bold uppercase tracking-[1px] rounded-full`}>
                                     {order.status}
                                   </span>
                                 </td>
                                 <td className="py-5 font-sans font-bold text-[14px] text-[#333]">
                                   {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.total)}
                                 </td>
-                                <td className="py-5 text-right">
-                                  <button className="text-[11px] font-bold uppercase tracking-[1px] text-[#777] hover:text-primary transition-colors">Chi tiết</button>
+                                <td className="py-5 text-right flex items-center justify-end gap-4">
+                                  {order.status === "Hoàn thành" && (
+                                    <button 
+                                      onClick={() => { setSelectedOrder(order); setIsReviewOpen(true); }}
+                                      className="text-[11px] font-bold uppercase tracking-[1px] text-primary hover:text-[#333] transition-colors"
+                                    >
+                                      Đánh giá
+                                    </button>
+                                  )}
+                                  <button 
+                                    onClick={() => { setSelectedOrder(order); setIsTrackingOpen(true); }}
+                                    className="text-[11px] font-bold uppercase tracking-[1px] text-[#777] hover:text-primary transition-colors border-b border-transparent hover:border-primary"
+                                  >
+                                    Chi tiết
+                                  </button>
                                 </td>
                               </tr>
                             ))}
@@ -320,6 +374,240 @@ export default function AccountPage() {
           </div>
         </div>
       </section>
+
+      {/* Order Tracking Modal */}
+      <AnimatePresence>
+        {isTrackingOpen && selectedOrder && (
+          <div className="fixed inset-0 z-[10001] flex items-center justify-center px-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsTrackingOpen(false)}
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-[550px] bg-white shadow-2xl rounded-sm overflow-hidden"
+            >
+              <div className="p-6 border-b border-[#eee] flex justify-between items-center bg-[#faf9f7]">
+                <div>
+                  <h4 className="text-[18px] font-normal text-[#333] font-serif italic mb-0.5">Chi tiết trạng thái</h4>
+                  <p className="text-[10px] font-bold text-[#999] uppercase tracking-[2px]">Mã đơn: {selectedOrder.id}</p>
+                </div>
+                <button 
+                  onClick={() => setIsTrackingOpen(false)}
+                  className="w-8 h-8 flex items-center justify-center text-[#999] hover:text-primary transition-colors border border-[#eee] bg-white rounded-full"
+                >
+                  <FaTimes size={12} />
+                </button>
+              </div>
+
+              <div className="p-8">
+                {/* Stepper */}
+                <div className="relative mb-12">
+                  {/* Progress Line */}
+                  <div className="absolute top-5 left-0 w-full h-[2px] bg-[#eee] z-0">
+                    <div 
+                      className="h-full bg-primary transition-all duration-1000 ease-out" 
+                      style={{ width: `${Math.max(0, (getStatusInfo(selectedOrder.status).step - 1) * 33.33)}%` }}
+                    />
+                  </div>
+
+                  {/* Steps */}
+                  <div className="relative z-10 flex justify-between">
+                    {[
+                      { label: "Đã đặt", icon: FaClipboardList, step: 1 },
+                      { label: "Xử lý", icon: FaClock, step: 2 },
+                      { label: "Đang giao", icon: FaTruck, step: 3 },
+                      { label: "Xong", icon: FaCheckCircle, step: 4 },
+                    ].map((step, idx) => {
+                      const isActive = getStatusInfo(selectedOrder.status).step >= step.step;
+                      const Icon = step.icon;
+
+                      return (
+                        <div key={idx} className="flex flex-col items-center group">
+                          <div className={`
+                            w-10 h-10 rounded-full flex items-center justify-center mb-3 transition-all duration-500
+                            ${isActive ? "bg-primary text-white shadow-lg shadow-primary/20 scale-110" : "bg-white border-2 border-[#eee] text-[#ccc] group-hover:border-primary/30 group-hover:text-primary/30"}
+                          `}>
+                            <Icon size={14} />
+                          </div>
+                          <span className={`text-[9px] font-bold uppercase tracking-[1px] whitespace-nowrap transition-colors ${isActive ? "text-[#333]" : "text-[#999]"}`}>
+                            {step.label}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Info Cards */}
+                <div className="grid grid-cols-2 gap-4 pt-8 border-t border-[#eee]">
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 bg-[#faf9f7] rounded-full flex items-center justify-center text-primary">
+                        <FaClock size={10} />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-bold text-[#999] uppercase tracking-[1px] mb-0">Ngày đặt</p>
+                        <p className="text-[13px] font-bold text-[#333] font-sans">{formatDate(selectedOrder.date)}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 bg-[#faf9f7] rounded-full flex items-center justify-center text-primary">
+                        <FaClipboardList size={10} />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-bold text-[#999] uppercase tracking-[1px] mb-0">Trạng thái</p>
+                        <p className={`text-[13px] font-bold ${getStatusInfo(selectedOrder.status).color} font-sans uppercase tracking-[0.5px]`}>
+                          {selectedOrder.status}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 bg-[#faf9f7] rounded-full flex items-center justify-center text-primary">
+                        <FaBoxOpen size={10} />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-bold text-[#999] uppercase tracking-[1px] mb-0">Tổng tiền</p>
+                        <p className="text-[16px] font-bold text-primary font-sans">
+                          {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(selectedOrder.total)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {selectedOrder.status === "Đang xử lý" && (
+                  <div className="mt-6 p-4 bg-blue-50/50 border border-blue-100 rounded-sm flex items-start gap-3">
+                    <FaClock className="text-blue-500 mt-1 shrink-0" size={14} />
+                    <p className="text-[12px] text-blue-700 italic font-sans leading-relaxed">
+                      Đơn hàng của bạn đang được Atelier chuẩn bị và kiểm tra kỹ lưỡng trước khi gửi đi.
+                    </p>
+                  </div>
+                )}
+
+                {selectedOrder.status === "Hoàn thành" && (
+                  <div className="mt-6 p-5 bg-green-50/50 border border-green-100 rounded-sm flex flex-col items-center text-center gap-3">
+                    <div className="flex gap-1 text-primary">
+                      <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
+                    </div>
+                    <p className="text-[13px] text-green-800 font-bold font-serif italic">
+                      Đơn hàng đã được giao thành công!
+                    </p>
+                    <button 
+                      onClick={() => { setIsTrackingOpen(false); setIsReviewOpen(true); }}
+                      className="text-[11px] font-bold uppercase tracking-[2px] text-primary border-b border-primary pb-0.5 hover:text-[#333] hover:border-[#333] transition-all"
+                    >
+                      Viết đánh giá ngay
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-6 bg-[#faf9f7] border-t border-[#eee] flex justify-end">
+                <button 
+                  onClick={() => setIsTrackingOpen(false)}
+                  className="h-[40px] px-8 bg-[#333] text-white text-[10px] font-bold uppercase tracking-[2px] hover:bg-primary transition-all font-sans"
+                >
+                  Đóng
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Order Review Modal */}
+      <AnimatePresence>
+        {isReviewOpen && selectedOrder && (
+          <div className="fixed inset-0 z-[10001] flex items-center justify-center px-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsReviewOpen(false)}
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-[500px] bg-white shadow-2xl rounded-sm overflow-hidden"
+            >
+              <div className="p-6 border-b border-[#eee] flex justify-between items-center bg-[#faf9f7]">
+                <div>
+                  <h4 className="text-[18px] font-normal text-[#333] font-serif italic mb-0.5">Đánh giá sản phẩm</h4>
+                  <p className="text-[10px] font-bold text-[#999] uppercase tracking-[2px]">Mã đơn: {selectedOrder.id}</p>
+                </div>
+                <button 
+                  onClick={() => setIsReviewOpen(false)}
+                  className="w-8 h-8 flex items-center justify-center text-[#999] hover:text-primary transition-colors"
+                >
+                  <FaTimes size={12} />
+                </button>
+              </div>
+
+              <div className="p-8 text-center">
+                <div className="mb-8">
+                  <p className="text-[14px] text-[#333] mb-4 font-bold">Bạn thấy đơn hàng này như thế nào?</p>
+                  <div className="flex justify-center gap-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        onMouseEnter={() => setHoverRating(star)}
+                        onMouseLeave={() => setHoverRating(0)}
+                        onClick={() => setRating(star)}
+                        className="text-[30px] transition-transform active:scale-90"
+                      >
+                        {star <= (hoverRating || rating) ? (
+                          <FaStar className="text-primary" />
+                        ) : (
+                          <FaRegStar className="text-[#ddd]" />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-[#999] mt-2 uppercase tracking-[1px] font-bold">
+                    {rating === 5 ? "Tuyệt vời" : rating === 4 ? "Rất tốt" : rating === 3 ? "Bình thường" : rating === 2 ? "Tệ" : "Rất tệ"}
+                  </p>
+                </div>
+
+                <div className="text-left mb-6">
+                  <label className="block text-[11px] font-bold text-[#333] uppercase tracking-[2px] mb-2">Nhận xét của bạn</label>
+                  <textarea 
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..."
+                    className="w-full h-[120px] p-4 bg-[#faf9f7] border border-[#eee] focus:border-primary outline-none transition-colors font-sans text-[14px] resize-none"
+                  />
+                </div>
+
+                <button 
+                  onClick={async () => {
+                    setIsSubmittingReview(true);
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    alert("Cảm ơn bạn đã đánh giá!");
+                    setIsReviewOpen(false);
+                    setIsSubmittingReview(false);
+                    setComment("");
+                    setRating(5);
+                  }}
+                  disabled={isSubmittingReview}
+                  className="w-full h-[50px] bg-[#333] text-white text-[12px] font-bold uppercase tracking-[3px] hover:bg-primary transition-all disabled:opacity-50"
+                >
+                  {isSubmittingReview ? "Đang gửi..." : "Gửi đánh giá"}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }

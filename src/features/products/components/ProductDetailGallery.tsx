@@ -12,9 +12,9 @@ export function ProductDetailGallery({ images }: ProductDetailGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <div className="flex flex-col md:flex-row gap-4">
+    <div className="flex flex-col md:flex-row gap-4 items-start">
       {/* Thumbnails */}
-      <div className="order-2 md:order-1 flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto no-scrollbar md:h-[560px] md:w-[100px] flex-shrink-0">
+      <div className="order-2 md:order-1 flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto no-scrollbar md:h-[480px] md:w-[100px] flex-shrink-0">
         {images.map((img, index) => (
           <div
             key={index}
@@ -23,12 +23,12 @@ export function ProductDetailGallery({ images }: ProductDetailGalleryProps) {
               activeIndex === index ? "border-primary" : "border-gray-100 hover:border-gray-200"
             }`}
           >
-            <div className="relative w-[80px] h-[80px] md:w-full md:h-[90px]">
+            <div className="relative w-[80px] h-[80px] md:w-full md:h-[90px] bg-[#f9f9f9]">
               <Image 
                 src={img.startsWith('http') || img.startsWith('/') || img.startsWith('data:') ? img : `/${img}`} 
                 alt={`Thumbnail ${index + 1}`} 
                 fill 
-                className="object-cover"
+                className="object-contain p-1"
               />
             </div>
           </div>
@@ -36,7 +36,7 @@ export function ProductDetailGallery({ images }: ProductDetailGalleryProps) {
       </div>
 
       {/* Main Image */}
-      <div className="order-1 md:order-2 flex-grow bg-white border border-gray-100 relative group overflow-hidden h-[400px] md:h-[560px]">
+      <div className="order-1 md:order-2 flex-grow bg-[#f9f9f9] border border-gray-100 relative group overflow-hidden h-[350px] md:h-[480px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeIndex}
@@ -44,15 +44,17 @@ export function ProductDetailGallery({ images }: ProductDetailGalleryProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="w-full h-full"
+            className="w-full h-full p-1 flex items-start justify-center"
           >
-            <Image
-              src={images[activeIndex].startsWith('http') || images[activeIndex].startsWith('/') || images[activeIndex].startsWith('data:') ? images[activeIndex] : `/${images[activeIndex]}`}
-              alt="Main product image"
-              fill
-              className="object-cover hover:scale-105 transition-transform duration-500"
-              priority
-            />
+            <div className="relative w-full h-full">
+              <Image
+                src={images[activeIndex].startsWith('http') || images[activeIndex].startsWith('/') || images[activeIndex].startsWith('data:') ? images[activeIndex] : `/${images[activeIndex]}`}
+                alt="Main product image"
+                fill
+                className="object-contain object-top hover:scale-105 transition-transform duration-500"
+                priority
+              />
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>

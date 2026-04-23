@@ -22,14 +22,31 @@ export const useOrders = () => {
     setOrders(Array.isArray(data) ? data : []);
   };
 
-  const updateStatus = (id: string, status: OrderStatus) => {
-    orderService.updateOrderStatus(id, status);
-    refreshOrders();
+  const updateStatus = async (id: string, status: OrderStatus) => {
+    // Cập nhật giao diện lập tức (Optimistic Update)
+    setOrders(prev => prev.map(o => o.id === id ? { ...o, status } : o));
+    
+    try {
+      const success = await orderService.updateOrderStatus(id, status);
+      if (!success) {
+        // Nếu lỗi thì tải lại dữ liệu chuẩn từ server
+        refreshOrders();
+      }
+    } catch (error) {
+      refreshOrders();
+    }
   };
 
-  const deleteOrder = (id: string) => {
-    orderService.deleteOrder(id);
-    refreshOrders();
+  const deleteOrder = async (id: string) => {
+    // Cập nhật giao diện lập tức
+    setOrders(prev => prev.filter(o => o.id !== id));
+    
+    try {
+      await orderService.deleteOrder(id);
+    } catch (error) {
+      // Nếu lỗi thì tải lại dữ liệu chuẩn từ server
+      refreshOrders();
+    }
   };
 
   const filteredOrders = useMemo(() => {

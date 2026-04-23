@@ -1,4 +1,9 @@
 @import "tailwindcss";
+@source "../features/**/*.{ts,tsx}";
+@source "../shared/**/*.{ts,tsx}";
+@source "./**/*.{ts,tsx}";
+
+
 
 :root {
   --background: #ffffff;

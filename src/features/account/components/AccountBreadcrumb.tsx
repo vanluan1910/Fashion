@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 export function AccountBreadcrumb({ title }: { title: string }) {
   return (
     <section className="bg-[#f9f9f9] border-t border-[#eee] overflow-hidden">
-      <div className="max-w-[1170px] mx-auto px-[15px] pt-[10px] pb-[21px]">
+      <div className="max-w-[1170px] mx-auto px-[15px] pt-[10px] pb-0">
         {/* Replicating wow fadeIn behavior */}
         <motion.div
           initial={{ opacity: 0 }}

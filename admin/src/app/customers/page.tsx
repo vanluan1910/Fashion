@@ -277,7 +277,7 @@ export default function CustomersPage() {
                         onClick={() => handleViewDetail(customer)}
                         title="Xem hồ sơ" className="p-2.5 text-[#777] hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all"><ExternalLink size={20} /></button>
                       <button 
-                        onClick={() => handleDeleteRequest(customer.account_id || customer.id, customer.full_name || customer.name)}
+                        onClick={() => handleDeleteRequest(String(customer.account_id || customer.id), customer.full_name || customer.name)}
                         title="Xóa khách hàng" className="p-2.5 text-[#777] hover:bg-red-50 hover:text-red-600 rounded-xl transition-all"><Trash2 size={20} /></button>
                     </div>
                   </td>

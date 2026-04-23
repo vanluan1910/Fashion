@@ -13,7 +13,7 @@ export default function EditProductPage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
-  
+
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [dialogConfig, setDialogConfig] = useState<{
@@ -30,22 +30,26 @@ export default function EditProductPage() {
   });
 
   useEffect(() => {
-    if (id) {
-      // Find the product (handling URL encoding)
-      const decodedId = decodeURIComponent(id);
-      const foundProduct = productService.getProductById(decodedId) || productService.getProductById(id);
-      
-      if (foundProduct) {
-        setProduct(foundProduct);
-      } else {
-        triggerDialog({
-          title: "Không tìm thấy!",
-          message: `Sản phẩm với mã ${decodedId} không tồn tại hoặc đã bị xóa.`,
-          type: "warning"
-        });
+    const fetchProduct = async () => {
+      if (id) {
+        setLoading(true);
+        const decodedId = decodeURIComponent(id);
+        const foundProduct = await productService.getProductById(decodedId);
+
+        if (foundProduct) {
+          setProduct(foundProduct);
+        } else {
+          triggerDialog({
+            title: "Không tìm thấy!",
+            message: `Sản phẩm với mã ${decodedId} không tồn tại hoặc đã bị xóa.`,
+            type: "warning"
+          });
+        }
+        setLoading(false);
       }
-      setLoading(false);
-    }
+    };
+
+    fetchProduct();
   }, [id]);
 
   const triggerDialog = (config: Omit<typeof dialogConfig, "isOpen">) => {
@@ -88,7 +92,7 @@ export default function EditProductPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
-        <button 
+        <button
           onClick={() => router.push("/products")}
           className="p-2 hover:bg-[#f74f2e]/10 text-[#f74f2e] rounded-xl transition-all"
         >
@@ -100,21 +104,21 @@ export default function EditProductPage() {
         </div>
       </div>
 
-      <ProductForm 
-        onSubmit={handleUpdate} 
-        onCancel={() => router.push("/products")} 
+      <ProductForm
+        onSubmit={handleUpdate}
+        onCancel={() => router.push("/products")}
         initialData={product}
         isEditing={true}
       />
 
-      <Dialog 
-        {...dialogConfig} 
+      <Dialog
+        {...dialogConfig}
         onClose={() => {
           setDialogConfig(prev => ({ ...prev, isOpen: false }));
           if (dialogConfig.type === "success" && dialogConfig.onConfirm) {
             dialogConfig.onConfirm();
           }
-        }} 
+        }}
       />
     </div>
   );

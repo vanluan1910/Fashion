@@ -14,11 +14,13 @@ export function ProductGrid({ category }: { category?: string }) {
   const searchParams = useSearchParams();
   const idParam = searchParams.get("id");
   const categoryFilter = (category ? [category.toLowerCase()] : searchParams.get("category")?.toLowerCase().split(",")) || [];
+  const subCategoryFilter = searchParams.get("subCategory")?.toLowerCase().split(",") || [];
   const saleFilter = searchParams.get("sale") === "true";
   const sizeFilter = searchParams.get("size")?.toLowerCase().split(",") || [];
   const colorFilter = searchParams.get("color")?.toLowerCase().split(",") || [];
   const minPriceFilter = Number(searchParams.get("minPrice")) || 0;
   const maxPriceFilter = Number(searchParams.get("maxPrice")) || 999999999;
+  const searchFilter = searchParams.get("search")?.toLowerCase() || "";
 
   React.useEffect(() => {
     const loadProducts = async () => {
@@ -36,23 +38,50 @@ export function ProductGrid({ category }: { category?: string }) {
     if (idParam) return String(product.id) === idParam;
 
     // 2. Lọc theo Khoảng giá
-    const price = Number(product.price);
+    const price = parseInt(String(product.price).replace(/\D/g, "")) || 0;
     if (price < minPriceFilter || price > maxPriceFilter) return false;
 
-    // 3. Lọc theo Danh mục (Hỗ trợ chọn nhiều mục)
-    const productCat = String(product.category || "").toLowerCase();
-    if (categoryFilter.length > 0 && !categoryFilter.some(filter => productCat.includes(filter))) {
-      return false;
+    // 3. Lọc theo Danh mục chính
+    if (categoryFilter.length > 0 && categoryFilter[0] !== "") {
+      const productCat = String(product.category || "").toLowerCase();
+      if (!categoryFilter.some(filter => {
+        const f = filter.toLowerCase();
+        // So khớp linh hoạt: bao gồm nhau hoặc ánh xạ từ tiếng Việt sang tiếng Anh
+        if (productCat.includes(f) || f.includes(productCat)) return true;
+        if (f.includes("nam") && productCat.includes("men")) return true;
+        if (f.includes("nữ") && productCat.includes("women")) return true;
+        if (f.includes("phụ kiện") && productCat.includes("acc")) return true;
+        return false;
+      })) return false;
     }
 
-    // 4. Lọc theo Trạng thái Giảm giá
-    if (saleFilter && !product.label?.toLowerCase().includes("sale")) return false;
+    // 4. Lọc theo Danh mục con (subCategory)
+    if (subCategoryFilter.length > 0 && subCategoryFilter[0] !== "") {
+      const productSubCat = String(product.subCategory || "").toLowerCase();
+      if (!subCategoryFilter.some(filter => productSubCat.includes(filter))) return false;
+    }
 
-    // 5. Lọc theo Kích cỡ
-    if (sizeFilter.length > 0) {
+    // 5. Lọc theo Trạng thái Giảm giá
+    if (saleFilter) {
+      const op = parseInt(String(product.originalPrice || product.oldPrice || "").replace(/\D/g, "")) || 0;
+      const isSale = (product.label || "").toLowerCase().includes("sale") || (op > price);
+      if (!isSale) return false;
+    }
+
+    // 6. Lọc theo Kích cỡ
+    if (sizeFilter.length > 0 && sizeFilter[0] !== "") {
       const productSizes = (product.sizes || []).map((s: string) => s.toLowerCase());
       if (!sizeFilter.some(s => productSizes.includes(s))) return false;
     }
+
+    // 7. Lọc theo Màu sắc
+    if (colorFilter.length > 0 && colorFilter[0] !== "") {
+      const productColors = (product.colors || []).map((c: string) => c.toLowerCase());
+      if (!colorFilter.some(c => productColors.includes(c))) return false;
+    }
+
+    // 8. Lọc theo Từ khóa tìm kiếm (Search)
+    if (searchFilter && !product.name.toLowerCase().includes(searchFilter)) return false;
 
     return true;
   });
@@ -69,7 +98,7 @@ export function ProductGrid({ category }: { category?: string }) {
     <div className="flex-1 overflow-hidden">
       {/* START Collection Sorting */}
       <motion.div 
-        className="collection-sorting-row flex flex-wrap items-center justify-between mb-[50px] border-b border-[#ececec] pb-[8px]"
+        className="collection-sorting-row flex flex-wrap items-center justify-between mb-[20px] border-b border-[#ececec] pb-[8px]"
         initial={{ opacity: 0, x: 50 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
@@ -80,8 +109,10 @@ export function ProductGrid({ category }: { category?: string }) {
             <p className="text-[14px] text-[#777] font-sans">
               {idParam && filteredProducts.length > 0 ? (
                 <>Hiển thị 1 kết quả cho "<span className="font-bold">{filteredProducts[0].name}</span>"</>
-              ) : categoryFilter ? (
-                <>Hiển thị {filteredProducts.length} kết quả cho "<span className="font-bold">{categoryFilter}</span>"</>
+              ) : searchFilter ? (
+                <>Hiển thị {filteredProducts.length} kết quả cho "<span className="font-bold">{searchFilter}</span>"</>
+              ) : categoryFilter.length > 0 && categoryFilter[0] !== "" ? (
+                <>Hiển thị {filteredProducts.length} kết quả cho "<span className="font-bold">{categoryFilter.join(", ")}</span>"</>
               ) : (
                 <>Hiển thị tất cả {filteredProducts.length} sản phẩm</>
               )}
@@ -126,7 +157,7 @@ export function ProductGrid({ category }: { category?: string }) {
 
       {/* START Products Grid */}
       {filteredProducts.length > 0 ? (
-        <div className={`category-products grid gap-x-[30px] gap-y-[50px] transition-all duration-300 ${
+        <div className={`category-products grid gap-x-[30px] gap-y-[30px] transition-all duration-300 ${
           columns === 2 ? "grid-cols-2" : 
           columns === 3 ? "grid-cols-2 md:grid-cols-3" : 
           "grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
@@ -160,7 +191,7 @@ export function ProductGrid({ category }: { category?: string }) {
       {/* START Products Pagination */}
       {filteredProducts.length > 8 && (
         <motion.div 
-          className="pagination mt-[80px] pt-[40px] border-t border-[#ececec] flex items-center justify-center"
+          className="pagination mt-[50px] pt-[30px] border-t border-[#ececec] flex items-center justify-center"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

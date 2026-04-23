@@ -19,6 +19,8 @@ export default function ProductsPage() {
     setSearchTerm,
     selectedCategory,
     setSelectedCategory,
+    selectedSubCategory,
+    setSelectedSubCategory,
     selectedProducts,
     toggleSelectAll,
     toggleSelectProduct,
@@ -98,10 +100,31 @@ export default function ProductsPage() {
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
                 >
-                   <option>Tất cả</option>
-                   <option>Thời trang nam</option>
-                   <option>Thời trang nữ</option>
-                   <option>Phụ kiện</option>
+                   <option value="Tất cả">Tất cả danh mục</option>
+                   <option value="Thời trang nam">Thời trang nam</option>
+                   <option value="Thời trang nữ">Thời trang nữ</option>
+                   <option value="Phụ kiện">Phụ kiện</option>
+                </select>
+             </div>
+             
+             <div className="flex items-center gap-2 px-3 py-2 bg-[#f3f4f9] rounded-xl border-none">
+                <select 
+                  className="bg-transparent border-none text-[13px] font-bold text-[#555] focus:ring-0 outline-none cursor-pointer"
+                  value={selectedSubCategory}
+                  onChange={(e) => setSelectedSubCategory(e.target.value)}
+                >
+                   <option value="Tất cả loại">Tất cả loại SP</option>
+                   <option value="T-Shirts">Áo thun (T-Shirts)</option>
+                   <option value="Shirts">Áo sơ mi (Shirts)</option>
+                   <option value="Jackets">Áo khoác (Jackets)</option>
+                   <option value="Sweaters">Áo len (Sweaters)</option>
+                   <option value="Jeans">Quần Jeans</option>
+                   <option value="Dresses">Váy liền (Dresses)</option>
+                   <option value="Skirts">Chân váy (Skirts)</option>
+                   <option value="Suits">Bộ Suit / Vest</option>
+                   <option value="Handbags">Túi xách (Handbags)</option>
+                   <option value="Shoes">Giày dép (Shoes)</option>
+                   <option value="Hats">Mũ nón (Hats)</option>
                 </select>
              </div>
              <p className="text-[13px] text-[#999] font-bold ml-2">Đã chọn: {selectedProducts.length}</p>

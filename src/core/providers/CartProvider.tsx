@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { getproductsData } from "@/features/products/services/productsService";
 
 export interface CartItem {
   id: number;
@@ -30,21 +31,47 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   // Load cart from localStorage on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-      try {
-        setCartItems(JSON.parse(savedCart));
-      } catch (e) {
-        console.error("Failed to parse cart", e);
+    const loadCart = async () => {
+      const savedCart = localStorage.getItem("cart");
+      if (savedCart) {
+        try {
+          const storedItems = JSON.parse(savedCart) as any[];
+          if (storedItems.length > 0) {
+            // Lấy dữ liệu sản phẩm mới nhất để "hydrate" (lấy name, price, image)
+            const allProducts = await getproductsData();
+            
+            const hydratedItems = storedItems.map(item => {
+              const product = allProducts.find(p => p.id === item.id);
+              if (product) {
+                return {
+                  ...item,
+                  name: product.name,
+                  price: product.price,
+                  image: product.image
+                };
+              }
+              return item;
+            }).filter(item => item.name); // Chỉ giữ lại nếu tìm thấy sản phẩm
+
+            setCartItems(hydratedItems);
+          }
+        } catch (e) {
+          console.error("Failed to parse cart", e);
+        }
       }
-    }
-    setIsLoaded(true);
+      setIsLoaded(true);
+    };
+    loadCart();
   }, []);
 
   // Save cart to localStorage whenever it changes (only after initial load)
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem("cart", JSON.stringify(cartItems));
+      // Chỉ lưu các thông tin tùy chọn của người dùng, không lưu ảnh/tên (để tránh đầy bộ nhớ)
+      const slimItems = cartItems.map(({ id, quantity, size, color }) => ({
+        id, quantity, size, color
+      }));
+      localStorage.setItem("cart", JSON.stringify(slimItems));
     }
   }, [cartItems, isLoaded]);
 

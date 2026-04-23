@@ -3,9 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 const COLLECTIONS = [
-  { id: 1, title: "Thời trang Nữ", image: "/images/women.png", link: "/category/women" },
-  { id: 2, title: "Thời trang Nam", image: "/images/men.png", link: "/category/men" },
-  { id: 3, title: "Phụ kiện cao cấp", image: "/images/products.png", link: "/category/accessories" },
+  { id: 1, title: "Thời trang Nữ", image: "/images/women.png", link: "/shop?category=Nữ" },
+  { id: 2, title: "Thời trang Nam", image: "/images/men.png", link: "/shop?category=Nam" },
+  { id: 3, title: "Phụ kiện cao cấp", image: "/images/products.png", link: "/shop?category=Phụ kiện" },
 ];
 
 export function CollectionGrid() {

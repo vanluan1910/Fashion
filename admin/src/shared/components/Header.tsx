@@ -44,12 +44,16 @@ export function Header({ onToggleSidebar, isSidebarOpen }: HeaderProps) {
     const fetchNotifications = async () => {
       try {
         const response = await fetch("http://localhost:5000/api/auth/recent-signups");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const result = await response.json();
-        if (result.success) {
-          setRecentSignups(result.data);
+        if (result && result.success) {
+          setRecentSignups(Array.isArray(result.data) ? result.data : []);
         }
       } catch (error) {
-        console.error("Failed to fetch notifications", error);
+        // Tránh log lỗi liên tục khi server offline hoặc đang restart trong môi trường dev
+        console.warn("🔔 Thông báo: Không thể kết nối tới máy chủ để lấy dữ liệu thông báo mới.");
       }
     };
 

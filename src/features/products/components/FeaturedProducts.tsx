@@ -143,7 +143,7 @@ export function FeaturedProducts({ title }: { title: string }) {
                           }
                         }}
                         className={`absolute bottom-4 right-4 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 shadow-md z-20 opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 ${
-                          isInWishlist(product.id) ? "bg-[#f74f2e] text-white" : "bg-white text-[#333] hover:bg-[#f74f2e] hover:text-white"
+                          isInWishlist(product.id) ? "bg-[#f74f2e] text-white" : "bg-white text-[#333] hover:bg-[#f3f4f9] hover:text-[#f74f2e]"
                         }`}
                         suppressHydrationWarning
                       >

@@ -9,7 +9,7 @@ import { useAuth } from "@/core/providers/AuthProvider";
 import { useCart } from "@/core/providers/CartProvider";
 import { useWishlist } from "@/core/providers/WishlistProvider";
 import { useCurrency } from "@/core/providers/CurrencyProvider";
-import { SHOP_PRODUCTS } from "@/features/shop/constants/shop-data";
+import { getproductsData } from "@/features/products/services/productsService";
 
 export function Header() {
   const { user, logout, isAuthenticated } = useAuth();
@@ -24,14 +24,32 @@ export function Header() {
   const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [products, setProducts] = useState<any[]>([]);
   const router = useRouter();
+
+  const handleSearch = (e?: React.FormEvent | React.KeyboardEvent) => {
+    if (e) {
+      if ('key' in e && e.key !== 'Enter') return;
+      e.preventDefault();
+    }
+    if (searchQuery.trim()) {
+      router.push(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchOpen(false);
+      setSearchQuery("");
+    }
+  };
 
   const filteredProducts = searchQuery.trim() === ""
     ? []
-    : SHOP_PRODUCTS.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase())).slice(0, 5);
+    : products.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase())).slice(0, 5);
 
   useEffect(() => {
     setMounted(true);
+    const loadProducts = async () => {
+      const data = await getproductsData();
+      setProducts(data || []);
+    };
+    loadProducts();
   }, []);
 
   return (
@@ -105,13 +123,10 @@ export function Header() {
                 <Link href="/blog" className="text-[15px] text-[#333] hover:text-primary transition-colors duration-300 font-sans font-normal py-7 block whitespace-nowrap">Tin tức</Link>
               </li>
               <li className="mx-[15px] group relative">
-                <Link
-                  href="/shop"
-                  className="text-[15px] text-[#333] hover:text-primary transition-colors flex items-center cursor-pointer duration-300 font-medium py-7 whitespace-nowrap"
-                >
-                  <span className="group-hover:text-primary">Trang khác</span>
+                <div className="text-[15px] text-[#333] group-hover:text-primary transition-colors flex items-center cursor-pointer duration-300 font-medium py-7 whitespace-nowrap">
+                  <span>Trang khác</span>
                   <span className="ml-[6px] transition-transform duration-300 group-hover:rotate-180 group-hover:text-primary opacity-60 flaticon-down-arrow-1 !text-[7px]"></span>
-                </Link>
+                </div>
 
                 <ul className="absolute top-full left-0 w-[450px] bg-white transition-all duration-300 z-[100] opacity-0 invisible -translate-y-4 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 border border-[#eee] shadow-[0px_0px_15px_3px_rgba(0,0,0,0.15)] list-none p-[30px] m-0 grid grid-cols-2 gap-x-[30px]">
                   {[
@@ -197,13 +212,17 @@ export function Header() {
                           type="text" 
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
+                          onKeyDown={handleSearch}
                           placeholder="Tìm kiếm sản phẩm..." 
                           className="w-full h-[46px] border border-gray-200 focus:border-primary pl-[15px] pr-[45px] text-[14px] text-[#333] outline-none font-sans transition-all duration-300 placeholder:text-gray-400 rounded-sm"
                           autoFocus
                         />
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                        <button 
+                          onClick={() => handleSearch()}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary cursor-pointer"
+                        >
                           <i className="flaticon-magnifying-glass !text-[16px]"></i>
-                        </div>
+                        </button>
                       </div>
                     </div>
                     <div className="max-h-[350px] overflow-y-auto bg-white">
@@ -343,9 +362,11 @@ export function Header() {
                   transition={{ duration: 0.2, ease: "easeOut" }}
                   className="absolute top-[calc(100%+25px)] right-0 w-[calc(100vw-64px)] sm:w-[320px] bg-white z-[110] shadow-[0px_20px_40px_rgba(0,0,0,0.15)] p-1 rounded-sm"
                 >
-                  <form className="relative flex items-center">
+                  <form onSubmit={handleSearch} className="relative flex items-center">
                     <input
                       type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Tìm kiếm..."
                       className="w-full h-[50px] border border-[#eee] focus:border-primary pl-[15px] pr-[50px] text-[14px] text-[#333] outline-none font-sans transition-all duration-300"
                       autoFocus
