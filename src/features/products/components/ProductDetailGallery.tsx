@@ -36,27 +36,18 @@ export function ProductDetailGallery({ images }: ProductDetailGalleryProps) {
       </div>
 
       {/* Main Image */}
-      <div className="order-1 md:order-2 flex-grow bg-[#f9f9f9] border border-gray-100 relative group overflow-hidden h-[350px] md:h-[480px]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeIndex}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="w-full h-full p-1 flex items-start justify-center"
-          >
-            <div className="relative w-full h-full">
-              <Image
-                src={images[activeIndex].startsWith('http') || images[activeIndex].startsWith('/') || images[activeIndex].startsWith('data:') ? images[activeIndex] : `/${images[activeIndex]}`}
-                alt="Main product image"
-                fill
-                className="object-contain object-top hover:scale-105 transition-transform duration-500"
-                priority
-              />
-            </div>
-          </motion.div>
-        </AnimatePresence>
+      <div className="order-1 md:order-2 w-full bg-[#f9f9f9] border border-gray-200 relative overflow-hidden h-[450px] md:h-[480px] rounded-sm flex items-center justify-center">
+        {images && images.length > 0 && images[activeIndex] ? (
+          <img
+            src={images[activeIndex].startsWith('http') || images[activeIndex].startsWith('/') || images[activeIndex].startsWith('data:') ? images[activeIndex] : `/${images[activeIndex]}`}
+            alt="Main product image"
+            className="max-w-full max-h-full object-contain"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-gray-400 italic">
+            Không có ảnh
+          </div>
+        )}
       </div>
     </div>
   );

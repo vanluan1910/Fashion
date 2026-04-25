@@ -7,7 +7,7 @@ import Link from "next/link";
 import { ProductCard } from "./ProductCard";
 import { getproductsData } from "../../products/services/productsService";
 
-export function ProductGrid({ category }: { category?: string }) {
+export function ProductGrid({ category, onFilterOpen }: { category?: string, onFilterOpen?: () => void }) {
   const [products, setProducts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [columns, setColumns] = useState(3);
@@ -98,13 +98,26 @@ export function ProductGrid({ category }: { category?: string }) {
     <div className="flex-1 overflow-hidden">
       {/* START Collection Sorting */}
       <motion.div 
-        className="collection-sorting-row flex flex-wrap items-center justify-between mb-[20px] border-b border-[#ececec] pb-[8px]"
+        className="collection-sorting-row flex items-center justify-between mb-[20px] border-b border-[#ececec] pb-[10px]"
         initial={{ opacity: 0, x: 50 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 1.3, ease: "easeOut" }}
       >
         <div className="flex items-center">
+          {/* Mobile Filter Trigger - Aligned Left */}
+          <div className="lg:hidden mr-4">
+            <button 
+              onClick={onFilterOpen}
+              className="flex items-center space-x-2 text-[#333] border border-[#eee] px-3 py-1.5 rounded-sm bg-white active:bg-gray-50"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+              </svg>
+              <span className="text-[13px] font-bold">Bộ lọc</span>
+            </button>
+          </div>
+
           <div className="hidden lg:block mb-[10px]">
             <p className="text-[14px] text-[#777] font-sans">
               {idParam && filteredProducts.length > 0 ? (

@@ -5,6 +5,7 @@ const blogsController = require('./controllers/blogs.controller');
 // Public routes
 router.get('/', blogsController.getAll);
 router.get('/:id', blogsController.getById);
+router.get('/slug/:slug', blogsController.getBySlug);
 
 // Admin/Protected routes (could add auth middleware later)
 router.post('/', blogsController.create);

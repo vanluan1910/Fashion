@@ -8,8 +8,7 @@ import {
   FaTwitter, 
   FaYoutube, 
   FaRegCalendarAlt, 
-  FaUserEdit,
-  FaRegComments
+  FaUserEdit
 } from "react-icons/fa";
 
 interface BlogDetailContentProps {
@@ -36,9 +35,6 @@ export function BlogDetailContent({ post }: BlogDetailContentProps) {
           </span>
           <span className="flex items-center gap-1.5 hover:text-[#f74f2e] transition-colors cursor-default">
             <FaUserEdit className="text-[#f74f2e]" /> {post.author}
-          </span>
-          <span className="flex items-center gap-1.5 hover:text-[#f74f2e] transition-colors cursor-default">
-            <FaRegComments className="text-[#f74f2e]" /> 03 Bình luận
           </span>
         </div>
 

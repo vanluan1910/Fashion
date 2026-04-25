@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Work_Sans, Playfair_Display } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import "./flaticon.css";
 import { Header } from "@/shared/components/Header";
@@ -24,6 +25,42 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
+const elegantoSans = localFont({
+  src: [
+    {
+      path: "../../public/fonts/eleganto-sans/ElegantoSans-Thin.ttf",
+      weight: "100",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/eleganto-sans/ElegantoSans-Light.ttf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/eleganto-sans/ElegantoSans-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/eleganto-sans/ElegantoSans-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/eleganto-sans/ElegantoSans-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/eleganto-sans/ElegantoSans-Black.ttf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-eleganto",
+});
+
 export const metadata: Metadata = {
   title: "Yoha Fashion Store | Premium Clothing & Accessories",
   description: "Shop luxury fashion items including handbags, dresses, and man-style t-shirts at Yoha Store.",
@@ -38,7 +75,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="vi" className={`${workSans.variable} ${playfair.variable}`}>
+    <html lang="vi" className={`${workSans.variable} ${playfair.variable} ${elegantoSans.variable}`}>
       <body suppressHydrationWarning className="font-sans antialiased">
         <AuthProvider>
           <CurrencyProvider>

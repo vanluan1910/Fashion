@@ -6,7 +6,6 @@ import { FeaturedProducts } from "../features/products/components/FeaturedProduc
 import { LatestBlog } from "../features/blog/components/LatestBlog";
 import { BrandLogos } from "../features/brands/components/BrandLogos";
 import { InstagramSection } from "../features/social/components/InstagramSection";
-import { NewsletterSection } from "../shared/components/NewsletterSection";
 
 export default function HomePage() {
   return (
@@ -32,8 +31,7 @@ export default function HomePage() {
       {/* Instagram Feature Section */}
       <InstagramSection />
 
-      {/* Newsletter Subscription Section */}
-      <NewsletterSection />
+
     </div>
   );
 }

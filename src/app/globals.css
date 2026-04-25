@@ -13,7 +13,7 @@
   --color-foreground: var(--foreground);
   --color-border: var(--border);
   --shadow-luxury: var(--luxury-shadow);
-  --font-sans: var(--font-work-sans);
+  --font-sans: var(--font-playfair);
   --font-serif: var(--font-playfair);
 }
 
@@ -41,7 +41,7 @@
     background-color: var(--background);
     color: var(--foreground);
     line-height: 1.6;
-    font-family: var(--font-work-sans), sans-serif;
+    font-family: var(--font-playfair), serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -61,14 +61,14 @@
 
   .font-sans,
   body {
-    font-family: var(--font-work-sans), sans-serif;
+    font-family: var(--font-playfair), serif;
   }
 
   button,
   input,
   select,
   textarea {
-    font-family: var(--font-work-sans), sans-serif;
+    font-family: var(--font-playfair), serif;
   }
 }
 
@@ -109,6 +109,15 @@
 @layer utilities {
   .animate-progress {
     animation: progress 8s linear infinite;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 

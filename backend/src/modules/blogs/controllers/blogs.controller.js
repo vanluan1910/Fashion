@@ -20,6 +20,16 @@ class BlogsController {
     }
   }
 
+  async getBySlug(req, res) {
+    const result = await blogsService.getBlogBySlug(req.params.slug);
+    if (result.success) {
+      res.json(result);
+    } else {
+      const statusCode = result.message === 'Blog not found' ? 404 : 500;
+      res.status(statusCode).json(result);
+    }
+  }
+
   async create(req, res) {
     const result = await blogsService.createBlog(req.body);
     if (result.success) {

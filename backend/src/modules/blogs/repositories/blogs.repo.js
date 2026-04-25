@@ -10,6 +10,15 @@ class BlogsRepository {
     }
   }
 
+  async findBySlug(slug) {
+    try {
+      const [rows] = await db.execute('SELECT * FROM blogs WHERE slug = ?', [slug]);
+      return rows[0];
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async findById(id) {
     try {
       const [rows] = await db.execute('SELECT * FROM blogs WHERE id = ?', [id]);
@@ -20,11 +29,11 @@ class BlogsRepository {
   }
 
   async create(blogData) {
-    const { title, excerpt, content, author, category, image_url } = blogData;
+    const { title, slug, excerpt, content, author, category, image_url } = blogData;
     try {
       const [result] = await db.execute(
-        'INSERT INTO blogs (title, excerpt, content, author, category, image_url) VALUES (?, ?, ?, ?, ?, ?)',
-        [title, excerpt, content, author, category, image_url]
+        'INSERT INTO blogs (title, slug, excerpt, content, author, category, image_url) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [title, slug, excerpt, content, author, category, image_url]
       );
       return result.insertId;
     } catch (error) {

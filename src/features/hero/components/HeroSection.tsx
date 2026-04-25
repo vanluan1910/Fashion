@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export function HeroSection() {
   const [currentSlide, setCurrentSlide] = React.useState(0);
-  
+
   const slides = [
     {
       id: 1,
@@ -44,7 +44,7 @@ export function HeroSection() {
     <section className="relative w-full h-[70vh] md:h-[90vh] overflow-hidden bg-background">
       {/* 1. Progress Bar under Header - Resets on slide change */}
       <div className="absolute top-0 left-0 w-full h-[1px] bg-black/5 z-[60]">
-        <div 
+        <div
           key={currentSlide}
           className="h-full bg-primary animate-progress origin-left"
         ></div>
@@ -53,8 +53,8 @@ export function HeroSection() {
       {/* 2. Slider Controls (Simplified Dots in Corner) */}
       <div className="absolute bottom-[40px] right-[40px] z-50 flex items-center space-x-3 bg-white/10 backdrop-blur-sm p-3 rounded-full">
         {slides.map((_, i) => (
-          <button 
-            key={i} 
+          <button
+            key={i}
             onClick={() => setCurrentSlide(i)}
             className={`w-[10px] h-[10px] rounded-full transition-all duration-300 border border-white/50 ${i === currentSlide ? "bg-primary w-[25px]" : "bg-white hover:bg-primary/50"}`}
             aria-label={`Go to slide ${i + 1}`}
@@ -65,11 +65,11 @@ export function HeroSection() {
 
       <div className="absolute inset-0 w-full h-full">
         {slides.map((slide, index) => (
-          <div 
+          <div
             key={slide.id}
             className={`absolute inset-0 transition-all duration-1000 ${index === currentSlide ? "opacity-100 z-10 pointer-events-auto" : "opacity-0 z-0 pointer-events-none"}`}
           >
-            <div 
+            <div
               className={`absolute inset-0 transition-transform duration-[6000ms] ease-linear ${index === currentSlide ? "scale-110" : "scale-100"}`}
               style={{ position: 'absolute', inset: 0 }}
             >
@@ -90,7 +90,7 @@ export function HeroSection() {
                 {slide.subtitle}
               </p>
               <div className={`transition-all duration-1000 delay-700 ${index === currentSlide ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}>
-                <Link 
+                <Link
                   href={slide.link}
                   className="inline-flex items-center px-[40px] py-[15px] border-[1px] border-[#f74f2e] bg-transparent text-[#f74f2e] hover:!bg-[#f74f2e] hover:!text-white transition-all duration-300 text-[16px] font-bold font-sans capitalize tracking-widest rounded-none group z-20 cursor-pointer"
                 >

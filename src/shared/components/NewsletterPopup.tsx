@@ -51,7 +51,7 @@ export function NewsletterPopup() {
 
           {/* Popup Content */}
           <motion.div
-            className="fixed top-1/2 left-1/2 z-[10001] w-full max-w-[730px] min-h-[450px] bg-cover bg-no-repeat bg-center newsletter_popup shadow-2xl overflow-visible"
+            className="fixed top-1/2 left-1/2 z-[10001] w-full max-w-[730px] min-h-[450px] bg-cover bg-no-repeat bg-center newsletter_popup shadow-2xl overflow-visible flex items-center justify-center"
             style={{ backgroundImage: "url('/images/newsletter_popup.jpg')" }}
             initial={{ opacity: 0, scale: 0.8, x: "-50%", y: "-55%" }}
             animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
@@ -65,15 +65,15 @@ export function NewsletterPopup() {
             >
               <i className="flaticon-close"></i>
             </button>
-
+ 
             {/* Form Wrap */}
-            <div className="news_form bg-white/90 w-full max-w-[540px] m-auto p-10 lg:p-[40px] mt-[40px] lg:mt-[40px] text-center shadow-lg">
+            <div className="news_form bg-white/90 w-full max-w-[540px] p-10 lg:p-[40px] text-center shadow-lg mx-4 lg:mx-0">
 
 
-              <h3 className="title_h3 text-[24px] lg:text-[30px] font-semibold text-[#333] mb-1.5 uppercase leading-tight">
+              <h3 className="title_h3 text-[24px] lg:text-[30px] font-semibold text-[#333] mb-1.5 leading-tight">
                 Đăng ký & <span className="text-[#f74f2e]">Nhận 20% </span>giảm giá
               </h3>
-              <h4 className="title_h4 text-[18px] lg:text-[22px] text-[#333] mb-1.5 font-medium uppercase">
+              <h4 className="title_h4 text-[18px] lg:text-[22px] text-[#333] mb-1.5 font-medium">
                 Cho đơn hàng đầu tiên
               </h4>
               <p className="text-[#666] text-[14px] lg:text-[15px] mb-6 lg:mb-[24px] leading-relaxed">
@@ -82,7 +82,7 @@ export function NewsletterPopup() {
 
               <form className="mb-1 text-left" onSubmit={handleSubmit}>
                 <div className="form-group mb-4">
-                  <label htmlFor="modal-email" className="block text-left text-[14px] font-bold text-[#333] uppercase mb-2 title_h5">
+                  <label htmlFor="modal-email" className="block text-left text-[14px] font-bold text-[#333] mb-2 title_h5">
                     Nhập Email của bạn
                   </label>
                   <input
@@ -97,9 +97,9 @@ export function NewsletterPopup() {
                 </div>
                 <button
                   type="submit"
-                  className="btn background-btn w-auto bg-[#f74f2e] text-white py-2.5 px-8 text-[14px] font-bold uppercase hover:bg-[#333] transition-all"
+                  className="btn background-btn w-auto bg-[#f74f2e] text-white py-2.5 px-8 text-[14px] font-bold hover:bg-[#333] transition-all"
                 >
-                  ĐĂNG KÝ NGAY
+                  Đăng ký ngay
                 </button>
               </form>
             </div>

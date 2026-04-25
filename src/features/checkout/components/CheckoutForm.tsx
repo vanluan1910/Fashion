@@ -35,6 +35,7 @@ export function CheckoutForm({ onSuccess }: { onSuccess?: () => void }) {
         city: (e.currentTarget.elements.namedItem("City") as HTMLInputElement).value,
         phone: (e.currentTarget.elements.namedItem("Phone") as HTMLInputElement).value,
         email: (e.currentTarget.elements.namedItem("Email") as HTMLInputElement).value,
+        note: (e.currentTarget.elements.namedItem("OrderNote") as HTMLTextAreaElement).value,
       }
     }, user?.id || 3);
 
@@ -137,6 +138,16 @@ export function CheckoutForm({ onSuccess }: { onSuccess?: () => void }) {
                 <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 font-sans text-left">Địa chỉ Email <span className="text-[#f74f2e]">*</span></label>
                 <input type="email" name="Email" className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors" required suppressHydrationWarning />
               </div>
+            </div>
+
+            <div className="mt-6">
+              <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 font-sans text-left">Ghi chú đơn hàng (Tùy chọn)</label>
+              <textarea 
+                name="OrderNote"
+                placeholder="Yêu cầu đặc biệt cho đơn hàng của bạn, ví dụ: lưu ý về thời gian giao hàng."
+                className="w-full h-[120px] border border-[#eee] p-4 text-[14px] outline-none focus:border-primary transition-colors resize-none font-sans"
+                suppressHydrationWarning
+              ></textarea>
             </div>
           </div>
 

@@ -137,12 +137,12 @@ export default function AccountPage() {
     <main className="min-h-screen bg-[#faf9f7]">
       <AccountBreadcrumb title="tài khoản của tôi" />
       
-      <section className="py-[80px]">
+      <section className="py-[40px] md:py-[80px]">
         <div className="max-w-[1170px] mx-auto px-[15px]">
           <div className="flex flex-wrap -mx-[15px]">
             {/* Sidebar Navigation */}
-            <div className="w-full lg:w-1/4 px-[15px] mb-[40px] lg:mb-0">
-              <div className="bg-white border border-[#eee] p-8 shadow-sm rounded-sm">
+            <div className="w-full lg:w-1/4 px-[15px] mb-[30px] lg:mb-0">
+              <div className="bg-white border border-[#eee] p-6 md:p-8 shadow-sm rounded-sm">
                 <div className="text-center mb-8 pb-8 border-b border-[#eee]">
                   <div className="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-serif italic font-bold shadow-lg shadow-primary/20">
                     {user.name.charAt(0).toUpperCase()}
@@ -190,9 +190,9 @@ export default function AccountPage() {
                 transition={{ duration: 0.4 }}
               >
                 {activeTab === "profile" ? (
-                  <div className="p-10 border border-[#eee] bg-white shadow-sm rounded-sm">
+                  <div className="p-6 md:p-10 border border-[#eee] bg-white shadow-sm rounded-sm">
                     <div className="flex justify-between items-center mb-8 border-b border-[#eee] pb-4">
-                      <h3 className="text-[32px] font-normal text-[#333] font-serif italic">
+                      <h3 className="text-[22px] md:text-[32px] font-normal text-[#333] font-serif italic">
                         Thông tin hồ sơ
                       </h3>
                       {!isEditing ? (
@@ -230,10 +230,10 @@ export default function AccountPage() {
                               type="text" 
                               value={editForm.name}
                               onChange={(e) => setEditForm({...editForm, name: e.target.value})}
-                              className="w-full h-[45px] px-0 bg-transparent border-b border-primary focus:border-[#333] outline-none font-sans text-[16px] font-bold text-[#1a1a1a] transition-colors" 
+                              className="w-full h-[45px] px-0 bg-transparent border-b-2 border-[#1a1a1a] focus:border-primary outline-none font-sans text-[16px] font-bold text-[#1a1a1a] transition-colors" 
                             />
                           ) : (
-                            <p className="text-[15px] text-[#555] border-b border-[#f9f9f9] pb-2 font-sans">{user.name}</p>
+                            <p className="text-[15px] text-[#333] font-bold border-b border-[#ddd] pb-2 font-sans">{user.name}</p>
                           )}
                         </div>
                         <div className="group">
@@ -243,10 +243,10 @@ export default function AccountPage() {
                               type="email" 
                               value={editForm.email}
                               onChange={(e) => setEditForm({...editForm, email: e.target.value})}
-                              className="w-full h-[45px] px-0 bg-transparent border-b border-primary focus:border-[#333] outline-none font-sans text-[16px] font-bold text-[#1a1a1a] transition-colors" 
+                              className="w-full h-[45px] px-0 bg-transparent border-b-2 border-[#1a1a1a] focus:border-primary outline-none font-sans text-[16px] font-bold text-[#1a1a1a] transition-colors" 
                             />
                           ) : (
-                            <p className="text-[15px] text-[#555] border-b border-[#f9f9f9] pb-2 font-sans">{user.email}</p>
+                            <p className="text-[15px] text-[#333] font-bold border-b border-[#ddd] pb-2 font-sans">{user.email}</p>
                           )}
                         </div>
 
@@ -261,7 +261,7 @@ export default function AccountPage() {
                                 value={editForm.currentPassword}
                                 onChange={(e) => setEditForm({...editForm, currentPassword: e.target.value})}
                                 placeholder="Nhập mật khẩu cũ"
-                                className="w-full h-[45px] px-0 bg-transparent border-b border-[#eee] focus:border-primary outline-none font-sans text-[16px] font-bold text-[#1a1a1a] placeholder:text-gray-400 transition-colors" 
+                                className="w-full h-[45px] px-0 bg-transparent border-b-2 border-[#ddd] focus:border-[#1a1a1a] outline-none font-sans text-[16px] font-bold text-[#1a1a1a] placeholder:text-gray-400 transition-colors" 
                               />
                             </div>
                             <div className="group">
@@ -271,7 +271,7 @@ export default function AccountPage() {
                                 value={editForm.newPassword}
                                 onChange={(e) => setEditForm({...editForm, newPassword: e.target.value})}
                                 placeholder="Ít nhất 6 ký tự"
-                                className="w-full h-[45px] px-0 bg-transparent border-b border-[#eee] focus:border-primary outline-none font-sans text-[15px] placeholder:tracking-normal placeholder:text-gray-300 transition-colors" 
+                                className="w-full h-[45px] px-0 bg-transparent border-b-2 border-[#ddd] focus:border-[#1a1a1a] outline-none font-sans text-[16px] font-bold text-[#1a1a1a] placeholder:text-gray-300 transition-colors" 
                               />
                             </div>
                             <div className="group">
@@ -281,7 +281,7 @@ export default function AccountPage() {
                                 value={editForm.confirmPassword}
                                 onChange={(e) => setEditForm({...editForm, confirmPassword: e.target.value})}
                                 placeholder="Xác nhận lại"
-                                className="w-full h-[45px] px-0 bg-transparent border-b border-[#eee] focus:border-primary outline-none font-sans text-[15px] placeholder:tracking-normal placeholder:text-gray-300 transition-colors" 
+                                className="w-full h-[45px] px-0 bg-transparent border-b-2 border-[#ddd] focus:border-[#1a1a1a] outline-none font-sans text-[16px] font-bold text-[#1a1a1a] placeholder:text-gray-300 transition-colors" 
                               />
                             </div>
                           </div>

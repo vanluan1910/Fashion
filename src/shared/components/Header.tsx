@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/core/providers/AuthProvider";
 import { useCart } from "@/core/providers/CartProvider";
@@ -26,6 +26,7 @@ export function Header() {
   const [mounted, setMounted] = useState(false);
   const [products, setProducts] = useState<any[]>([]);
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleSearch = (e?: React.FormEvent | React.KeyboardEvent) => {
     if (e) {
@@ -76,14 +77,14 @@ export function Header() {
           <nav className="w-full">
             <ul className="flex items-center list-none p-0 m-0">
               <li className="mx-[15px]">
-                <Link href="/" className="text-[15px] text-primary transition-colors duration-300 font-sans font-bold whitespace-nowrap">Trang chủ</Link>
+                <Link href="/" className={`text-[15px] ${pathname === "/" ? "text-primary" : "text-[#333]"} hover:text-primary transition-colors duration-300 font-normal whitespace-nowrap`}>Trang chủ</Link>
               </li>
               <li className="mx-[15px] group">
                 <Link
                   href="/shop"
-                  className="text-[15px] text-[#333] hover:text-primary transition-colors flex items-center cursor-pointer select-none duration-300 font-sans font-normal py-7 whitespace-nowrap"
+                  className="text-[15px] text-[#333] hover:text-primary transition-colors flex items-center cursor-pointer select-none duration-300 font-normal py-7 whitespace-nowrap"
                 >
-                  <span className="group-hover:text-primary transition-colors">Cửa hàng</span>
+                  <span className={`${pathname.startsWith("/shop") ? "text-primary" : "text-[#333]"} group-hover:text-primary transition-colors`}>Cửa hàng</span>
                   <span className="ml-[6px] transition-transform duration-300 group-hover:rotate-180 group-hover:text-primary opacity-60 flaticon-down-arrow-1 !text-[7px]"></span>
                 </Link>
 
@@ -91,7 +92,7 @@ export function Header() {
                 <div className="absolute top-full left-0 w-full bg-white bg-[url('/images/menu-bg.png')] bg-no-repeat bg-right-bottom transition-all duration-300 z-[100] opacity-0 invisible -translate-y-4 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 border-t border-[#eee] shadow-[0px_25px_30px_-5px_rgba(0,0,0,0.1)]">
                   <div className="max-w-[1170px] mx-auto px-[15px] pt-[45px] pb-[50px] flex text-left">
                     <div className="w-1/3 px-[15px]">
-                      <h5 className="font-bold capitalize mb-[22px] text-[16px] text-[#333] font-sans tracking-widest">Sản phẩm</h5>
+                      <h5 className="font-bold uppercase mb-[22px] text-[16px] text-[#333] tracking-widest">Sản phẩm</h5>
                       <ul className="space-y-[10px] list-none p-0 m-0">
                         <li><Link href="/category/men" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Nam</Link></li>
                         <li><Link href="/category/women" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Nữ</Link></li>
@@ -99,7 +100,7 @@ export function Header() {
                       </ul>
                     </div>
                     <div className="w-1/3 px-[15px]">
-                      <h5 className="font-bold uppercase mb-[22px] text-[16px] text-[#333] font-sans tracking-widest">Danh mục 1</h5>
+                      <h5 className="font-bold uppercase mb-[22px] text-[16px] text-[#333] tracking-widest">Danh mục 1</h5>
                       <ul className="space-y-[10px] list-none p-0 m-0">
                         <li><Link href="/shop?category=Dresses" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Váy đầm</Link></li>
                         <li><Link href="/shop?category=Skirts" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Chân váy</Link></li>
@@ -109,7 +110,7 @@ export function Header() {
                       </ul>
                     </div>
                     <div className="w-1/3 px-[15px]">
-                      <h5 className="font-bold uppercase mb-[22px] text-[16px] text-[#333] font-sans tracking-widest">Danh mục 2</h5>
+                      <h5 className="font-bold uppercase mb-[22px] text-[16px] text-[#333] tracking-widest">Danh mục 2</h5>
                       <ul className="space-y-[10px] list-none p-0 m-0">
                         <li><Link href="/shop?category=Winter Wear" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Đồ mùa đông</Link></li>
                         <li><Link href="/shop?category=Summer Specials" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Đồ mùa hè</Link></li>
@@ -120,10 +121,10 @@ export function Header() {
                 </div>
               </li>
               <li className="mx-[15px]">
-                <Link href="/blog" className="text-[15px] text-[#333] hover:text-primary transition-colors duration-300 font-sans font-normal py-7 block whitespace-nowrap">Tin tức</Link>
+                <Link href="/blog" className={`text-[15px] ${pathname.startsWith("/blog") ? "text-primary" : "text-[#333]"} hover:text-primary transition-colors duration-300 font-normal py-7 block whitespace-nowrap`}>Tin tức</Link>
               </li>
               <li className="mx-[15px] group relative">
-                <div className="text-[15px] text-[#333] group-hover:text-primary transition-colors flex items-center cursor-pointer duration-300 font-medium py-7 whitespace-nowrap">
+                <div className="text-[15px] text-[#333] group-hover:text-primary transition-colors flex items-center cursor-pointer duration-300 font-normal py-7 whitespace-nowrap">
                   <span>Trang khác</span>
                   <span className="ml-[6px] transition-transform duration-300 group-hover:rotate-180 group-hover:text-primary opacity-60 flaticon-down-arrow-1 !text-[7px]"></span>
                 </div>
@@ -151,7 +152,7 @@ export function Header() {
                 </ul>
               </li>
               <li className="mx-[15px]">
-                <Link href="/shop?sale=true" className="text-[15px] text-[#f74f2e] hover:text-[#d12807] transition-colors font-bold duration-300 py-7 block whitespace-nowrap">Khuyến mãi</Link>
+                <Link href="/shop?sale=true" className="text-[15px] text-[#f74f2e] hover:text-[#d12807] transition-colors font-normal duration-300 py-7 block whitespace-nowrap">Khuyến mãi</Link>
               </li>
             </ul>
           </nav>
@@ -274,7 +275,7 @@ export function Header() {
 
         {/* 4. Currency Section */}
         <div className="flex-initial py-[25px] flex items-center justify-end space-x-[28px] text-[15px] capitalize text-[#333]">
-          <div className="relative group flex items-center space-x-2 font-sans font-normal leading-none h-full pt-[4px]">
+          <div className="relative group flex items-center space-x-2 font-normal leading-none h-full pt-[4px]">
             <div className="relative w-[18px] h-[12px] overflow-hidden rounded-[1px] shadow-sm border border-gray-100 bg-gray-50 flex items-center justify-center">
               <img src="https://flagcdn.com/w20/vn.png" alt="VN" className="w-full h-full object-cover" />
             </div>
@@ -284,7 +285,7 @@ export function Header() {
             <div 
               onClick={() => { setIsCurrencyOpen(!isCurrencyOpen); setIsLangOpen(false); }}
               suppressHydrationWarning
-              className="flex items-center space-x-2 cursor-pointer hover:text-primary transition-all duration-300 font-sans font-normal leading-none"
+              className="flex items-center space-x-2 cursor-pointer hover:text-primary transition-all duration-300 font-normal leading-none"
             >
               <div className="relative w-[18px] h-[12px] overflow-hidden rounded-[1px] shadow-sm border border-gray-100 bg-gray-50 flex items-center justify-center">
                 <img 
@@ -326,85 +327,99 @@ export function Header() {
       </div>
 
       {/* Mobile Header Layout */}
-      <div className="lg:hidden flex flex-col p-4 md:p-6 bg-white">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex space-x-4 text-xs font-bold text-gray-500 uppercase items-center">
-            <span className="flex items-center">
-              <img src="https://flagcdn.com/w20/vn.png" alt="VN" className="w-3 h-2 mr-1 object-cover" />
-              Vie ▼
-            </span>
-            <span>VND / USD ▼</span>
-          </div>
-          <div className="flex space-x-4 items-center relative">
-            <button
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="text-gray-800 hover:text-primary transition-colors focus:outline-none"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </button>
-            <Link href="/login"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg></Link>
-            <Link href="/cart" className="relative text-gray-800 hover:text-primary transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
-              <span className="absolute -bottom-1 -right-2 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                {mounted ? cartCount : 0}
-              </span>
-            </Link>
-
-            {/* Mobile Search Form Dropdown */}
-            <AnimatePresence>
-              {isSearchOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.98 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="absolute top-[calc(100%+25px)] right-0 w-[calc(100vw-64px)] sm:w-[320px] bg-white z-[110] shadow-[0px_20px_40px_rgba(0,0,0,0.15)] p-1 rounded-sm"
-                >
-                  <form onSubmit={handleSearch} className="relative flex items-center">
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Tìm kiếm..."
-                      className="w-full h-[50px] border border-[#eee] focus:border-primary pl-[15px] pr-[50px] text-[14px] text-[#333] outline-none font-sans transition-all duration-300"
-                      autoFocus
-                    />
-                    <button
-                      type="submit"
-                      className="absolute right-1 top-1 h-[42px] w-[45px] flex items-center justify-center text-[#333] hover:text-primary transition-all duration-300 bg-white"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                    </button>
-                  </form>
-                </motion.div>
-              )}
-            </AnimatePresence>
+      <div className="lg:hidden">
+        {/* Mobile Top Bar for Currency/Lang */}
+        <div className="flex items-center justify-between px-4 py-1.5 bg-white border-b border-gray-50 overflow-x-auto no-scrollbar">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-1.5 cursor-pointer">
+              <img src="https://flagcdn.com/w20/vn.png" alt="VN" className="w-3.5 h-2.5 object-cover" />
+              <span className="text-[10px] font-bold text-[#333]">VIE</span>
+            </div>
+            <div className="flex items-center space-x-1.5 cursor-pointer border-l border-gray-100 pl-4">
+              <img src={currency === "USD" ? "https://flagcdn.com/w20/us.png" : "https://flagcdn.com/w20/vn.png"} alt="Flag" className="w-3.5 h-2.5 object-cover" />
+              <span className="text-[10px] font-bold text-[#333]">{currency}</span>
+              <span className="flaticon-down-arrow-1 !text-[5px] opacity-40"></span>
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
+        {/* Mobile Main Header */}
+        <div className="flex items-center justify-between p-3.5 bg-white relative border-b border-gray-100">
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             suppressHydrationWarning
-            className="p-2 -ml-2 text-gray-800"
+            className="p-1 -ml-1 text-[#333] hover:text-primary transition-colors flex-shrink-0"
           >
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" /></svg>
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
           </button>
-          <Link href="/">
-            <Image src="/images/lo_go.png" alt="logo" width={120} height={30} className="object-contain" />
+
+          <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex-shrink-0">
+            <Image src="/images/lo_go.png" alt="logo" width={85} height={20} className="object-contain" priority />
           </Link>
-          <div className="w-8" />
+
+          <div className="flex items-center space-x-3 flex-shrink-0">
+            {mounted && (
+              <Link href={isAuthenticated ? "/account" : "/login"} className="text-[#333] hover:text-primary transition-colors">
+                <i className="flaticon-social !text-[16px]"></i>
+              </Link>
+            )}
+            <Link href="/wishlist" className="relative text-[#333] hover:text-primary transition-colors">
+              <i className="flaticon-heart !text-[16px]"></i>
+              <span className="absolute -top-1.5 -right-1.5 bg-[#f74f2e] text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">
+                {mounted ? wishlistItems.length : 0}
+              </span>
+            </Link>
+            <button 
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              suppressHydrationWarning
+              className="text-[#333] hover:text-primary transition-colors"
+            >
+              <i className="flaticon-magnifying-glass !text-[16px]"></i>
+            </button>
+            <Link href="/cart" className="relative text-[#333] hover:text-primary transition-colors">
+              <i className="flaticon-shopping-bag !text-[17px]"></i>
+              <span className="absolute -bottom-1 -right-1.5 bg-[#f74f2e] text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">
+                {mounted ? cartCount : 0}
+              </span>
+            </Link>
+          </div>
         </div>
+
+        {/* Mobile Search Dropdown */}
+        <AnimatePresence>
+          {isSearchOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="bg-white p-3 border-b border-gray-100 shadow-sm"
+            >
+              <div className="relative">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleSearch}
+                  placeholder="Tìm kiếm sản phẩm..."
+                  className="w-full h-10 border border-gray-200 px-4 text-sm outline-none focus:border-primary transition-colors"
+                  autoFocus
+                />
+                <button onClick={() => handleSearch()} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary">
+                  <i className="flaticon-magnifying-glass !text-[14px]"></i>
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
         {/* Mobile Menu Content */}
         {isMenuOpen && (
           <div className="mt-4 border-t pt-4 animate-in fade-in slide-in-from-top-4 duration-300 overflow-y-auto max-h-[70vh]">
-            <ul className="flex flex-col space-y-0 font-bold uppercase tracking-widest text-[#333]">
-              <li className="border-b border-gray-100 py-3"><Link href="/" onClick={() => setIsMenuOpen(false)} className="text-[15px]">Trang chủ</Link></li>
+            <ul className="flex flex-col space-y-0 font-normal uppercase tracking-widest text-[#333]">
+              <li className="border-b border-gray-100 py-3"><Link href="/" onClick={() => setIsMenuOpen(false)} className={`text-[15px] ${pathname === "/" ? "text-primary" : "text-[#333]"}`}>Trang chủ</Link></li>
               <li className="border-b border-gray-100 py-3">
                 <div
                   className="flex items-center justify-between cursor-pointer"
@@ -444,15 +459,14 @@ export function Header() {
                 )}
               </li>
               <li className="border-b border-gray-100 py-3">
-                <Link href="/blog" onClick={() => setIsMenuOpen(false)} className="text-[15px] font-bold uppercase tracking-widest text-[#333] block">
+                <Link href="/blog" onClick={() => setIsMenuOpen(false)} className={`text-[15px] ${pathname.startsWith("/blog") ? "text-primary" : "text-[#333]"} font-bold uppercase tracking-widest block`}>
                   Tin tức
                 </Link>
               </li>
-              <li className="border-b border-gray-100 py-3"><Link href="/shop?sale=true" onClick={() => setIsMenuOpen(false)} className="text-red-500 font-bold text-[15px]">Khuyến mãi</Link></li>
+              <li className="border-b border-gray-100 py-3"><Link href="/shop?sale=true" onClick={() => setIsMenuOpen(false)} className="text-red-500 font-normal text-[15px]">Khuyến mãi</Link></li>
             </ul>
           </div>
         )}
-      </div>
     </header>
   );
 }

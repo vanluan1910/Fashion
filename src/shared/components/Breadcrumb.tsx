@@ -32,7 +32,7 @@ export function Breadcrumb({ title, items }: BreadcrumbProps) {
             ))}
           </ol>
         </nav>
-        <h1 className="title_h1 text-[32px] font-normal capitalize text-[#333] m-0 leading-tight">
+        <h1 className="title_h1 text-[24px] md:text-[32px] font-normal capitalize text-[#333] m-0 leading-tight">
           {title}
         </h1>
       </div>

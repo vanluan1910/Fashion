@@ -89,7 +89,7 @@ export function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps
           {/* Modal Content */}
           <motion.div
             id="modalone"
-            className="fixed top-1/2 left-1/2 w-[95%] sm:w-[90%] max-w-[1000px] max-h-[90vh] bg-white z-[9999] overflow-hidden overflow-y-auto modal-content font-sans"
+            className="fixed top-1/2 left-1/2 w-[95%] sm:w-[90%] max-w-[1000px] max-h-[90vh] bg-white z-[9999] overflow-hidden overflow-y-auto modal-content"
             initial={{ opacity: 0, scale: 0.9, x: "-50%", y: "-50%" }}
             animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
             exit={{ opacity: 0, scale: 0.9, x: "-50%", y: "-50%" }}
@@ -135,7 +135,7 @@ export function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps
                                 <div className="product_title">
                                     <h2 className="text-[20px] font-medium text-[#333] mb-2">{product.title}</h2>
                                     <span className="product_price title_h4 text-[24px] font-bold text-[#f74f2e]"> ${product.price.toFixed(2)}</span>
-                                    <span className="stock text-right float-right text-[14px] text-[#4CAF50] font-bold uppercase">Còn hàng</span>
+                                    <span className="stock text-right float-right text-[14px] text-[#4CAF50] font-bold">Còn hàng</span>
                                     <p className="sku_text text-[12px] text-[#999] mt-2 mb-4">SKU: 01-2345678</p>
                                     <div className="star flex items-center gap-1">
                                         <span className="text-yellow-500 text-[14px]">★★★★★</span>
@@ -210,7 +210,7 @@ export function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps
                                             <button 
                                                 type="button"
                                                 onClick={handleAddToCart}
-                                                className="background-btn text-uppercase cart_btn py-3 px-8 text-[13px] font-bold bg-[#f74f2e] text-white hover:bg-[#d12807] transition-all inline-block" 
+                                                className="background-btn capitalize cart_btn py-3 px-8 text-[13px] font-bold bg-[#f74f2e] text-white hover:bg-[#d12807] transition-all inline-block" 
                                                 suppressHydrationWarning
                                             >
                                                 Thêm vào giỏ
@@ -218,7 +218,7 @@ export function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps
                                         </div>
                                         
                                         <div className="product_share mt-8">
-                                            <p className="text-[12px] text-[#777] font-medium uppercase mb-4">Chia sẻ</p>
+                                            <p className="text-[12px] text-[#777] font-medium mb-4">Chia sẻ</p>
                                             <ul className="social_icons flex gap-4 list-none p-0">
                                                 <li className="text-center"><a href="#" className="text-[#333] hover:text-[#f74f2e] transition-colors"><i className="flaticon-facebook vertical_middle text-[18px]"></i></a></li>
                                                 <li className="text-center"><a href="#" className="text-[#333] hover:text-[#f74f2e] transition-colors"><i className="flaticon-pinterest vertical_middle text-[18px]"></i></a></li>
@@ -230,7 +230,7 @@ export function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps
                                         <Link 
                                             href={`/product/${product.id}`} 
                                             onClick={onClose}
-                                            className="text-[13px] text-[#f74f2e] font-bold uppercase border-b border-[#f74f2e] hover:border-transparent transition-all"
+                                            className="text-[13px] text-[#f74f2e] font-bold capitalize border-b border-[#f74f2e] hover:border-transparent transition-all"
                                         >
                                             Xem chi tiết
                                         </Link>

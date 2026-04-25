@@ -9,7 +9,6 @@ import { useCurrency } from "@/core/providers/CurrencyProvider";
 export function CartTable() {
   const { cartItems, updateQuantity, removeFromCart, cartTotal } = useCart();
   const { formatPrice } = useCurrency();
-  const [notes, setNotes] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
 
   const handleUpdateCart = (e: React.FormEvent) => {
@@ -45,7 +44,7 @@ export function CartTable() {
   return (
     <div className="cart_form">
       <form onSubmit={handleUpdateCart}>
-        <div className="cart_table">
+        <div className="cart_table mb-10">
           <div className="w-full">
             {/* Desktop Header */}
             <div className="hidden md:flex border-t border-b border-[#e0dcdc]">
@@ -53,94 +52,97 @@ export function CartTable() {
               <div className="py-[13px] text-left text-[16px] font-medium text-[#333] font-sans w-[191px]">Giá</div>
               <div className="py-[13px] text-left text-[16px] font-medium text-[#333] font-sans w-[148px]">Số lượng</div>
               <div className="py-[13px] text-left text-[16px] font-medium text-[#333] font-sans w-[148px]">Tổng cộng</div>
-              <div className="py-[13px] text-right text-[16px] font-medium text-[#333] font-sans flex-1"></div>
+              <div className="py-[13px] text-right flex-1"></div>
             </div>
-
+ 
             {/* Table Body */}
-            <div className="block md:table-row-group">
+            <div className="block">
               <AnimatePresence mode="popLayout">
                 {cartItems.map((item) => (
-                  <motion.div 
+                    <motion.div 
                     key={item.id} 
                     layout
-                    className="block md:flex border-b border-[#eee] mb-[30px] md:mb-0 overflow-hidden"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0, x: -20 }}
+                    className="flex flex-col md:flex-row border-b border-[#eee] py-5 md:py-0"
                   >
-                    {/* Product Info */}
-                    <div className="py-[15px] md:py-[20px] px-0 align-middle block md:flex md:w-[570px] border-b border-[#eee] md:border-b-0">
-                      <div className="flex items-center w-full">
-                        <MobileLabel text="Sản phẩm" />
-                        <div className="flex items-center w-1/2 md:w-auto">
-                          <div className="w-[80px] h-[100px] md:w-[120px] md:h-[150px] flex-shrink-0 mr-[10px] md:mr-[20px] bg-[#f9f9f9] border border-[#eee] flex items-center justify-center overflow-hidden">
-                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                          </div>
-                          <div className="product_details pl-[10px] md:pl-[20px]">
-                            <Link href="/shop" className="text-[14px] md:text-[16px] font-normal text-[#333] hover:text-primary transition-colors m-0 font-sans leading-tight block mb-2">{item.name}</Link>
-                            {item.size && <p className="text-[13px] text-[#777] m-0 leading-normal font-sans uppercase">Kích cỡ: {item.size}</p>}
-                            {item.color && <p className="text-[13px] text-[#777] m-0 leading-normal font-sans">Màu sắc: {item.color}</p>}
-                          </div>
+                    {/* Product Info - Mobile Card Header */}
+                    <div className="flex items-start md:items-center md:w-[570px] md:py-[12px]">
+                      <div className="w-[80px] h-[100px] md:w-[90px] md:h-[110px] flex-shrink-0 bg-[#f9f9f9] border border-[#eee] flex items-center justify-center overflow-hidden">
+                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      </div>
+                      <div className="flex-grow pl-[15px] md:pl-[20px]">
+                        <Link href="/shop" className="text-[14px] md:text-[16px] font-bold text-[#333] hover:text-primary transition-colors block mb-1">{item.name}</Link>
+                        <div className="space-y-1">
+                          {item.size && <p className="text-[12px] text-[#777] uppercase">Size: {item.size}</p>}
+                          {item.color && <p className="text-[12px] text-[#777]">Màu: {item.color}</p>}
+                        </div>
+                        
+                        {/* Mobile Only: Inline Price */}
+                        <div className="md:hidden mt-2 text-[14px] font-bold text-primary">
+                          {formatPrice(item.price)}
                         </div>
                       </div>
+                      
+                      {/* Mobile Only: Remove Button */}
+                      <button 
+                        type="button"
+                        onClick={() => removeFromCart(item.id)}
+                        className="md:hidden text-[#ccc] hover:text-red-500 p-2"
+                      >
+                        <i className="flaticon-close !text-[10px]"></i>
+                      </button>
                     </div>
 
-                    {/* Price */}
-                    <div className="py-[15px] md:py-[20px] px-0 text-[15px] md:text-[16px] text-[#333] font-sans align-middle block md:flex md:items-center md:w-[191px] border-b border-[#eee] md:border-b-0">
-                      <div className="flex items-center w-full">
-                        <MobileLabel text="Giá" />
-                        <span className="w-1/2 md:w-auto text-left font-medium">{formatPrice(item.price)}</span>
-                      </div>
+                    {/* Price - Desktop Only */}
+                    <div className="hidden md:flex items-center w-[191px] md:py-[12px] text-[16px] text-[#333]">
+                      {formatPrice(item.price)}
                     </div>
 
-                    {/* Quantity */}
-                    <div className="py-[15px] md:py-[20px] px-0 align-middle block md:flex md:items-center md:w-[148px] border-b border-[#eee] md:border-b-0">
-                      <div className="flex items-center w-full">
-                        <MobileLabel text="Số lượng" />
-                        <div className="w-1/2 md:w-auto flex justify-start">
-                          <div className="quantity_box inline-flex items-center border border-[#aaa] overflow-hidden">
-                            <button 
-                              type="button"
-                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                              className="w-[30px] md:w-[40px] h-[30px] md:h-[45px] bg-[#f9f9f9] flex items-center justify-center text-[#333] border-r border-[#aaa] hover:text-primary"
-                            >
-                              -
-                            </button>
-                            <span className="w-[30px] md:w-[45px] h-[30px] md:h-[45px] flex items-center justify-center text-[13px] md:text-[15px] bg-white font-sans font-bold">
-                              {item.quantity}
-                            </span>
-                            <button 
-                              type="button"
-                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                              className="w-[30px] md:w-[40px] h-[30px] md:h-[45px] bg-[#f9f9f9] flex items-center justify-center text-[#333] border-l border-[#aaa] hover:text-primary"
-                            >
-                              +
-                            </button>
-                          </div>
+                    {/* Quantity & Subtotal - Responsive Grid on Mobile */}
+                    <div className="flex flex-wrap md:flex-nowrap items-center justify-between mt-4 md:mt-0 md:w-[320px] gap-4 md:gap-0">
+                      {/* Quantity */}
+                      <div className="flex items-center md:w-[160px] md:py-[12px]">
+                        <div className="quantity_box flex items-center border border-[#ddd] bg-white">
+                          <button 
+                            type="button"
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            className="w-[30px] h-[30px] md:w-[35px] md:h-[40px] flex items-center justify-center hover:text-primary transition-colors"
+                          >
+                            -
+                          </button>
+                          <span className="w-[35px] md:w-[40px] text-center text-[13px] md:text-[15px] font-bold">
+                            {item.quantity}
+                          </span>
+                          <button 
+                            type="button"
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            className="w-[30px] h-[30px] md:w-[35px] md:h-[40px] flex items-center justify-center hover:text-primary transition-colors"
+                          >
+                            +
+                          </button>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Subtotal */}
-                    <div className="py-[15px] md:py-[20px] px-0 text-[15px] md:text-[16px] text-primary font-bold font-sans align-middle block md:flex md:items-center md:w-[148px] border-b border-[#eee] md:border-b-0">
-                      <div className="flex items-center w-full">
-                        <MobileLabel text="Tổng" />
-                        <span className="w-1/2 md:w-auto text-left">{formatPrice(item.price * item.quantity)}</span>
+                      {/* Subtotal */}
+                      <div className="flex items-center md:w-[160px] md:py-[12px] text-right justify-end md:pr-4">
+                        <span className="md:hidden text-[12px] text-[#999] mr-2">Tổng:</span>
+                        <span className="text-[16px] md:text-[16px] font-bold text-[#333] md:text-primary">
+                          {formatPrice(item.price * item.quantity)}
+                        </span>
                       </div>
                     </div>
 
-                    {/* Remove */}
-                    <div className="py-[15px] md:py-[20px] px-0 text-left md:text-right align-middle block md:flex md:items-center flex-1">
-                      <div className="flex items-center w-full">
-                        <MobileLabel text="Xóa" />
-                        <button 
-                          type="button"
-                          onClick={() => removeFromCart(item.id)}
-                          className="text-[#333] hover:text-red-500 transition-all block md:ml-auto focus:outline-none"
-                        >
-                          <i className="flaticon-close !text-[12px]"></i>
-                        </button>
-                      </div>
+                    {/* Remove Button - Desktop Only */}
+                    <div className="hidden md:flex items-center justify-end flex-1 md:py-[12px]">
+                      <button 
+                        type="button"
+                        onClick={() => removeFromCart(item.id)}
+                        className="text-[#333] hover:text-red-500 transition-colors"
+                      >
+                        <i className="flaticon-close !text-[12px]"></i>
+                      </button>
                     </div>
                   </motion.div>
                 ))}
@@ -170,17 +172,6 @@ export function CartTable() {
           <Link href="/checkout" className="px-[30px] py-[13px] bg-[#f74f2e] text-white font-bold uppercase text-[13px] hover:bg-[#333] transition-all text-center">
             Tiến hành thanh toán
           </Link>
-        </div>
-
-        {/* Note Section */}
-        <div className="mt-10 max-w-[500px] text-left">
-          <label className="block text-[15px] font-bold text-[#333] uppercase mb-2 font-sans">Thêm ghi chú đơn hàng</label>
-          <textarea 
-            className="w-full h-[100px] border border-[#aaa] p-4 text-[14px] outline-none focus:border-primary transition-all font-sans"
-            placeholder="Yêu cầu đặc biệt cho đơn hàng của bạn..."
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-          ></textarea>
         </div>
       </form>
     </div>

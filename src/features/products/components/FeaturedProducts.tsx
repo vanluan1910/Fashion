@@ -49,12 +49,12 @@ export function FeaturedProducts({ title }: { title: string }) {
   };
 
   return (
-    <section className="pt-[60px] bg-white overflow-hidden">
+    <section className="pt-[30px] md:pt-[60px] bg-white overflow-hidden">
       <div className="max-w-[1170px] mx-auto px-[15px]">
-        <h3 className="text-[30px] font-normal text-[#333] text-center mb-[40px] capitalize" style={{ fontFamily: "'Work Sans', sans-serif" }}>
+        <h3 className="text-[30px] font-normal text-[#333] text-center mb-[40px] capitalize">
           {title}
         </h3>
-        
+
         <div className="flex flex-wrap -mx-[15px]">
           {isLoading ? (
             <div className="w-full text-center py-20 text-[#999] italic">Đang tải sản phẩm từ cửa hàng...</div>
@@ -64,8 +64,8 @@ export function FeaturedProducts({ title }: { title: string }) {
               const delay = (index % 4) * 0.2;
 
               return (
-                <motion.div 
-                  key={product.id} 
+                <motion.div
+                  key={product.id}
                   className="w-1/2 md:w-1/3 lg:w-1/4 px-[15px] mb-[40px]"
                   initial={{ opacity: 0, x: isSlideFromLeft ? -50 : 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -83,7 +83,7 @@ export function FeaturedProducts({ title }: { title: string }) {
                           className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                       </div>
-                      
+
                       {product.label === "new" && (
                         <div className="absolute top-0 left-0 bg-[#333] text-white text-[12px] font-bold px-3 py-1 capitalize z-20">
                           Mới<span className="absolute -bottom-1 left-1 w-2 h-2 bg-[#333] rotate-45 transform"></span>
@@ -100,7 +100,7 @@ export function FeaturedProducts({ title }: { title: string }) {
                       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-200 z-10 flex flex-col items-center justify-center">
                         {product.status === "Còn hàng" ? (
                           <div className="flex flex-col space-y-[11px] w-full items-center transform translate-y-4 group-hover:-translate-y-2 transition-transform duration-200">
-                            <button 
+                            <button
                               onClick={() => addToCart({
                                 id: product.id,
                                 name: product.name,
@@ -114,7 +114,7 @@ export function FeaturedProducts({ title }: { title: string }) {
                             >
                               Thêm vào giỏ <i className="flaticon-arrows ml-2 text-[12px]"></i>
                             </button>
-                            <Link 
+                            <Link
                               href={`/product/${product.id}`}
                               className="inline-flex items-center justify-center py-[4px] px-[28px] border border-[#f74f2e] text-[#f74f2e] text-[14px] font-bold capitalize bg-transparent hover:bg-[#f74f2e] hover:text-white transition-all duration-200 text-center leading-normal"
                               suppressHydrationWarning
@@ -129,7 +129,7 @@ export function FeaturedProducts({ title }: { title: string }) {
                         )}
                       </div>
 
-                      <button 
+                      <button
                         onClick={() => {
                           if (isInWishlist(product.id)) {
                             removeFromWishlist(product.id);
@@ -142,9 +142,8 @@ export function FeaturedProducts({ title }: { title: string }) {
                             });
                           }
                         }}
-                        className={`absolute bottom-4 right-4 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 shadow-md z-20 opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 ${
-                          isInWishlist(product.id) ? "bg-[#f74f2e] text-white" : "bg-white text-[#333] hover:bg-[#f3f4f9] hover:text-[#f74f2e]"
-                        }`}
+                        className={`absolute bottom-4 right-4 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 shadow-md z-20 opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 ${isInWishlist(product.id) ? "bg-[#f74f2e] text-white" : "bg-white text-[#333] hover:bg-[#f3f4f9] hover:text-[#f74f2e]"
+                          }`}
                         suppressHydrationWarning
                       >
                         <i className="flaticon-heart text-[16px]"></i>
@@ -153,28 +152,28 @@ export function FeaturedProducts({ title }: { title: string }) {
 
                     <div className="text-center featured_detail_content">
                       <Link href={`/product/${product.id}`} className="block mb-1">
-                        <span className="block text-[15px] text-[#333] hover:text-[#f74f2e] transition-colors capitalize font-medium" style={{ fontFamily: "'Work Sans', sans-serif" }}>
+                        <span className="block text-[15px] text-[#333] hover:text-[#f74f2e] transition-colors capitalize font-medium">
                           {product.name}
                         </span>
                       </Link>
-                      <p className="text-[18px] font-bold text-[#333] mb-3" style={{ fontFamily: "'Work Sans', sans-serif" }}>
+                      <p className="text-[18px] font-bold text-[#333] mb-3">
                         {product.oldPrice && (
                           <span className="text-[#999] line-through mr-2 font-normal text-[14px]">{formatPrice(product.oldPrice)}</span>
                         )}
                         <span>{formatPrice(product.price)}</span>
                       </p>
-                      
+
                       {product.sizes && product.sizes.length > 0 && (
                         <div className="flex justify-center items-center gap-[5px] featured_variyant">
                           {product.sizes.map((size: string) => (
                             <div key={size} className="radio inline-block">
-                              <input 
-                                type="radio" 
-                                name={`size-${product.id}`} 
+                              <input
+                                type="radio"
+                                name={`size-${product.id}`}
                                 id={`size-${product.id}-${size}`}
                                 className="hidden peer"
                               />
-                              <label 
+                              <label
                                 htmlFor={`size-${product.id}-${size}`}
                                 className="flex items-center justify-center w-[25px] h-[28px] border border-[#aaa] text-[12px] text-[#333] uppercase cursor-pointer hover:border-[#f74f2e] hover:text-[#f74f2e] peer-checked:border-[#f74f2e] peer-checked:text-[#f74f2e] transition-all duration-200"
                               >
@@ -193,9 +192,9 @@ export function FeaturedProducts({ title }: { title: string }) {
             <div className="w-full text-center py-20 text-[#999] italic">Hiện chưa có sản phẩm nào trong cửa hàng.</div>
           )}
         </div>
-        
+
         {/* Quick View Modal Hook */}
-        <QuickViewModal 
+        <QuickViewModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           product={selectedProduct}

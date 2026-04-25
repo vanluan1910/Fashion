@@ -92,13 +92,13 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           <div className="flex flex-col space-y-[11px] w-full items-center transform translate-y-4 group-hover:-translate-y-2 transition-transform duration-200">
             <button 
               onClick={handleAddToCart}
-              className="inline-flex items-center justify-center py-[4px] px-[28px] bg-[#f74f2e] text-white text-[14px] font-bold uppercase hover:bg-[#d12807] transition-all duration-200 text-center leading-normal"
+              className="inline-flex items-center justify-center py-[4px] px-[28px] bg-[#f74f2e] text-white text-[14px] font-bold capitalize hover:bg-[#d12807] transition-all duration-200 text-center leading-normal"
             >
               Thêm vào giỏ <i className="flaticon-arrows ml-2 text-[12px]"></i>
             </button>
             <Link 
               href={`/product/${product.id}`}
-              className="inline-flex items-center justify-center py-[4px] px-[28px] border border-[#f74f2e] text-[#f74f2e] text-[14px] font-bold uppercase bg-transparent hover:bg-[#f74f2e] hover:text-white transition-all duration-200 text-center leading-normal"
+              className="inline-flex items-center justify-center py-[4px] px-[28px] border border-[#f74f2e] text-[#f74f2e] text-[14px] font-bold capitalize bg-transparent hover:bg-[#f74f2e] hover:text-white transition-all duration-200 text-center leading-normal"
             >
               Xem chi tiết <i className="flaticon-arrows ml-2 text-[12px]"></i>
             </Link>
@@ -121,11 +121,11 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
       {/* Product Info Section */}
       <div className="featured_detail_content pt-[5px] text-center">
         <Link href={`/shop?category=${product.category}`}>
-          <h5 className="featured_title text-[15px] text-[#333] mb-1 hover:text-[#f74f2e] transition-colors uppercase font-medium" style={{ fontFamily: "'Work Sans', sans-serif" }}>
+          <h5 className="featured_title text-[15px] text-[#333] mb-1 hover:text-[#f74f2e] transition-colors capitalize font-medium">
             {product.name}
           </h5>
         </Link>
-        <div className="featured_price text-[18px] font-bold text-[#333] mb-3" style={{ fontFamily: "'Work Sans', sans-serif" }}>
+        <div className="featured_price text-[18px] font-bold text-[#333] mb-3">
           {discountPercent > 0 ? (
             <div className="flex items-center justify-center gap-2">
               <span className="text-[#999] line-through font-normal text-[14px]">{formatPrice(originalPriceNum)}</span>

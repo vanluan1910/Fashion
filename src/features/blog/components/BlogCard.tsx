@@ -17,7 +17,7 @@ export function BlogCard({ post }: BlogCardProps) {
   return (
     <div className="blog_content mb-[30px] group">
       <div className="relative overflow-hidden mb-[15px]">
-        <Link href={`/blog/${post.id}`} className="block">
+        <Link href={`/blog/${post.slug}`} className="block">
           <Image
             src={post.image}
             alt={post.title}
@@ -34,7 +34,7 @@ export function BlogCard({ post }: BlogCardProps) {
           <span className="inline-block w-2 h-2 bg-[#f74f2e] rotate-45 ml-2 relative top-[-1px]"></span>
         </span>
         
-        <Link href={`/blog/${post.id}`}>
+        <Link href={`/blog/${post.slug}`}>
           <h5 className="text-[20px] font-bold text-[#333] mb-[15px] hover:text-[#f74f2e] transition-colors leading-tight font-sans">
             {post.title}
           </h5>

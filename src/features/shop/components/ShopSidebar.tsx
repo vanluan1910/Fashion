@@ -96,18 +96,11 @@ export function ShopSidebar() {
 
   return (
     <div className="collection_sidebar">
-      <div className="flex items-center justify-between lg:hidden mb-[30px] pb-[20px] border-b border-[#ececec]">
-        <h3 className="text-[24px] font-normal text-[#333]">Bộ lọc</h3>
-        <button className="text-[#333]" onClick={() => router.back()}>
-          <CloseIcon className="w-5 h-5" />
-        </button>
-      </div>
-
       {/* 1. Shopping by (Đang lọc theo) */}
       {(searchParams.get("category") || searchParams.get("minPrice") || searchParams.get("sale")) && (
         <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
           <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-            <h2 className="text-[18px] font-medium text-[#333] mb-0 leading-none capitalize tracking-tighter" style={{ fontFamily: "'Work Sans', sans-serif" }}>Bộ lọc đang chọn</h2>
+            <h2 className="text-[18px] font-medium text-[#333] mb-0 leading-none capitalize tracking-tighter">Bộ lọc đang chọn</h2>
           </div>
           
           <div className="layer-filter shopping_by_select p-[18px_10px_15px] space-y-[15px]">
@@ -142,7 +135,7 @@ export function ShopSidebar() {
       {/* 2. Availability (Trạng thái) */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Trạng thái</h5>
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest">Trạng thái</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter pt-[9px] px-[10px] pb-[12px]">
@@ -158,7 +151,7 @@ export function ShopSidebar() {
       {/* 3. Categories (Danh mục) */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Danh mục</h5>
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest">Danh mục</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter pt-[12px] px-[10px] pb-[15px]">
@@ -192,7 +185,7 @@ export function ShopSidebar() {
       {/* 4. Men Category */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Sản phẩm Nam</h5>
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest">Sản phẩm Nam</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter">
@@ -251,7 +244,7 @@ export function ShopSidebar() {
       {/* 5. Women Category */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Sản phẩm Nữ</h5>
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest">Sản phẩm Nữ</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter pt-[12px] px-[10px] pb-[15px]">
@@ -282,7 +275,7 @@ export function ShopSidebar() {
       {/* 6. Accessories */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Phụ kiện</h5>
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest">Phụ kiện</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter pt-[12px] px-[10px] pb-[15px]">
@@ -313,7 +306,7 @@ export function ShopSidebar() {
       {/* 6. Price Slider */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Giá cả</h5>
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest">Giá cả</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter pt-[22px] px-[30px] pb-[39px]">
@@ -380,7 +373,7 @@ export function ShopSidebar() {
       {/* 7. Size Selection */}
       <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Kích cỡ</h5>
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest">Kích cỡ</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter">
@@ -404,7 +397,7 @@ export function ShopSidebar() {
       {/* 8. Color Selection */}
       <div className="category_list color_box border border-[#e0dcdc] bg-white">
         <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
-          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest" style={{ fontFamily: "'Work Sans', sans-serif" }}>Màu sắc</h5>
+          <h5 className="text-[16px] font-medium text-[#333] mb-0 leading-none tracking-widest">Màu sắc</h5>
           <span className="flaticon-down-arrow text-[14px] text-[#333] leading-none"></span>
         </div>
         <div className="layer-filter">

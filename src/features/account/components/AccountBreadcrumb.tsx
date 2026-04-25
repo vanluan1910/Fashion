@@ -28,7 +28,7 @@ export function AccountBreadcrumb({ title }: { title: string }) {
               </li>
             </ol>
           </nav>
-          <h1 className="text-[32px] font-normal text-[#333] capitalize m-0" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <h1 className="text-[24px] md:text-[32px] font-normal text-[#333] capitalize m-0" style={{ fontFamily: "'Playfair Display', serif" }}>
             {title}
           </h1>
         </motion.div>

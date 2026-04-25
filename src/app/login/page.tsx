@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen bg-[#faf9f7]">
+    <main className="min-h-screen bg-[#faf9f7] font-eleganto">
       <AccountBreadcrumb title="đăng nhập" />
       
       <section className="py-[100px] relative overflow-hidden">

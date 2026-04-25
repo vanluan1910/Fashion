@@ -4,6 +4,7 @@ class BlogDTO {
     return {
       id: blog.id,
       title: blog.title,
+      slug: blog.slug,
       excerpt: blog.excerpt,
       content: blog.content,
       author: blog.author,

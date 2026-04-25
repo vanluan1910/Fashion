@@ -5,12 +5,11 @@ import { motion } from "framer-motion";
 
 export function NewsletterSection() {
   return (
-    <section className="pt-[60px] pb-[60px] newsletter bg-white overflow-hidden">
+    <section className="pt-[30px] md:pt-[60px] pb-[40px] md:pb-[60px] newsletter bg-white overflow-hidden">
       <div className="max-w-[1170px] mx-auto px-[15px]">
         {/* Title with fadeInUp */}
         <motion.h3
           className="text-[30px] font-normal text-[#333] text-center mb-[30px] capitalize title_h3 home_title_h3"
-          style={{ fontFamily: "'Work Sans', sans-serif" }}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

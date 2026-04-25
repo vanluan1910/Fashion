@@ -7,6 +7,7 @@ export interface Blog {
   category: string;
   image: string;
   date: string;
+  slug: string;
 }
 
 export const getBlogsData = async (): Promise<Blog[]> => {
@@ -33,6 +34,15 @@ export const getBlogById = async (id: string | number): Promise<Blog | null> => 
     return null;
   } catch (error) {
     console.error('Error fetching blog detail:', error);
+    return null;
+  }
+};
+export const getBlogBySlug = async (slug: string): Promise<Blog | null> => {
+  try {
+    const blogs = await getBlogsData();
+    return blogs.find(b => b.slug === slug) || null;
+  } catch (error) {
+    console.error('Error finding blog by slug:', error);
     return null;
   }
 };

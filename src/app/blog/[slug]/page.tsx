@@ -1,10 +1,11 @@
 import React from "react";
 import { notFound } from "next/navigation";
-import { BLOG_POSTS } from "@/features/blog/constants/blog-data";
+import { getBlogBySlug, getBlogsData } from "@/features/blog/services/blogService";
 import { BlogBreadcrumb } from "@/features/blog/components/BlogBreadcrumb";
 import { BlogDetailContent } from "@/features/blog/components/BlogDetailContent";
 import { BlogSidebar } from "@/features/blog/components/BlogSidebar";
-import { BlogComments } from "@/features/blog/components/BlogComments";
+
+import { BLOG_POSTS as STATIC_POSTS } from "@/features/blog/constants/blog-data";
 
 interface BlogDetailPageProps {
   params: Promise<{
@@ -14,11 +15,13 @@ interface BlogDetailPageProps {
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { slug } = await params;
-  const post = BLOG_POSTS.find((p) => p.slug === slug);
+  const post = await getBlogBySlug(slug);
 
   if (!post) {
     notFound();
   }
+
+  const allPosts = await getBlogsData();
 
   return (
     <main className="blog_details_page bg-white min-h-screen">
@@ -30,12 +33,12 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             {/* Main Content Area */}
             <div className="w-full lg:w-8/12 px-[15px]">
               <BlogDetailContent post={post} />
-              <BlogComments />
+
             </div>
 
             {/* Sidebar Area */}
             <div className="w-full lg:w-4/12 px-[15px] mt-[60px] lg:mt-0">
-              <BlogSidebar recentPosts={BLOG_POSTS} />
+              <BlogSidebar recentPosts={allPosts.length > 0 ? allPosts : STATIC_POSTS} />
             </div>
           </div>
         </div>
@@ -45,7 +48,8 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 }
 
 export async function generateStaticParams() {
-  return BLOG_POSTS.map((post) => ({
+  const blogs = await getBlogsData();
+  return blogs.map((post) => ({
     slug: post.slug,
   }));
 }

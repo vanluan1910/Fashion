@@ -36,11 +36,11 @@ export function LoginForm() {
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <h2 className="text-[32px] font-normal text-[#333] mb-2 font-serif italic">Chào mừng trở lại</h2>
-        <p className="text-[14px] text-[#888] mb-10 font-sans tracking-wide">Vui lòng đăng nhập để tiếp tục trải nghiệm cùng Atelier.</p>
+        <p className="text-[14px] text-[#888] mb-10 font-eleganto tracking-wide">Vui lòng đăng nhập để tiếp tục trải nghiệm cùng Atelier.</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="group">
-            <label htmlFor="email" className="block text-[11px] font-bold text-[#333] mb-2 uppercase tracking-[2px] font-sans">
+            <label htmlFor="email" className="block text-[11px] font-bold text-[#333] mb-2 uppercase tracking-[2px] font-eleganto">
               Địa chỉ Email <span className="text-[#f74f2e]">*</span>
             </label>
             <div className="relative">
@@ -49,7 +49,7 @@ export function LoginForm() {
                 id="email" 
                 name="Email"
                 placeholder="email@example.com"
-                className="w-full h-[55px] px-0 bg-transparent border-b border-[#eee] focus:border-primary outline-none transition-all duration-300 font-sans text-[15px] placeholder:text-gray-300"
+                className="w-full h-[55px] px-0 bg-transparent border-b border-[#eee] focus:border-primary outline-none transition-all duration-300 font-eleganto text-[15px] placeholder:text-gray-300"
                 required
                 suppressHydrationWarning
               />
@@ -59,7 +59,7 @@ export function LoginForm() {
           
           <div className="group">
             <div className="flex justify-between items-center mb-2">
-              <label htmlFor="password" className="block text-[11px] font-bold text-[#333] uppercase tracking-[2px] font-sans">
+              <label htmlFor="password" className="block text-[11px] font-bold text-[#333] uppercase tracking-[2px] font-eleganto">
                 Mật khẩu <span className="text-[#f74f2e]">*</span>
               </label>
               <Link href="#" className="text-[11px] text-[#999] hover:text-[#f74f2e] transition-all uppercase tracking-wider">
@@ -72,7 +72,7 @@ export function LoginForm() {
                 id="password" 
                 name="Password"
                 placeholder="••••••••"
-                className="w-full h-[55px] px-0 bg-transparent border-b border-[#eee] focus:border-primary outline-none transition-all duration-300 font-sans text-[15px] placeholder:text-gray-300"
+                className="w-full h-[55px] px-0 bg-transparent border-b border-[#eee] focus:border-primary outline-none transition-all duration-300 font-eleganto text-[15px] placeholder:text-gray-300"
                 required
                 suppressHydrationWarning
               />
@@ -84,7 +84,7 @@ export function LoginForm() {
             <button 
               type="submit" 
               disabled={isLoading}
-              className={`w-full h-[55px] bg-primary text-white text-[13px] font-bold uppercase transition-all duration-500 flex items-center justify-center font-sans tracking-[3px] scale-100 hover:bg-[#333] group relative overflow-hidden shadow-lg shadow-primary/20 ${isLoading ? "opacity-70 cursor-not-allowed" : ""}`}
+              className={`w-full h-[55px] bg-primary text-white text-[13px] font-bold uppercase transition-all duration-500 flex items-center justify-center font-eleganto tracking-[3px] scale-100 hover:bg-[#333] group relative overflow-hidden shadow-lg shadow-primary/20 ${isLoading ? "opacity-70 cursor-not-allowed" : ""}`}
               suppressHydrationWarning
             >
               <span className="relative z-10">{isLoading ? "Đang xử lý..." : "Đăng nhập tài khoản"}</span>
@@ -93,7 +93,7 @@ export function LoginForm() {
           </div>
 
           <div className="lg:hidden text-center mt-10 p-8 bg-[#fcfcff] border border-dashed border-[#eee]">
-             <p className="text-[14px] text-[#888] mb-4 font-sans italic">Bạn chưa có tài khoản?</p>
+             <p className="text-[14px] text-[#888] mb-4 font-eleganto italic">Bạn chưa có tài khoản?</p>
              <Link href="/register" className="text-[12px] font-bold text-[#333] uppercase tracking-[2px] border-b border-[#333] pb-1 hover:text-[#f74f2e] hover:border-[#f74f2e] transition-all">
                 Tạo tài khoản mới
              </Link>
@@ -124,7 +124,7 @@ export function CreateAccountSection() {
             "Lưu danh sách sản phẩm yêu thích",
             "Tích điểm đổi quà tặng độc quyền"
           ].map((item, i) => (
-            <li key={i} className="flex items-center text-[14px] text-[#666] font-sans">
+            <li key={i} className="flex items-center text-[14px] text-[#666] font-eleganto">
               <span className="w-1.5 h-1.5 bg-[#f74f2e] rounded-full mr-3"></span>
               {item}
             </li>
@@ -132,7 +132,7 @@ export function CreateAccountSection() {
         </ul>
         <Link 
           href="/register" 
-          className="inline-flex h-[55px] px-[40px] bg-[#333] text-white text-[13px] font-bold uppercase items-center justify-center hover:bg-primary transition-all duration-500 font-sans tracking-[3px] shadow-lg shadow-black/5"
+          className="inline-flex h-[55px] px-[40px] bg-[#333] text-white text-[13px] font-bold uppercase items-center justify-center hover:bg-primary transition-all duration-500 font-eleganto tracking-[3px] shadow-lg shadow-black/5"
         >
           Đăng ký ngay <FaArrowRight className="ml-3 font-bold" />
         </Link>

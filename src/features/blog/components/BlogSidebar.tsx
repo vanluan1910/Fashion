@@ -132,27 +132,7 @@ export function BlogSidebar({ recentPosts }: BlogSidebarProps) {
         </div>
       </div>
 
-      {/* Newsletter Widget */}
-      <div className="widget newsletter_widget bg-[#f9f9f9] p-10 border border-[#eee]">
-        <h3 
-          className="text-[20px] font-normal mb-4 uppercase tracking-[3px] text-[#333]"
-          style={{ fontFamily: "var(--font-playfair), serif" }}
-        >
-          Bản tin
-        </h3>
-        <p className="text-[13px] text-[#666] mb-8 font-sans leading-relaxed">Đăng ký để nhận những thông tin mới nhất về thời trang và phong cách sống.</p>
-        <div className="space-y-4">
-          <input
-            suppressHydrationWarning
-            type="email"
-            placeholder="Email của bạn..."
-            className="w-full h-[50px] px-4 bg-white border border-[#eee] focus:outline-none focus:border-[#f74f2e] transition-all text-[#333] placeholder:uppercase placeholder:text-[11px] placeholder:tracking-widest font-sans"
-          />
-          <button type="submit" suppressHydrationWarning className="w-full h-[50px] bg-[#333] text-white font-bold uppercase text-[11px] tracking-[3px] hover:bg-[#f74f2e] transition-all font-sans">
-            Đăng ký ngay
-          </button>
-        </div>
-      </div>
+
     </aside>
   );
 }

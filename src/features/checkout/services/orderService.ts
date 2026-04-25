@@ -10,6 +10,7 @@ export interface OrderData {
     city: string;
     phone: string;
     email: string;
+    note?: string;
   };
 }
 
@@ -20,6 +21,7 @@ export const orderService = {
         account_id: accountId || 3, // Sử dụng ID người dùng thực tế hoặc mặc định là 3
         total_amount: orderData.total,
         status: "Đang xử lý",
+        note: orderData.customerInfo.note || "",
         items: orderData.items // Bổ sung danh sách sản phẩm
       };
 

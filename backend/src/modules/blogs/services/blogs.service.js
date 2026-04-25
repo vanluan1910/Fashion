@@ -38,6 +38,27 @@ class BlogsService {
     }
   }
 
+  async getBlogBySlug(slug) {
+    try {
+      const blog = await blogsRepo.findBySlug(slug);
+      if (!blog) {
+        return {
+          success: false,
+          message: 'Blog not found'
+        };
+      }
+      return {
+        success: true,
+        data: BlogDTO.toResponse(blog)
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: 'Error fetching blog by slug: ' + error.message
+      };
+    }
+  }
+
   async createBlog(blogData) {
     try {
       const blogId = await blogsRepo.create(blogData);

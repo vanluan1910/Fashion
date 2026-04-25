@@ -46,13 +46,13 @@ export function ProductDetailInfo({ product }: ProductDetailInfoProps) {
   };
 
   return (
-    <div className="space-y-8 font-sans">
+    <div className="space-y-8">
       <div>
         <div className="flex items-center gap-2 mb-2">
-          {product.isNew && <span className="px-2 py-0.5 bg-[#333] text-white text-[10px] uppercase font-bold">Mới</span>}
-          {product.label === 'sale' && <span className="px-2 py-0.5 bg-[#f74f2e] text-white text-[10px] uppercase font-bold">Giảm giá</span>}
+          {product.isNew && <span className="px-2 py-0.5 bg-[#333] text-white text-[10px] font-bold">Mới</span>}
+          {product.label === 'sale' && <span className="px-2 py-0.5 bg-[#f74f2e] text-white text-[10px] font-bold">Giảm giá</span>}
         </div>
-        <h1 className="text-3xl font-bold text-[#333] mb-4 tracking-tight">{product.name}</h1>
+        <h1 className="text-[22px] md:text-3xl font-bold text-[#333] mb-4 tracking-tight leading-tight">{product.name}</h1>
         <div className="flex items-center gap-6 text-[14px]">
           <div className="flex items-center gap-1">
             <span className="text-yellow-500">★★★★★</span>
@@ -76,7 +76,7 @@ export function ProductDetailInfo({ product }: ProductDetailInfoProps) {
       </div>
 
       <div className="space-y-4">
-        <h4 className="text-[14px] font-bold uppercase tracking-wider text-[#333]">Mô tả ngắn</h4>
+        <h4 className="text-[14px] font-bold tracking-wider text-[#333]">Mô tả ngắn</h4>
         <p className="text-[14px] text-gray-500 leading-relaxed">
           {product.shortDescription || "Mẫu sản phẩm thời trang cao cấp, thiết kế hiện đại phù hợp với nhiều phong cách khác nhau. Chất liệu bền bỉ và thoải mái khi sử dụng."}
         </p>
@@ -125,7 +125,7 @@ export function ProductDetailInfo({ product }: ProductDetailInfoProps) {
             <button 
               onClick={handleAddToCart}
               suppressHydrationWarning={true}
-              className={`flex-grow font-bold py-3 uppercase tracking-widest text-[13px] transition-all duration-300 ${
+              className={`flex-grow font-bold py-3 capitalize tracking-widest text-[13px] transition-all duration-300 ${
                 isAdded ? "bg-green-600 text-white" : "bg-[#f74f2e] text-white hover:bg-[#333]"
               }`}
             >
@@ -134,7 +134,7 @@ export function ProductDetailInfo({ product }: ProductDetailInfoProps) {
             <button 
               onClick={handleBuyNow}
               suppressHydrationWarning={true}
-              className="flex-grow border border-[#f74f2e] text-[#f74f2e] font-bold py-3 uppercase tracking-widest text-[13px] hover:bg-[#f74f2e] hover:text-white transition-colors"
+              className="flex-grow border border-[#f74f2e] text-[#f74f2e] font-bold py-3 capitalize tracking-widest text-[13px] hover:bg-[#f74f2e] hover:text-white transition-colors"
             >
               Mua Ngay
             </button>
@@ -144,7 +144,7 @@ export function ProductDetailInfo({ product }: ProductDetailInfoProps) {
         {/* Set Order Card */}
         <div className="bg-white border border-gray-100 rounded-sm overflow-hidden">
           <div className="p-4 bg-gray-50/50 border-b border-gray-100">
-            <h3 className="font-bold text-[15px] text-[#333] uppercase tracking-wide">Đặt hàng nhanh</h3>
+            <h3 className="font-bold text-[15px] text-[#333] tracking-wide">Đặt hàng nhanh</h3>
           </div>
           <div className="p-4 space-y-4">
             <table className="w-full text-left text-[14px]">
@@ -199,7 +199,7 @@ export function ProductDetailInfo({ product }: ProductDetailInfoProps) {
             </div>
             
             <div className="pt-4 flex items-center gap-3 border-t border-gray-50">
-              <span className="text-[12px] font-bold text-[#333] uppercase">Chia sẻ :</span>
+              <span className="text-[12px] font-bold text-[#333]">Chia sẻ :</span>
               <div className="flex gap-4">
                 <button className="text-[#666] hover:text-[#f74f2e] transition-colors">
                   <i className="flaticon-facebook text-[18px]"></i>
