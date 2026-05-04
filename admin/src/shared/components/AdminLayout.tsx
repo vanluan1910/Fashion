@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Sidebar } from "./Sidebar";
+import { ADMIN_SIDEBAR_LAYOUT, Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 
 export default function AdminLayout({
@@ -12,10 +12,19 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   const isLoginPage = pathname === "/login";
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+    setIsSidebarOpen(isDesktop);
+  }, []);
 
   useEffect(() => {
     const isAuth = localStorage.getItem("atelier_admin_auth");
@@ -38,8 +47,8 @@ export default function AdminLayout({
   // Chống nháy (flicker) bằng cách trả về null trong khi đang xác thực và chưa ở trang login
   if (isAuthenticated === false && !isLoginPage) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="w-12 h-12 border-4 border-[#f74f2e] border-t-transparent rounded-full animate-spin"></div>
+      <div className="flex min-h-screen items-center justify-center bg-[var(--admin-canvas)]">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-[var(--admin-accent)] border-t-transparent"></div>
       </div>
     );
   }
@@ -49,21 +58,35 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-[#f3f4f9] font-sans">
+    <div className="min-h-screen bg-transparent font-sans text-[var(--admin-text)]">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-      
-      <div className={`transition-all duration-500 ease-in-out ${isSidebarOpen ? "lg:pl-[260px]" : "pl-0"}`}>
-        <Header onToggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
-        
-        {/* Spacer to push content below fixed header */}
-        <div className="h-[70px]" />
 
-        <main className="p-6 lg:p-10 min-h-[calc(100vh-126px)] animate-in fade-in duration-700">
-          {children}
+      <div
+        className={`transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          isSidebarOpen
+            ? ADMIN_SIDEBAR_LAYOUT.expandedPadding
+            : ADMIN_SIDEBAR_LAYOUT.collapsedPadding
+        }`}
+      >
+        <Header onToggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+
+        <div className="h-[86px]" />
+
+        <main className="px-4 pb-6 pt-5 sm:px-6 lg:px-8 lg:pb-8 lg:pt-6">
+          <div className="mx-auto flex min-h-[calc(100vh-10.5rem)] w-full max-w-[1600px] flex-col gap-6">
+            <div className="admin-page-surface min-h-[calc(100vh-11.5rem)] px-4 py-4 sm:px-5 sm:py-5 lg:px-7 lg:py-7">
+              <div className="h-full animate-in fade-in duration-700">{children}</div>
+            </div>
+          </div>
         </main>
 
-        <footer className="h-14 flex items-center justify-center text-[11px] font-bold uppercase tracking-wider text-gray-400 border-t border-gray-100 bg-white lg:bg-transparent">
-          <p>© 2024. Chế tác bởi <span className="text-[#f74f2e]">Atelier Luxury Team</span>. Bảo lưu mọi quyền.</p>
+        <footer className="px-4 pb-5 sm:px-6 lg:px-8 lg:pb-7">
+          <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3 rounded-[20px] border border-[var(--admin-border)] bg-[rgba(255,251,246,0.72)] px-4 py-3 text-[11px] font-medium text-[var(--admin-text-muted)] shadow-[var(--admin-shadow-sm)] backdrop-blur md:px-5">
+            <p className="tracking-[0.18em] uppercase">Atelier Admin Workspace</p>
+            <p className="text-right">
+              © 2024 <span className="font-semibold text-[var(--admin-accent-strong)]">Atelier Luxury Team</span>
+            </p>
+          </div>
         </footer>
       </div>
     </div>
