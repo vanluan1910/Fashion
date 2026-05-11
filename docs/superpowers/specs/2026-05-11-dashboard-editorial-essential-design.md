@@ -22,6 +22,9 @@ This change is presentation-focused. It must not change backend logic, data mean
 - Chart direction: more elegant and fashion/editorial, not enterprise
 - Preferred chart style: `bar chart with a trend line`
 - Overall layout direction: `editorial split`
+- Top band refinement: `soft luxury panel`
+- Tone preference for the top band: `mềm mại, nữ tính, luxury`
+- Top metrics should be treated as `equally important`
 
 ## Current Problem
 
@@ -68,6 +71,7 @@ Reasoning:
 - revenue is the main business signal
 - orders show volume
 - average order value gives a more useful commercial read than customers or conversion for this reduced layout
+- none of the three metrics should visually dominate the other two
 
 ### Primary Chart
 
@@ -99,12 +103,30 @@ The product column may remain on desktop if spacing still feels balanced, but it
 
 ### 1. Top Band
 
-Create a restrained editorial header:
+Create one unified `soft luxury panel` instead of separate KPI cards.
 
-- left: short page heading only
-- right or below: three large summary metric blocks
+Structure:
+
+- top: short editorial heading
+- bottom: three summary metrics on the same visual plane
+
+The top metrics should not be rendered as three separate card widgets.
+
+They should feel like one composed panel with:
+
+- very soft boundaries
+- larger corner radii
+- warmer surface treatment
+- more whitespace
+- thin dividers or spacing instead of obvious boxes
 
 The top band should not contain descriptive paragraphs, helper text, or secondary summaries.
+
+The three metrics should be equal in hierarchy:
+
+- no hero metric
+- no oversized featured number
+- no stacked “main + supporting” KPI arrangement
 
 ### 2. Main Feature Band
 
@@ -140,6 +162,8 @@ The design should feel:
 - warm
 - premium
 - quiet
+- soft
+- feminine
 
 Guidelines:
 
@@ -148,15 +172,20 @@ Guidelines:
 - stronger typographic hierarchy
 - softer but more deliberate surfaces
 - no extra decorative widgets
+- avoid dashboard-hard card repetition in the hero area
 
 ## Component Treatment
 
 ### Metric Blocks
 
+For the top band:
+
 - large values
 - compact uppercase labels
 - optional small delta chip only where useful
 - no extra descriptions
+- metrics should live inside one shared panel, not isolated cards
+- separators should be understated and elegant
 
 ### Revenue Chart Container
 
