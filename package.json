@@ -8,7 +8,8 @@
     "build": "next build",
     "vercel-build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "scrape:santino-shirts": "node scripts/santino-shirt-images.mjs"
   },
   "keywords": [],
   "author": "",
