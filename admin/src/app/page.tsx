@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import type { LucideIcon } from "lucide-react";
 import {
   TrendingUp,
   Users,
@@ -28,9 +29,9 @@ import { API_ENDPOINTS } from "@/shared/config/api";
 interface StatItem {
   label: string;
   value: string;
-  change: string;
-  isUp: boolean;
-  icon: any;
+  change?: string;
+  isUp?: boolean;
+  icon: LucideIcon;
   compareLabel: string;
 }
 
@@ -54,6 +55,7 @@ interface CategoryData {
 }
 
 const PIE_COLORS = ["#8b7766", "#c6875b", "#567261", "#a06f37", "#6e7f96"];
+const YEAR_OPTIONS = [2024, 2023] as const;
 
 const NOTIFICATIONS = [
   { title: "Đơn hàng #7425 đã hoàn thành", time: "2 phút trước", tone: "success" },
@@ -75,7 +77,7 @@ export default function DashboardPage() {
   const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState("year");
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedYear, setSelectedYear] = useState(YEAR_OPTIONS[0]);
   const categoryTotal = categoryData.reduce((sum, item) => sum + item.value, 0);
 
   useEffect(() => {
@@ -105,7 +107,7 @@ export default function DashboardPage() {
             },
             {
               label: "Tổng khách hàng",
-              value: s.customers.value.toLocaleString(),
+              value: s.customers.value.toLocaleString("vi-VN"),
               change: `${s.customers.change >= 0 ? "+" : ""}${s.customers.change}%`,
               isUp: s.customers.isUp,
               icon: Users,
@@ -114,10 +116,9 @@ export default function DashboardPage() {
             {
               label: "Tỷ lệ chuyển đổi",
               value: `${s.conversionRate}%`,
-              change: "+1.5%",
-              isUp: true,
+              change: undefined,
               icon: TrendingUp,
-              compareLabel: "so với tháng trước",
+              compareLabel: "chưa có dữ liệu so sánh",
             },
           ]);
 
@@ -216,13 +217,15 @@ export default function DashboardPage() {
                   <Icon size={20} />
                 </div>
                 <div className="text-right">
-                  <p
-                    className="inline-flex items-center gap-1 text-sm font-semibold"
-                    style={{ color: stat.isUp ? "var(--admin-success)" : "var(--admin-danger)" }}
-                  >
-                    {stat.isUp ? <ArrowUpRight size={15} /> : <ArrowDownRight size={15} />}
-                    {stat.change}
-                  </p>
+                  {stat.change ? (
+                    <p
+                      className="inline-flex items-center gap-1 text-sm font-semibold"
+                      style={{ color: stat.isUp ? "var(--admin-success)" : "var(--admin-danger)" }}
+                    >
+                      {stat.isUp ? <ArrowUpRight size={15} /> : <ArrowDownRight size={15} />}
+                      {stat.change}
+                    </p>
+                  ) : null}
                   <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--admin-text-muted)]">{stat.compareLabel}</p>
                 </div>
               </div>
@@ -246,8 +249,8 @@ export default function DashboardPage() {
               <h2 className="admin-section-title">Hiệu suất kinh doanh</h2>
             </div>
 
-            <div className="flex w-full items-end gap-3 sm:w-auto">
-              <div className="min-w-[140px]">
+            <div className="flex w-full flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end sm:justify-end lg:w-auto">
+              <div className="w-full min-w-0 sm:flex-1 sm:basis-[12rem] lg:w-auto">
                 <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--admin-text-muted)]">
                   Năm hiển thị
                 </label>
@@ -256,12 +259,15 @@ export default function DashboardPage() {
                   onChange={(e) => setSelectedYear(parseInt(e.target.value))}
                   className="admin-select w-full text-[13px] font-medium"
                 >
-                  <option value={2024}>Năm 2024</option>
-                  <option value={2023}>Năm 2023</option>
+                  {YEAR_OPTIONS.map((year) => (
+                    <option key={year} value={year}>
+                      Năm {year}
+                    </option>
+                  ))}
                 </select>
               </div>
 
-              <div className="min-w-[160px]">
+              <div className="w-full min-w-0 sm:flex-1 sm:basis-[12rem] lg:w-auto">
                 <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--admin-text-muted)]">
                   Chu kỳ phân tích
                 </label>
