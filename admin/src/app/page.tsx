@@ -56,10 +56,10 @@ interface CategoryData {
 const PIE_COLORS = ["#8b7766", "#c6875b", "#567261", "#a06f37", "#6e7f96"];
 
 const NOTIFICATIONS = [
-  { title: "Order #7425 completed", time: "2 minutes ago", tone: "success" },
-  { title: "Product 'Silk blouse' is nearly out of stock", time: "15 minutes ago", tone: "warning" },
-  { title: "New customer signup", time: "1 hour ago", tone: "neutral" },
-  { title: "Monthly revenue report is ready", time: "3 hours ago", tone: "accent" },
+  { title: "Đơn hàng #7425 đã hoàn thành", time: "2 phút trước", tone: "success" },
+  { title: "Sản phẩm 'Áo lụa' sắp hết hàng", time: "15 phút trước", tone: "warning" },
+  { title: "Khách hàng mới đăng ký", time: "1 giờ trước", tone: "neutral" },
+  { title: "Báo cáo doanh thu tháng đã sẵn sàng", time: "3 giờ trước", tone: "accent" },
 ] as const;
 
 function getStatusTone(status: string) {
@@ -88,36 +88,36 @@ export default function DashboardPage() {
           const { stats: s } = data;
           setStats([
             {
-              label: "Total revenue",
+              label: "Tổng doanh thu",
               value: new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(s.revenue.value),
               change: `${s.revenue.change >= 0 ? "+" : ""}${s.revenue.change}%`,
               isUp: s.revenue.isUp,
               icon: CreditCard,
-              compareLabel: "vs last month",
+              compareLabel: "so với tháng trước",
             },
             {
-              label: "New orders",
+              label: "Đơn hàng mới",
               value: s.orders.value.toString(),
               change: `${s.orders.change >= 0 ? "+" : ""}${s.orders.change}%`,
               isUp: s.orders.isUp,
               icon: ShoppingBag,
-              compareLabel: "vs yesterday",
+              compareLabel: "so với hôm qua",
             },
             {
-              label: "Total customers",
+              label: "Tổng khách hàng",
               value: s.customers.value.toLocaleString(),
               change: `${s.customers.change >= 0 ? "+" : ""}${s.customers.change}%`,
               isUp: s.customers.isUp,
               icon: Users,
-              compareLabel: "total growth",
+              compareLabel: "tăng trưởng tổng",
             },
             {
-              label: "Conversion rate",
+              label: "Tỷ lệ chuyển đổi",
               value: `${s.conversionRate}%`,
               change: "+1.5%",
               isUp: true,
               icon: TrendingUp,
-              compareLabel: "vs last month",
+              compareLabel: "so với tháng trước",
             },
           ]);
 
@@ -142,13 +142,24 @@ export default function DashboardPage() {
           <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[var(--admin-border)] bg-[rgba(255,255,255,0.78)] shadow-admin-sm">
             <Spinner className="h-8 w-8 animate-spin text-[var(--admin-accent)]" />
           </div>
-          <p className="text-sm font-semibold text-[var(--admin-text-muted)]">Loading dashboard data...</p>
+          <p className="text-sm font-semibold text-[var(--admin-text-muted)]">Đang tải dữ liệu dashboard...</p>
         </div>
       </div>
     );
   }
 
-  const heroStats = stats.slice(0, 2);
+  const heroSnapshots = [
+    {
+      label: "Đơn gần nhất",
+      value: recentOrders[0]?.id ?? "Chưa có",
+      note: recentOrders[0]?.customer ?? "Chờ dữ liệu",
+    },
+    {
+      label: "Danh mục dẫn đầu",
+      value: categoryData[0]?.name ?? "Chưa có",
+      note: `${categoryData.length} danh mục`,
+    },
+  ];
 
   return (
     <div className="space-y-6">
@@ -158,56 +169,34 @@ export default function DashboardPage() {
             <div className="pointer-events-none absolute right-0 top-0 h-32 w-32 rounded-full bg-[rgba(139,119,102,0.08)] blur-3xl" />
             <div className="inline-flex items-center gap-2 rounded-full border border-[var(--admin-border)] bg-[rgba(255,255,255,0.68)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--admin-text-muted)]">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--admin-accent)]" />
-              Overview
+              Tổng quan
             </div>
             <div className="mt-4 max-w-2xl space-y-3">
               <h1 className="text-[2rem] font-semibold tracking-[-0.05em] text-[var(--admin-heading)] sm:text-[2.4rem] lg:text-[2.7rem]">
-                Dashboard
+                Tổng quan
               </h1>
               <p className="max-w-xl text-sm leading-6 text-[var(--admin-text-muted)]">
-                Clean, bright, and easy to scan. Hero sets the tone, KPI row keeps key signals tight, and the lower bands
-                separate insights from operations.
+                Bố cục sáng, gọn, dễ quét. Hero giữ nhịp nhìn, KPI row giữ tín hiệu chính, phần dưới tách phân tích và vận hành.
               </p>
             </div>
           </div>
 
           <div className="border-t border-[var(--admin-border)] bg-[linear-gradient(180deg,rgba(255,255,255,0.58),rgba(255,253,249,0.86))] p-6 sm:p-7 lg:border-l lg:border-t-0 lg:p-8">
             <div className="grid gap-3 sm:grid-cols-2">
-              {heroStats.map((stat, idx) => {
-                if (!stat) return null;
-                const Icon = stat.icon;
-
-                return (
-                  <article
-                    key={idx}
-                    className="rounded-[calc(var(--admin-radius-md)-4px)] border border-[var(--admin-border)] bg-white/78 p-4 shadow-admin-sm"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div
-                        className="flex h-10 w-10 items-center justify-center rounded-[calc(var(--admin-radius-md)-4px)]"
-                        style={{ background: "var(--admin-accent-soft)", color: "var(--admin-accent-strong)" }}
-                      >
-                        <Icon size={20} />
-                      </div>
-                      <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--admin-text-muted)]">
-                        {stat.compareLabel}
-                      </span>
-                    </div>
-
-                    <div className="mt-4 space-y-1.5">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--admin-text-muted)]">{stat.label}</p>
-                      <p className="text-2xl font-semibold tracking-[-0.04em] text-[var(--admin-heading)]">{stat.value}</p>
-                      <div
-                        className="inline-flex items-center gap-1 text-sm font-semibold"
-                        style={{ color: stat.isUp ? "var(--admin-success)" : "var(--admin-danger)" }}
-                      >
-                        {stat.isUp ? <ArrowUpRight size={15} /> : <ArrowDownRight size={15} />}
-                        {stat.change}
-                      </div>
-                    </div>
-                  </article>
-                );
-              })}
+              {heroSnapshots.map((snapshot, idx) => (
+                <article
+                  key={idx}
+                  className="rounded-[calc(var(--admin-radius-md)-4px)] border border-[var(--admin-border)] bg-white/78 p-4 shadow-admin-sm"
+                >
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--admin-text-muted)]">
+                    {snapshot.label}
+                  </p>
+                  <p className="mt-2 text-[1.35rem] font-semibold tracking-[-0.05em] text-[var(--admin-heading)]">
+                    {snapshot.value}
+                  </p>
+                  <p className="mt-1 text-sm text-[var(--admin-text-muted)]">{snapshot.note}</p>
+                </article>
+              ))}
             </div>
           </div>
         </div>
@@ -234,9 +223,7 @@ export default function DashboardPage() {
                     {stat.isUp ? <ArrowUpRight size={15} /> : <ArrowDownRight size={15} />}
                     {stat.change}
                   </p>
-                  <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--admin-text-muted)]">
-                    {stat.compareLabel}
-                  </p>
+                  <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--admin-text-muted)]">{stat.compareLabel}</p>
                 </div>
               </div>
 
@@ -251,47 +238,47 @@ export default function DashboardPage() {
         })}
       </section>
 
-      <section className="grid grid-cols-1 gap-6 xl:grid-cols-[1.35fr_0.65fr]">
-        <article className="admin-page-surface min-w-0">
-          <div className="flex flex-col gap-4 px-5 py-5 sm:px-6 sm:py-6">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-              <div className="space-y-2">
-                <span className="admin-section-kicker">Revenue insights</span>
-                <h2 className="admin-section-title">Revenue performance</h2>
-              </div>
-
-              <div className="flex w-full items-end gap-3 sm:w-auto">
-                <div className="min-w-[140px]">
-                  <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--admin-text-muted)]">
-                    Display year
-                  </label>
-                  <select
-                    value={selectedYear}
-                    onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                    className="admin-select w-full text-[13px] font-medium"
-                  >
-                    <option value={2024}>Year 2024</option>
-                    <option value={2023}>Year 2023</option>
-                  </select>
-                </div>
-
-                <div className="min-w-[160px]">
-                  <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--admin-text-muted)]">
-                    Analysis period
-                  </label>
-                  <select
-                    value={period}
-                    onChange={(e) => setPeriod(e.target.value)}
-                    className="admin-select w-full text-[13px] font-medium"
-                  >
-                    <option value="week">Weekly</option>
-                    <option value="month">Monthly</option>
-                    <option value="year">Yearly</option>
-                  </select>
-                </div>
-              </div>
+      <section className="admin-page-surface overflow-hidden">
+        <div className="flex flex-col gap-4 px-5 py-5 sm:px-6 sm:py-6">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div className="space-y-2">
+              <span className="admin-section-kicker">Phân tích</span>
+              <h2 className="admin-section-title">Hiệu suất kinh doanh</h2>
             </div>
 
+            <div className="flex w-full items-end gap-3 sm:w-auto">
+              <div className="min-w-[140px]">
+                <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--admin-text-muted)]">
+                  Năm hiển thị
+                </label>
+                <select
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+                  className="admin-select w-full text-[13px] font-medium"
+                >
+                  <option value={2024}>Năm 2024</option>
+                  <option value={2023}>Năm 2023</option>
+                </select>
+              </div>
+
+              <div className="min-w-[160px]">
+                <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--admin-text-muted)]">
+                  Chu kỳ phân tích
+                </label>
+                <select
+                  value={period}
+                  onChange={(e) => setPeriod(e.target.value)}
+                  className="admin-select w-full text-[13px] font-medium"
+                >
+                  <option value="week">Hàng tuần</option>
+                  <option value="month">Hàng tháng</option>
+                  <option value="year">Hàng năm</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">
             <div className="min-w-0 rounded-[calc(var(--admin-radius-lg)-8px)] border border-[var(--admin-border)] bg-[linear-gradient(180deg,rgba(255,255,255,0.8),rgba(255,252,247,0.86))] p-4 shadow-admin-sm">
               <div className="min-w-0" style={{ width: "100%", height: 250, minHeight: 250 }}>
                 <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={250}>
@@ -329,7 +316,7 @@ export default function DashboardPage() {
                       }}
                       formatter={(value: any) => [
                         new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(Number(value) || 0),
-                        "Revenue",
+                        "Doanh thu",
                       ]}
                     />
                     <Bar dataKey="revenue" fill="url(#revenueFill)" radius={[10, 10, 0, 0]} barSize={40} animationDuration={1500} />
@@ -337,17 +324,8 @@ export default function DashboardPage() {
                 </ResponsiveContainer>
               </div>
             </div>
-          </div>
-        </article>
 
-        <article className="admin-page-surface min-w-0 px-5 py-5 sm:px-6 sm:py-6">
-          <div className="space-y-4">
-            <div className="space-y-1.5">
-              <span className="admin-section-kicker">Category insights</span>
-              <h2 className="admin-section-title">Product mix</h2>
-            </div>
-
-            <div className="min-w-0 rounded-[calc(var(--admin-radius-lg)-8px)] border border-[var(--admin-border)] bg-[linear-gradient(180deg,rgba(255,255,255,0.8),rgba(255,252,247,0.86))] p-3 shadow-admin-sm">
+            <div className="rounded-[calc(var(--admin-radius-lg)-8px)] border border-[var(--admin-border)] bg-[linear-gradient(180deg,rgba(255,255,255,0.8),rgba(255,252,247,0.86))] p-4 shadow-admin-sm">
               <div className="relative min-w-0" style={{ width: "100%", height: 220, minHeight: 220 }}>
                 <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={220}>
                   <PieChart>
@@ -381,30 +359,30 @@ export default function DashboardPage() {
                 </ResponsiveContainer>
 
                 <div className="pointer-events-none absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-center">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--admin-text-muted)]">Categories</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--admin-text-muted)]">Danh mục</p>
                   <p className="mt-1 text-2xl font-semibold tracking-[-0.04em] text-[var(--admin-heading)]">{categoryData.length}</p>
                 </div>
               </div>
-            </div>
 
-            <div className="space-y-3">
-              {categoryData.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between rounded-[calc(var(--admin-radius-md)-4px)] border border-[var(--admin-border)] bg-[rgba(255,255,255,0.58)] px-4 py-3"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="h-3 w-3 rounded-full" style={{ backgroundColor: PIE_COLORS[idx % PIE_COLORS.length] }} />
-                    <span className="text-sm font-medium text-[var(--admin-text)]">{item.name}</span>
+              <div className="mt-4 space-y-3">
+                {categoryData.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between rounded-[calc(var(--admin-radius-md)-4px)] border border-[var(--admin-border)] bg-[rgba(255,255,255,0.58)] px-4 py-3"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="h-3 w-3 rounded-full" style={{ backgroundColor: PIE_COLORS[idx % PIE_COLORS.length] }} />
+                      <span className="text-sm font-medium text-[var(--admin-text)]">{item.name}</span>
+                    </div>
+                    <span className="text-sm font-semibold text-[var(--admin-text-muted)]">
+                      {categoryTotal > 0 ? ((item.value / categoryTotal) * 100).toFixed(0) : 0}%
+                    </span>
                   </div>
-                  <span className="text-sm font-semibold text-[var(--admin-text-muted)]">
-                    {categoryTotal > 0 ? ((item.value / categoryTotal) * 100).toFixed(0) : 0}%
-                  </span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </article>
+        </div>
       </section>
 
       <section className="grid grid-cols-1 gap-6 xl:grid-cols-[1.35fr_0.65fr]">
@@ -412,15 +390,15 @@ export default function DashboardPage() {
           <div className="flex flex-col gap-4 px-5 py-5 sm:px-6 sm:py-6">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div className="space-y-2">
-                <span className="admin-section-kicker">Operations</span>
-                <h2 className="admin-section-title">Latest orders</h2>
+                <span className="admin-section-kicker">Vận hành</span>
+                <h2 className="admin-section-title">Đơn hàng mới nhất</h2>
               </div>
 
               <Link
                 href="/orders"
                 className="inline-flex items-center gap-2 self-start rounded-[calc(var(--admin-radius-md)-4px)] border border-[var(--admin-border)] bg-[rgba(255,255,255,0.68)] px-4 py-2.5 text-sm font-semibold text-[var(--admin-heading)] transition hover:-translate-y-0.5 hover:bg-[var(--admin-surface-strong)]"
               >
-                View all
+                Xem tất cả
                 <ArrowUpRight size={16} />
               </Link>
             </div>
@@ -429,10 +407,10 @@ export default function DashboardPage() {
               <table>
                 <thead>
                   <tr>
-                    <th>Customer / Order ID</th>
-                    <th className="hidden md:table-cell">Product</th>
-                    <th>Status</th>
-                    <th className="text-right">Amount</th>
+                    <th>Khách hàng / Mã đơn</th>
+                    <th className="hidden md:table-cell">Sản phẩm</th>
+                    <th>Trạng thái</th>
+                    <th className="text-right">Tổng tiền</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -464,7 +442,7 @@ export default function DashboardPage() {
                   ) : (
                     <tr>
                       <td colSpan={4} className="py-16 text-center text-sm font-medium text-[var(--admin-text-muted)]">
-                        No recent orders found.
+                        Chưa có đơn hàng nào được ghi nhận.
                       </td>
                     </tr>
                   )}
@@ -477,8 +455,8 @@ export default function DashboardPage() {
         <article className="admin-page-surface px-5 py-5 sm:px-6 sm:py-6">
           <div className="space-y-4">
             <div className="space-y-1.5">
-              <span className="admin-section-kicker">Activity</span>
-              <h2 className="admin-section-title">Fresh notifications</h2>
+              <span className="admin-section-kicker">Nhịp đập của hàng</span>
+              <h2 className="admin-section-title">Thông báo mới</h2>
             </div>
 
             <div className="space-y-3">
@@ -514,7 +492,7 @@ export default function DashboardPage() {
               href="/notifications"
               className="inline-flex w-full items-center justify-center rounded-[calc(var(--admin-radius-md)-4px)] border border-[var(--admin-border-strong)] bg-[rgba(255,255,255,0.72)] px-4 py-3 text-sm font-semibold text-[var(--admin-heading)] transition hover:-translate-y-0.5 hover:bg-[var(--admin-surface-strong)]"
             >
-              View all notifications
+              Xem tất cả thông báo
             </Link>
           </div>
         </article>
