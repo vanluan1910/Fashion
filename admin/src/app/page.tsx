@@ -150,14 +150,14 @@ export default function DashboardPage() {
 
   const heroSnapshots = [
     {
-      label: "Đơn gần nhất",
-      value: recentOrders[0]?.id ?? "Chưa có",
-      note: recentOrders[0]?.customer ?? "Chờ dữ liệu",
+      label: "Đơn trong kỳ",
+      value: recentOrders.length.toString(),
+      note: "Số đơn đã ghi nhận",
     },
     {
-      label: "Danh mục dẫn đầu",
-      value: categoryData[0]?.name ?? "Chưa có",
-      note: `${categoryData.length} danh mục`,
+      label: "Tổng nhóm hàng",
+      value: categoryData.length.toString(),
+      note: `${categoryTotal.toLocaleString("vi-VN")} mục`,
     },
   ];
 
@@ -176,7 +176,7 @@ export default function DashboardPage() {
                 Tổng quan
               </h1>
               <p className="max-w-xl text-sm leading-6 text-[var(--admin-text-muted)]">
-                Bố cục sáng, gọn, dễ quét. Hero giữ nhịp nhìn, KPI row giữ tín hiệu chính, phần dưới tách phân tích và vận hành.
+                Bố cục sáng, gọn, dễ quét. Khối trên giữ nhịp nhìn, dải chỉ số giữ tín hiệu chính, phần dưới tách phân tích và vận hành.
               </p>
             </div>
           </div>
