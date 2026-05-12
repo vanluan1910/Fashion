@@ -5,6 +5,7 @@ import { pipeline } from 'node:stream/promises';
 
 const DEFAULT_ROOT = 'https://santino.com.vn/product-category/san-pham';
 const OUTPUT_DIR = path.join('output', 'santino-shirts');
+const REQUEST_DELAY_MS = 250;
 
 const SHIRT_HINTS = [
   'so mi',
@@ -37,6 +38,10 @@ function absoluteUrl(baseUrl, href) {
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))];
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function cleanUrl(value) {
@@ -171,6 +176,34 @@ function getExtension(url, contentType = '') {
   return '.jpg';
 }
 
+function getProductSlug(productUrl) {
+  return new URL(productUrl).pathname.split('/').filter(Boolean).pop();
+}
+
+function getProductFolderName(productUrl) {
+  const slug = getProductSlug(productUrl);
+  const code = slug.match(/-([a-z]\d{3,})$/i)?.[1];
+  return code ? code.toLowerCase() : slug;
+}
+
+export function buildProductImageEntries({ outputDir, productUrl, title, images }) {
+  const folderName = getProductFolderName(productUrl);
+
+  return images.map((imageUrl, index) => ({
+    title,
+    productUrl,
+    sourceUrl: productUrl,
+    imageUrl,
+    localPath: path.join(
+      outputDir,
+      'images',
+      folderName,
+      `${String(index + 1).padStart(2, '0')}${path.extname(new URL(imageUrl).pathname) || '.jpg'}`
+    ),
+    index: index + 1,
+  }));
+}
+
 async function downloadImage(url, filePath) {
   const response = await fetch(url, {
     headers: { 'user-agent': 'Mozilla/5.0 (compatible; SantinoImageScraper/1.0)' },
@@ -195,34 +228,45 @@ async function runCli() {
 
   const selectedProducts = unique(productLinks).slice(0, limit);
   const manifest = [];
+  const failures = [];
 
   for (const productUrl of selectedProducts) {
-    const html = await loadHtml(productUrl);
-    const images = extractProductImages(html, productUrl);
-    const title = extractProductTitle(html) || new URL(productUrl).pathname.split('/').filter(Boolean).pop();
-    const slug = new URL(productUrl).pathname.split('/').filter(Boolean).pop();
-
-    images.forEach((imageUrl, index) => {
-      const filename = `${slug}-${String(index + 1).padStart(2, '0')}${path.extname(new URL(imageUrl).pathname) || '.jpg'}`;
-      const filePath = path.join(outputDir, 'images', filename);
-      manifest.push({
-        title,
+    try {
+      await sleep(REQUEST_DELAY_MS);
+      const html = await loadHtml(productUrl);
+      const images = extractProductImages(html, productUrl);
+      const title = extractProductTitle(html) || getProductSlug(productUrl);
+      const entries = buildProductImageEntries({
+        outputDir,
         productUrl,
-        sourceUrl: productUrl,
-        imageUrl,
-        localPath: filePath,
-        index: index + 1,
+        title,
+        images,
       });
-    });
 
-    if (!dryRun) {
-      for (const entry of manifest.filter((item) => item.productUrl === productUrl)) {
-        try {
-          await access(entry.localPath);
-        } catch {
-          await downloadImage(entry.imageUrl, entry.localPath);
+      manifest.push(...entries);
+
+      if (!dryRun) {
+        for (const entry of entries) {
+          try {
+            await access(entry.localPath);
+          } catch {
+            try {
+              await sleep(REQUEST_DELAY_MS);
+              await downloadImage(entry.imageUrl, entry.localPath);
+            } catch (error) {
+              failures.push({
+                productUrl,
+                imageUrl: entry.imageUrl,
+                message: error.message,
+              });
+              console.error(`[download] ${entry.imageUrl} -> ${error.message}`);
+            }
+          }
         }
       }
+    } catch (error) {
+      failures.push({ productUrl, message: error.message });
+      console.error(`[product] ${productUrl} -> ${error.message}`);
     }
   }
 
@@ -231,7 +275,18 @@ async function runCli() {
     await writeFile(path.join(outputDir, 'manifest.json'), JSON.stringify(manifest, null, 2), 'utf8');
   }
 
-  console.log(JSON.stringify({ products: selectedProducts.length, images: manifest.length, dryRun }, null, 2));
+  console.log(
+    JSON.stringify(
+      {
+        products: selectedProducts.length,
+        images: manifest.length,
+        failures: failures.length,
+        dryRun,
+      },
+      null,
+      2
+    )
+  );
   return manifest;
 }
 

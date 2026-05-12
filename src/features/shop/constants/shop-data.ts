@@ -118,9 +118,9 @@ export const SHOP_PRODUCTS: Product[] = [
 ];
 
 export const SHOP_CATEGORIES = [
-  { id: 1, name: "Men", count: 6 },
-  { id: 2, name: "Women", count: 8 },
-  { id: 3, name: "Accessories", count: 10 }
+  { id: 1, name: "Thời trang nam", count: 6 },
+  { id: 2, name: "Thời trang nữ", count: 8 },
+  { id: 3, name: "Phụ kiện", count: 10 }
 ];
 
 export const SHOP_SIZES = [

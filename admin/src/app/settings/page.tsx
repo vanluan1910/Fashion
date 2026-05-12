@@ -65,16 +65,16 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <section className="admin-page-surface overflow-hidden">
+        <div className="flex flex-col gap-4 p-6 sm:flex-row sm:items-end sm:justify-between sm:p-7">
         <div>
           <h1 className="text-2xl font-extrabold text-[#333] tracking-tight">Cài đặt hệ thống</h1>
-          <p className="text-[#888] text-[13px] font-medium mt-1">Quản lý cấu hình chung, thương hiệu và quyền riêng tư.</p>
         </div>
         <div className="flex items-center gap-3">
           <button 
             onClick={handleSave}
             disabled={isSaving}
-            className="flex items-center gap-2 px-8 py-2.5 bg-[#f74f2e] text-white rounded-xl text-[13px] font-bold hover:bg-[#d24327] transition-all shadow-lg shadow-[#f74f2e]/20 active:scale-95 disabled:opacity-50"
+            className="flex items-center gap-2 rounded-[calc(var(--admin-radius-md)-4px)] bg-[var(--admin-accent)] px-8 py-2.5 text-[13px] font-semibold text-white shadow-admin-md transition hover:-translate-y-0.5 hover:bg-[var(--admin-accent-strong)] active:scale-95 disabled:opacity-50"
           >
             {isSaving ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span> : <Save size={18} />}
             Lưu thay đổi
@@ -82,7 +82,9 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      </section>
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Navigation Tabs */}
         <div className="lg:col-span-1 space-y-2">
           {[
@@ -94,10 +96,10 @@ export default function SettingsPage() {
             <button 
               key={tab.id}
               onClick={() => setActiveTab(tab.id as TabType)}
-              className={`w-full flex items-center gap-3 px-5 py-3.5 rounded-xl text-[14px] font-bold transition-all border ${
+              className={`w-full flex items-center gap-3 px-5 py-3.5 rounded-xl text-[14px] font-semibold transition-all border ${
                 activeTab === tab.id 
-                  ? "bg-[#f74f2e] text-white border-[#f74f2e] shadow-md shadow-[#f74f2e]/20" 
-                  : "bg-white text-[#666] hover:bg-[#f3f4f9] border-[#eee]"
+                  ? "bg-[var(--admin-accent)] text-white border-[var(--admin-accent)] shadow-md shadow-[rgba(139,119,102,0.18)]" 
+                  : "bg-white text-[var(--admin-text-muted)] hover:bg-[var(--admin-surface-strong)] border-[var(--admin-border)]"
               }`}
             >
               <tab.icon size={20} />
@@ -111,10 +113,9 @@ export default function SettingsPage() {
           {activeTab === "general" && (
             <>
               {/* General Config Card */}
-              <div className="bg-white rounded-2xl border border-[#eee] shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="p-6 border-b border-[#eee] bg-[#fcfcff]">
+              <div className="admin-page-surface overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="p-6 border-b border-[var(--admin-border)] bg-[rgba(255,255,255,0.56)]">
                    <h4 className="text-[16px] font-black text-[#333]">Thông tin trang web</h4>
-                   <p className="text-[#999] text-[12px] font-medium">Các thông tin này sẽ hiển thị lên công cụ tìm kiếm và trình duyệt.</p>
                 </div>
                 <div className="p-6 space-y-6">
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -172,10 +173,9 @@ export default function SettingsPage() {
               </div>
 
               {/* Social Links Card */}
-              <div className="bg-white rounded-2xl border border-[#eee] shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500 delay-150">
-                <div className="p-6 border-b border-[#eee] bg-[#fcfcff]">
+              <div className="admin-page-surface overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500 delay-150">
+                <div className="p-6 border-b border-[var(--admin-border)] bg-[rgba(255,255,255,0.56)]">
                    <h4 className="text-[16px] font-black text-[#333]">Mạng xã hội</h4>
-                   <p className="text-[#999] text-[12px] font-medium">Kết nối trang web với các tài khoản mạng xã hội của bạn.</p>
                 </div>
                 <div className="p-6 space-y-4">
                    <div className="flex items-center gap-4">

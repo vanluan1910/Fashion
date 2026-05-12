@@ -8,6 +8,8 @@ import type { Product } from "@/features/shop/types/shop-types";
 import { useCart } from "@/core/providers/CartProvider";
 import { useWishlist } from "@/core/providers/WishlistProvider";
 import { useCurrency } from "@/core/providers/CurrencyProvider";
+import { getShopCategoryLabel } from "../constants/shop-taxonomy";
+import { formatImageUrl } from "@/features/products/utils/productImages.mjs";
 
 interface ProductCardProps {
   product: Product;
@@ -66,12 +68,12 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
     <div className="featured_content group relative">
       <div className="featured_img_content relative overflow-hidden bg-white mb-5">
         {/* Main Image Section */}
-        <div className="relative w-full" style={{ aspectRatio: '270/340' }}>
+        <div className="relative w-full bg-[#f0f0f0] flex items-center justify-center" style={{ aspectRatio: '270/340' }}>
           <Image
-            src={product.image}
+            src={formatImageUrl(product.image)}
             alt={product.name}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-110"
+            className="object-cover object-top mix-blend-multiply transition-transform duration-700 group-hover:scale-110"
             priority={priority}
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
           />
@@ -120,7 +122,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
 
       {/* Product Info Section */}
       <div className="featured_detail_content pt-[5px] text-center">
-        <Link href={`/shop?category=${product.category}`}>
+        <Link href={`/shop?category=${encodeURIComponent(getShopCategoryLabel(product.category))}`}>
           <h5 className="featured_title text-[15px] text-[#333] mb-1 hover:text-[#f74f2e] transition-colors capitalize font-medium">
             {product.name}
           </h5>

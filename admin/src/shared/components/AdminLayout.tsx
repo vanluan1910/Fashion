@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ADMIN_SIDEBAR_LAYOUT, Sidebar } from "./Sidebar";
 import { Header } from "./Header";
@@ -28,7 +28,7 @@ export default function AdminLayout({
 
   useEffect(() => {
     const isAuth = localStorage.getItem("atelier_admin_auth");
-    
+
     if (isAuth !== "true" && !isLoginPage) {
       setIsAuthenticated(false);
       router.push("/login");
@@ -39,12 +39,10 @@ export default function AdminLayout({
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  // Trả về nội dung thô cho trang Login
   if (isLoginPage) {
     return <>{children}</>;
   }
 
-  // Chống nháy (flicker) bằng cách trả về null trong khi đang xác thực và chưa ở trang login
   if (isAuthenticated === false && !isLoginPage) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[var(--admin-canvas)]">
@@ -70,21 +68,21 @@ export default function AdminLayout({
       >
         <Header onToggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
 
-        <div className="h-[86px]" />
+        <div className="h-[72px]" />
 
-        <main className="px-4 pb-6 pt-5 sm:px-6 lg:px-8 lg:pb-8 lg:pt-6">
-          <div className="mx-auto flex min-h-[calc(100vh-10.5rem)] w-full max-w-[1600px] flex-col gap-6">
-            <div className="admin-page-surface min-h-[calc(100vh-11.5rem)] px-4 py-4 sm:px-5 sm:py-5 lg:px-7 lg:py-7">
+        <main className="px-4 pb-4 pt-3 sm:px-5 sm:pb-5 sm:pt-4 lg:px-6 lg:pb-6 lg:pt-4">
+          <div className="mx-auto flex min-h-[calc(100vh-8.75rem)] w-full max-w-[1600px] flex-col gap-4">
+            <div className="admin-page-surface min-h-[calc(100vh-10rem)] px-4 py-3.5 sm:px-5 sm:py-4 lg:px-6 lg:py-5">
               <div className="h-full animate-in fade-in duration-700">{children}</div>
             </div>
           </div>
         </main>
 
-        <footer className="px-4 pb-5 sm:px-6 lg:px-8 lg:pb-7">
-          <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3 rounded-[20px] border border-[var(--admin-border)] bg-[rgba(255,251,246,0.72)] px-4 py-3 text-[11px] font-medium text-[var(--admin-text-muted)] shadow-[var(--admin-shadow-sm)] backdrop-blur md:px-5">
+        <footer className="px-4 pb-4 sm:px-5 sm:pb-5 lg:px-6 lg:pb-6">
+          <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3 rounded-[18px] border border-[var(--admin-border)] bg-[rgba(255,255,255,0.7)] px-4 py-2.5 text-[10px] font-medium text-[var(--admin-text-muted)] shadow-[var(--admin-shadow-sm)] backdrop-blur md:px-5">
             <p className="tracking-[0.18em] uppercase">Atelier Admin Workspace</p>
             <p className="text-right">
-              © 2024 <span className="font-semibold text-[var(--admin-accent-strong)]">Atelier Luxury Team</span>
+              Â© 2024 <span className="font-semibold text-[var(--admin-accent-strong)]">Atelier Luxury Team</span>
             </p>
           </div>
         </footer>

@@ -1,129 +1,147 @@
-import React from "react";
-import Image from "next/image";
+"use client";
 
-export function BlogComments() {
-  const comments = [
-    {
-      id: 1,
-      name: "Nguyễn Văn A",
-      date: "25 Tháng 3, 2024",
-      avatar: "https://secure.gravatar.com/avatar/22e032470e9a7e6e580e0cd22c3e16ee?s=80&d=mm&r=g",
-      content: "Bài viết rất hữu ích! Tôi đã áp dụng các mẹo phối đồ này và cảm thấy tự tin hơn rất nhiều. Cảm ơn tác giả.",
-      replies: [
-        {
-          id: 2,
-          name: "Quản trị viên",
-          date: "26 Tháng 3, 2024",
-          avatar: "https://secure.gravatar.com/avatar/789?s=80&d=mm&r=g",
-          content: "Chào bạn, rất vui vì bài viết giúp ích được cho bạn. Chúc bạn luôn rạng rỡ!",
-        }
-      ]
-    },
-    {
-      id: 3,
-      name: "Trần Thị B",
-      date: "24 Tháng 3, 2024",
-      avatar: "https://secure.gravatar.com/avatar/456?s=80&d=mm&r=g",
-      content: "Mình rất thích phong cách tối giản này. Bạn có thể gợi ý thêm một số địa chỉ mua đồ uy tín không?",
+import React from "react";
+import { blogCommentService, type BlogComment } from "../services/blogCommentService";
+
+interface BlogCommentsProps {
+  postId: number;
+}
+
+export function BlogComments({ postId }: BlogCommentsProps) {
+  const [comments, setComments] = React.useState<BlogComment[]>([]);
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [content, setContent] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [error, setError] = React.useState("");
+
+  const loadComments = React.useCallback(async () => {
+    setIsLoading(true);
+    setError("");
+    try {
+      const data = await blogCommentService.getComments(postId);
+      setComments(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Không thể tải bình luận");
+    } finally {
+      setIsLoading(false);
     }
-  ];
+  }, [postId]);
+
+  React.useEffect(() => {
+    loadComments();
+  }, [loadComments]);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!name.trim() || !content.trim()) {
+      setError("Vui lòng nhập tên và nội dung bình luận.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError("");
+
+    try {
+      await blogCommentService.createComment(postId, {
+        user_name: name.trim(),
+        email: email.trim() || undefined,
+        content: content.trim()
+      });
+      setContent("");
+      setName("");
+      setEmail("");
+      await loadComments();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Không thể gửi bình luận");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="blog_comments_area mt-[80px]">
-      <h3 
-        className="text-[28px] font-normal text-[#333] mb-[45px] uppercase tracking-wider"
-        style={{ fontFamily: "var(--font-playfair), serif" }}
-      >
-        03 Bình luận
+      <h3 className="mb-[45px] font-serif text-[28px] font-normal uppercase tracking-wider text-[#333]">
+        {comments.length.toString().padStart(2, "0")} Bình luận
       </h3>
-      
+
       <div className="comment_list space-y-12">
-        {comments.map((comment) => (
-          <div key={comment.id} className="comment_item pb-10 border-b last:border-0 border-[#f0f0f0]">
-            <div className="flex flex-col md:flex-row gap-8">
-              <div className="w-[80px] h-[80px] shrink-0 rounded-full overflow-hidden border border-[#eee]">
-                <Image src={comment.avatar} alt={comment.name} width={80} height={80} className="w-full h-full object-cover" />
-              </div>
-              <div className="comment_content flex-1">
-                <div className="flex items-center justify-between mb-2">
-                  <h5 
-                    className="text-[18px] font-normal text-[#333] uppercase tracking-wide"
-                    style={{ fontFamily: "var(--font-playfair), serif" }}
-                  >
-                    {comment.name}
-                  </h5>
-                  <button type="button" suppressHydrationWarning className="text-[#f74f2e] text-[13px] font-bold uppercase hover:text-[#333] transition-colors font-sans tracking-widest border-b-2 border-transparent hover:border-[#f74f2e]">Phản hồi</button>
+        {isLoading ? (
+          <p className="font-sans text-[14px] text-[#888]">Đang tải bình luận...</p>
+        ) : comments.length > 0 ? (
+          comments.map((comment) => (
+            <div key={comment.comment_id} className="comment_item border-b border-[#f0f0f0] pb-10 last:border-0">
+              <div className="flex flex-col gap-8 md:flex-row">
+                <div className="flex h-[80px] w-[80px] shrink-0 items-center justify-center overflow-hidden rounded-full border border-[#eee] bg-[#f7f7f7]">
+                  <span className="font-sans text-[24px] font-bold text-[#777]">
+                    {comment.user_name?.charAt(0).toUpperCase() || "?"}
+                  </span>
                 </div>
-                <p className="text-[13px] text-[#999] mb-4 uppercase tracking-[2px]">{comment.date}</p>
-                <p className="text-[16px] text-[#666] leading-relaxed font-sans">{comment.content}</p>
+                <div className="comment_content flex-1">
+                  <div className="mb-2 flex items-center justify-between">
+                    <h5 className="font-serif text-[18px] font-normal uppercase tracking-wide text-[#333]">
+                      {comment.user_name}
+                    </h5>
+                  </div>
+                  <p className="mb-4 font-sans text-[13px] uppercase tracking-[2px] text-[#999]">
+                    {new Date(comment.created_at).toLocaleDateString("vi-VN")}
+                  </p>
+                  <p className="font-sans text-[16px] leading-relaxed text-[#666]">{comment.content}</p>
+                </div>
               </div>
             </div>
-
-            {comment.replies && (
-              <div className="replies mt-10 ml-0 md:ml-[110px] space-y-10">
-                {comment.replies.map((reply) => (
-                  <div key={reply.id} className="flex flex-col md:flex-row gap-8">
-                    <div className="w-[80px] h-[80px] shrink-0 rounded-full overflow-hidden border border-[#eee]">
-                      <Image src={reply.avatar} alt={reply.name} width={80} height={80} className="w-full h-full object-cover" />
-                    </div>
-                    <div className="comment_content flex-1 p-8 bg-[#fdfdfd] border border-[#f0f0f0] rounded-sm">
-                      <div className="flex items-center justify-between mb-2">
-                        <h5 
-                          className="text-[18px] font-normal text-[#333] uppercase tracking-wide"
-                          style={{ fontFamily: "var(--font-playfair), serif" }}
-                        >
-                          {reply.name} <span className="text-[#f74f2e] text-[12px] font-bold ml-2 uppercase tracking-tighter">(Quản trị viên)</span>
-                        </h5>
-                        <button type="button" suppressHydrationWarning className="text-[#f74f2e] text-[13px] font-bold uppercase hover:text-[#333] transition-colors font-sans tracking-widest">Phản hồi</button>
-                      </div>
-                      <p className="text-[13px] text-[#999] mb-4 uppercase tracking-[2px]">{reply.date}</p>
-                      <p className="text-[16px] text-[#666] leading-relaxed font-sans">{reply.content}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="font-sans text-[14px] text-[#888]">Chưa có bình luận nào.</p>
+        )}
       </div>
 
       <div className="comment_form_area mt-[100px] border-t-4 border-[#333] pt-[60px]">
-        <h3 
-          className="text-[32px] font-normal text-[#333] mb-[15px] uppercase tracking-widest"
-          style={{ fontFamily: "var(--font-playfair), serif" }}
-        >
+        <h3 className="mb-[15px] font-serif text-[32px] font-normal uppercase tracking-widest text-[#333]">
           Để lại bình luận
         </h3>
-        <p className="text-[15px] text-[#888] mb-[45px] font-sans">Email của bạn sẽ không được hiển thị công khai. Các trường bắt buộc được đánh dấu *</p>
-        
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <p className="mb-[45px] font-sans text-[15px] text-[#888]">
+          Email của bạn sẽ không được hiển thị công khai. Các trường bắt buộc được đánh dấu *
+        </p>
+
+        <form className="grid grid-cols-1 gap-8 md:grid-cols-2" onSubmit={handleSubmit}>
           <div className="col-span-2">
             <textarea
-              suppressHydrationWarning
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
               placeholder="Lời nhắn của bạn *"
               rows={6}
-              className="w-full px-5 py-4 border border-[#eee] focus:outline-none focus:border-[#f74f2e] transition-all font-sans resize-none placeholder:uppercase placeholder:text-[12px] placeholder:tracking-widest"
-            ></textarea>
-          </div>
-          <div>
-            <input
-              suppressHydrationWarning
-              type="text"
-              placeholder="Họ và tên *"
-              className="w-full h-[55px] px-5 border border-[#eee] focus:outline-none focus:border-[#f74f2e] transition-all font-sans placeholder:uppercase placeholder:text-[12px] placeholder:tracking-widest"
+              className="w-full resize-none border border-[#eee] px-5 py-4 font-sans transition-all placeholder:text-[12px] placeholder:uppercase placeholder:tracking-widest focus:border-[#f74f2e] focus:outline-none"
             />
           </div>
           <div>
             <input
-              suppressHydrationWarning
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              type="text"
+              placeholder="Họ và tên *"
+              className="h-[55px] w-full border border-[#eee] px-5 font-sans transition-all placeholder:text-[12px] placeholder:uppercase placeholder:tracking-widest focus:border-[#f74f2e] focus:outline-none"
+            />
+          </div>
+          <div>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               type="email"
               placeholder="Email *"
-              className="w-full h-[55px] px-5 border border-[#eee] focus:outline-none focus:border-[#f74f2e] transition-all font-sans placeholder:uppercase placeholder:text-[12px] placeholder:tracking-widest"
+              className="h-[55px] w-full border border-[#eee] px-5 font-sans transition-all placeholder:text-[12px] placeholder:uppercase placeholder:tracking-widest focus:border-[#f74f2e] focus:outline-none"
             />
           </div>
           <div className="col-span-2">
-            <button type="submit" suppressHydrationWarning className="px-12 h-[55px] bg-[#333] text-white font-bold uppercase text-[12px] tracking-[4px] hover:bg-[#f74f2e] transition-all font-sans">
-              Gửi bình luận
+            {error && <p className="mb-4 font-sans text-[13px] text-red-600">{error}</p>}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="h-[55px] bg-[#333] px-12 font-sans text-[12px] font-bold uppercase tracking-[4px] text-white transition-all hover:bg-[#f74f2e] disabled:opacity-50"
+            >
+              {isSubmitting ? "Đang gửi..." : "Gửi bình luận"}
             </button>
           </div>
         </form>

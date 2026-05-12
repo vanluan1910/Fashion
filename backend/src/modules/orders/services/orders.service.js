@@ -1,7 +1,16 @@
 const ordersRepo = require('../repositories/orders.repo');
 const OrderDTO = require('../dtos/orders.dto');
+const notificationsService = require('../../notifications/services/notifications.service');
 
 class OrdersService {
+  async emitNotificationSafely(payload) {
+    try {
+      await notificationsService.createNotification(payload);
+    } catch (error) {
+      console.warn('[notifications] create failed:', error.message);
+    }
+  }
+
   async getAllOrders() {
     try {
       const orders = await ordersRepo.findAll();
@@ -37,6 +46,22 @@ class OrdersService {
   async createOrder(data) {
     try {
       const orderId = await ordersRepo.create(data);
+
+      await this.emitNotificationSafely({
+        type: 'order_created',
+        title: `Đơn hàng mới #${orderId}`,
+        message: `Đơn hàng #${orderId} vừa được tạo.`,
+        entity_type: 'order',
+        entity_id: String(orderId),
+        actor_account_id: data.account_id || null,
+        metadata_json: {
+          order_id: orderId,
+          account_id: data.account_id || null,
+          total_amount: data.total_amount || 0,
+          status: data.status || 'Đang xử lý'
+        }
+      });
+
       return {
         success: true,
         data: { id: orderId },

@@ -21,7 +21,7 @@ export function CartTable() {
   };
 
   const MobileLabel = ({ text }: { text: string }) => (
-    <span className="md:hidden w-1/2 inline-block align-middle text-[16px] font-medium text-[#333] uppercase font-sans text-left pr-[10px]">
+    <span className="md:hidden w-1/2 inline-block align-middle text-[16px] font-medium text-[#333] uppercase text-left pr-[10px]">
       {text}
     </span>
   );
@@ -32,8 +32,8 @@ export function CartTable() {
         <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
           <i className="flaticon-shopping-bag text-[#aaa] text-[24px]"></i>
         </div>
-        <h3 className="text-[24px] font-normal text-[#333] mb-4 uppercase font-sans">Giỏ hàng đang trống</h3>
-        <p className="text-[16px] text-[#777] mb-8 font-sans">Có vẻ như bạn chưa thêm bất kỳ sản phẩm nào vào giỏ hàng.</p>
+        <h3 className="text-[24px] font-normal text-[#333] mb-4 uppercase">Giỏ hàng đang trống</h3>
+        <p className="text-[16px] text-[#777] mb-8">Có vẻ như bạn chưa thêm bất kỳ sản phẩm nào vào giỏ hàng.</p>
         <Link href="/shop" className="background-btn px-[35px] py-[15px] bg-[#f74f2e] text-white hover:bg-[#333] transition-all text-[14px] font-bold inline-block">
           Quay lại cửa hàng
         </Link>
@@ -48,10 +48,10 @@ export function CartTable() {
           <div className="w-full">
             {/* Desktop Header */}
             <div className="hidden md:flex border-t border-b border-[#e0dcdc]">
-              <div className="py-[13px] text-left text-[16px] font-medium text-[#333] font-sans w-[570px]">Sản phẩm</div>
-              <div className="py-[13px] text-left text-[16px] font-medium text-[#333] font-sans w-[191px]">Giá</div>
-              <div className="py-[13px] text-left text-[16px] font-medium text-[#333] font-sans w-[148px]">Số lượng</div>
-              <div className="py-[13px] text-left text-[16px] font-medium text-[#333] font-sans w-[148px]">Tổng cộng</div>
+              <div className="py-[13px] text-left text-[16px] font-medium text-[#333] w-[570px]">Sản phẩm</div>
+              <div className="py-[13px] text-left text-[16px] font-medium text-[#333] w-[191px]">Giá</div>
+              <div className="py-[13px] text-left text-[16px] font-medium text-[#333] w-[148px]">Số lượng</div>
+              <div className="py-[13px] text-left text-[16px] font-medium text-[#333] w-[148px]">Tổng cộng</div>
               <div className="py-[13px] text-right flex-1"></div>
             </div>
  
@@ -153,8 +153,8 @@ export function CartTable() {
 
         {/* Cart Total Summary */}
         <div className="cart_subtotal text-right mt-[30px] mb-[40px] px-0 md:px-[13px]">
-          <div className="inline-block w-1/2 md:w-auto text-left md:text-right text-[16px] font-normal text-[#333] font-sans pr-[15px]">Tạm tính:</div>
-          <div className="inline-block w-1/2 md:w-auto text-right text-[24px] font-bold text-primary font-sans leading-none">{formatPrice(cartTotal)}</div>
+          <div className="inline-block w-1/2 md:w-auto text-left md:text-right text-[16px] font-normal text-[#333] pr-[15px]">Tạm tính:</div>
+          <div className="inline-block w-1/2 md:w-auto text-right text-[24px] font-bold text-primary leading-none">{formatPrice(cartTotal)}</div>
         </div>
 
         {/* Footer Actions */}

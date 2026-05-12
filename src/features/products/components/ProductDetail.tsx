@@ -7,12 +7,13 @@ import { ProductDetailInfo } from "./ProductDetailInfo";
 import { ProductTabs } from "./ProductTabs";
 import { SAMPLE_PRODUCT } from "../constants";
 
-import { Product } from "../types/product";
+import { getProductImages } from "../utils/productImages.mjs";
 
 export default function ProductDetail({ product }: { product: Product }) {
+  const images = getProductImages(product);
 
   return (
-    <main className="bg-white min-h-screen pb-20 font-sans">
+    <main className="bg-white min-h-screen pb-20">
       <Breadcrumb 
         title="Chi Tiết Sản Phẩm" 
         items={[
@@ -25,7 +26,7 @@ export default function ProductDetail({ product }: { product: Product }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left: Gallery */}
           <div className="lg:col-span-5">
-            <ProductDetailGallery images={product.images || [product.image]} />
+            <ProductDetailGallery images={images} />
           </div>
 
           {/* Right: Info */}

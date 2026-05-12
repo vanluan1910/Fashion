@@ -38,7 +38,7 @@ export function BlogDetailContent({ post }: BlogDetailContentProps) {
           </span>
         </div>
 
-        <h2 className="text-[28px] md:text-[34px] font-normal text-[#333] mb-[25px] leading-[1.3] font-sans capitalize tracking-tight">
+        <h2 className="text-[28px] md:text-[34px] font-normal text-[#333] mb-[25px] leading-[1.3] font-serif capitalize tracking-tight">
           {post.title}
         </h2>
         

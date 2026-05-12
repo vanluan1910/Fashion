@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
 import { $getNodeByKey, LexicalNode, NodeKey } from 'lexical';
@@ -27,14 +27,9 @@ export default function ImageComponent({
   nodeKey,
 }: ImageComponentProps) {
   const [editor] = useLexicalComposerContext();
-  const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(nodeKey);
-  const [widthInput, setWidthInput] = useState(width ? String(width) : '');
+  const [isSelected, setSelected] = useLexicalNodeSelection(nodeKey);
   const imageRef = useRef<HTMLImageElement | null>(null);
   const dragStateRef = useRef<{ startX: number; startWidth: number } | null>(null);
-
-  useEffect(() => {
-    setWidthInput(width ? String(width) : '');
-  }, [width]);
 
   const updateImageSize = useCallback(
     (nextWidth?: number, nextHeight?: number) => {
@@ -49,12 +44,6 @@ export default function ImageComponent({
     [editor, nodeKey],
   );
 
-  const stopResize = useCallback(() => {
-    dragStateRef.current = null;
-    window.removeEventListener('mousemove', onDragResize);
-    window.removeEventListener('mouseup', stopResize);
-  }, []);
-
   const onDragResize = useCallback(
     (event: MouseEvent) => {
       const dragState = dragStateRef.current;
@@ -67,11 +56,16 @@ export default function ImageComponent({
         Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, dragState.startWidth + deltaX)),
       );
 
-      setWidthInput(String(nextWidth));
       updateImageSize(nextWidth, undefined);
     },
     [updateImageSize],
   );
+
+  const stopResize = useCallback(function stopResizeHandler() {
+    dragStateRef.current = null;
+    window.removeEventListener('mousemove', onDragResize);
+    window.removeEventListener('mouseup', stopResizeHandler);
+  }, [onDragResize]);
 
   const startResize = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();

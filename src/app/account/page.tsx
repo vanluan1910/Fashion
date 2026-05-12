@@ -22,6 +22,8 @@ import {
 import Link from "next/link";
 import { orderService } from "@/features/checkout/services/orderService";
 import { AnimatePresence } from "framer-motion";
+import { WishlistTable } from "@/features/wishlist/components/WishlistTable";
+import { reviewService } from "@/features/account/services/reviewService";
 
 export default function AccountPage() {
   const { user, logout, updateProfile, isAuthenticated, isLoading } = useAuth();
@@ -45,6 +47,9 @@ export default function AccountPage() {
   const [hoverRating, setHoverRating] = React.useState(0);
   const [comment, setComment] = React.useState("");
   const [isSubmittingReview, setIsSubmittingReview] = React.useState(false);
+  const [isReviewSuccessOpen, setIsReviewSuccessOpen] = React.useState(false);
+  const [selectedReviewProductId, setSelectedReviewProductId] = React.useState("");
+  const [reviewError, setReviewError] = React.useState("");
 
   // Redirect to login if not authenticated (only after loading is finished)
   React.useEffect(() => {
@@ -104,7 +109,7 @@ export default function AccountPage() {
   const menuItems = [
     { id: "profile", icon: FaUser, label: "Thông tin cá nhân" },
     { id: "orders", icon: FaShoppingBag, label: "Đơn hàng của tôi" },
-    { id: "wishlist", icon: FaHeart, label: "Sản phẩm yêu thích", href: "/wishlist" },
+    { id: "wishlist", icon: FaHeart, label: "Sản phẩm yêu thích" },
     { id: "address", icon: FaMapMarkerAlt, label: "Sổ địa chỉ" },
   ];
 
@@ -133,47 +138,88 @@ export default function AccountPage() {
     }
   };
 
+  const resetReviewForm = () => {
+    setComment("");
+    setRating(5);
+    setHoverRating(0);
+    setIsSubmittingReview(false);
+    setReviewError("");
+    setSelectedReviewProductId("");
+  };
+
+  const closeReviewModal = () => {
+    setIsReviewOpen(false);
+    resetReviewForm();
+  };
+
+  const openReviewModal = (order: any) => {
+    const firstProductId = order?.items?.[0]?.product_id;
+    setSelectedOrder(order);
+    setSelectedReviewProductId(firstProductId ? String(firstProductId) : "");
+    setReviewError("");
+    setIsReviewOpen(true);
+  };
+
+  const handleSubmitReview = async () => {
+    if (!selectedOrder) return;
+
+    if (!selectedReviewProductId) {
+      setReviewError("Vui lòng chọn sản phẩm cần đánh giá.");
+      return;
+    }
+
+    setIsSubmittingReview(true);
+    setReviewError("");
+
+    const result = await reviewService.createReview({
+      orderId: selectedOrder.id,
+      productId: selectedReviewProductId,
+      rating,
+      comment,
+      accountId: user.id
+    });
+
+    if (!result.success) {
+      setIsSubmittingReview(false);
+      setReviewError(result.message || "Không thể gửi đánh giá lúc này.");
+      return;
+    }
+
+    closeReviewModal();
+    setIsReviewSuccessOpen(true);
+  };
+
   return (
     <main className="min-h-screen bg-[#faf9f7]">
       <AccountBreadcrumb title="tài khoản của tôi" />
       
-      <section className="py-[40px] md:py-[80px]">
+      <section className="pb-[40px] pt-[20px] md:pb-[80px] md:pt-[30px]">
         <div className="max-w-[1170px] mx-auto px-[15px]">
           <div className="flex flex-wrap -mx-[15px]">
             {/* Sidebar Navigation */}
             <div className="w-full lg:w-1/4 px-[15px] mb-[30px] lg:mb-0">
               <div className="bg-white border border-[#eee] p-6 md:p-8 shadow-sm rounded-sm">
                 <div className="text-center mb-8 pb-8 border-b border-[#eee]">
-                  <div className="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-serif italic font-bold shadow-lg shadow-primary/20">
+                  <div className="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl   font-bold shadow-lg shadow-primary/20">
                     {user.name.charAt(0).toUpperCase()}
                   </div>
-                  <h4 className="text-[20px] font-normal text-[#333] font-serif italic">{user.name}</h4>
-                  <p className="text-[12px] text-[#999] uppercase tracking-widest mt-1 font-sans font-medium">{user.email}</p>
+                  <h4 className="text-[20px] font-normal text-[#333]  ">{user.name}</h4>
+                  <p className="text-[12px] text-[#999] uppercase tracking-widest mt-1  font-medium">{user.email}</p>
                 </div>
                 
                 <nav className="space-y-4">
                   {menuItems.map((item, idx) => (
-                    item.href ? (
-                      <Link 
-                        key={idx} 
-                        href={item.href}
-                        className="flex items-center gap-3 text-[12px] uppercase tracking-[2px] transition-all duration-300 font-sans text-[#777] hover:text-primary"
-                      >
-                        <item.icon size={14} className="text-[#aaa]" /> {item.label}
-                      </Link>
-                    ) : (
-                      <button 
-                        key={idx} 
-                        onClick={() => { setActiveTab(item.id); setIsEditing(false); }}
-                        className={`flex items-center gap-3 text-[12px] uppercase tracking-[2px] transition-all duration-300 font-sans ${activeTab === item.id ? "text-primary font-bold" : "text-[#777] hover:text-primary"}`}
-                      >
-                        <item.icon size={14} className={activeTab === item.id ? "text-primary" : "text-[#aaa]"} /> {item.label}
-                      </button>
-                    )
+                    <button 
+                      key={idx} 
+                      onClick={() => { setActiveTab(item.id); setIsEditing(false); }}
+                      className={`flex items-center gap-3 text-[12px] uppercase tracking-[2px] transition-all duration-300  ${activeTab === item.id ? "text-primary font-bold" : "text-[#777] hover:text-primary"}`}
+                    >
+                      <item.icon size={14} className={activeTab === item.id ? "text-primary" : "text-[#aaa]"} /> {item.label}
+                    </button>
                   ))}
                   <button 
                     onClick={logout}
-                    className="flex items-center gap-3 text-[12px] uppercase tracking-[2px] text-red-500 font-bold pt-4 border-t border-[#eee] w-full hover:text-red-700 transition-colors font-sans"
+                    className="flex items-center gap-3 text-[12px] uppercase tracking-[2px] text-red-500 font-bold pt-4 border-t border-[#eee] w-full hover:text-red-700 transition-colors "
                   >
                     <FaSignOutAlt size={14} /> Đăng xuất
                   </button>
@@ -192,13 +238,13 @@ export default function AccountPage() {
                 {activeTab === "profile" ? (
                   <div className="p-6 md:p-10 border border-[#eee] bg-white shadow-sm rounded-sm">
                     <div className="flex justify-between items-center mb-8 border-b border-[#eee] pb-4">
-                      <h3 className="text-[22px] md:text-[32px] font-normal text-[#333] font-serif italic">
+                      <h3 className="text-[22px] md:text-[32px] font-normal text-[#333]  ">
                         Thông tin hồ sơ
                       </h3>
                       {!isEditing ? (
                         <button 
                           onClick={() => setIsEditing(true)}
-                          className="text-[12px] font-bold uppercase tracking-[2px] text-primary border-b border-primary pb-0.5 hover:text-[#333] hover:border-[#333] transition-all font-sans"
+                          className="text-[12px] font-bold uppercase tracking-[2px] text-primary border-b border-primary pb-0.5 hover:text-[#333] hover:border-[#333] transition-all "
                         >
                           Chỉnh sửa
                         </button>
@@ -206,14 +252,14 @@ export default function AccountPage() {
                         <div className="flex gap-6">
                           <button 
                             onClick={() => setIsEditing(false)}
-                            className="text-[12px] font-bold uppercase tracking-[2px] text-[#999] hover:text-[#333] transition-all font-sans"
+                            className="text-[12px] font-bold uppercase tracking-[2px] text-[#999] hover:text-[#333] transition-all "
                           >
                             Hủy
                           </button>
                           <button 
                             onClick={handleSave}
                             disabled={isSaving}
-                            className="text-[12px] font-bold uppercase tracking-[2px] text-primary border-b border-primary pb-0.5 hover:text-[#333] hover:border-[#333] transition-all disabled:opacity-50 font-sans"
+                            className="text-[12px] font-bold uppercase tracking-[2px] text-primary border-b border-primary pb-0.5 hover:text-[#333] hover:border-[#333] transition-all disabled:opacity-50 "
                           >
                             {isSaving ? "Đang lưu..." : "Lưu thay đổi"}
                           </button>
@@ -224,64 +270,64 @@ export default function AccountPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                       <div className="space-y-6">
                         <div className="group">
-                          <label className="block text-[11px] font-bold text-[#333] mb-2 uppercase tracking-[2px] font-sans">Tên đầy đủ</label>
+                          <label className="block text-[11px] font-bold text-[#333] mb-2 uppercase tracking-[2px] ">Tên đầy đủ</label>
                           {isEditing ? (
                             <input 
                               type="text" 
                               value={editForm.name}
                               onChange={(e) => setEditForm({...editForm, name: e.target.value})}
-                              className="w-full h-[45px] px-0 bg-transparent border-b-2 border-[#1a1a1a] focus:border-primary outline-none font-sans text-[16px] font-bold text-[#1a1a1a] transition-colors" 
+                              className="w-full h-[45px] px-0 bg-transparent border-b-2 border-[#1a1a1a] focus:border-primary outline-none  text-[16px] font-normal text-[#1a1a1a] transition-colors" 
                             />
                           ) : (
-                            <p className="text-[15px] text-[#333] font-bold border-b border-[#ddd] pb-2 font-sans">{user.name}</p>
+                            <p className="text-[15px] text-[#333] font-normal border-b border-[#ddd] pb-2 ">{user.name}</p>
                           )}
                         </div>
                         <div className="group">
-                          <label className="block text-[11px] font-bold text-[#333] mb-2 uppercase tracking-[2px] font-sans">Địa chỉ Email</label>
+                          <label className="block text-[11px] font-bold text-[#333] mb-2 uppercase tracking-[2px] ">Địa chỉ Email</label>
                           {isEditing ? (
                             <input 
                               type="email" 
                               value={editForm.email}
                               onChange={(e) => setEditForm({...editForm, email: e.target.value})}
-                              className="w-full h-[45px] px-0 bg-transparent border-b-2 border-[#1a1a1a] focus:border-primary outline-none font-sans text-[16px] font-bold text-[#1a1a1a] transition-colors" 
+                              className="w-full h-[45px] px-0 bg-transparent border-b-2 border-[#1a1a1a] focus:border-primary outline-none  text-[16px] font-normal text-[#1a1a1a] transition-colors" 
                             />
                           ) : (
-                            <p className="text-[15px] text-[#333] font-bold border-b border-[#ddd] pb-2 font-sans">{user.email}</p>
+                            <p className="text-[15px] text-[#333] font-normal border-b border-[#ddd] pb-2 ">{user.email}</p>
                           )}
                         </div>
 
                         {isEditing && (
                           <div className="pt-8 space-y-6 border-t border-[#eee] mt-10">
-                            <span className="text-[11px] font-bold text-primary uppercase tracking-[4px] block font-sans">Bảo mật</span>
-                            <h4 className="text-[18px] font-normal text-[#333] font-serif italic">Thay đổi mật khẩu</h4>
+                            <span className="text-[11px] font-bold text-primary uppercase tracking-[4px] block ">Bảo mật</span>
+                            <h4 className="text-[18px] font-normal text-[#333]  ">Thay đổi mật khẩu</h4>
                             <div className="group">
-                              <label className="block text-[11px] font-bold text-[#333] mb-2 uppercase tracking-[2px] font-sans">Mật khẩu hiện tại</label>
+                              <label className="block text-[11px] font-bold text-[#333] mb-2 uppercase tracking-[2px] ">Mật khẩu hiện tại</label>
                               <input 
                                 type="password" 
                                 value={editForm.currentPassword}
                                 onChange={(e) => setEditForm({...editForm, currentPassword: e.target.value})}
                                 placeholder="Nhập mật khẩu cũ"
-                                className="w-full h-[45px] px-0 bg-transparent border-b-2 border-[#ddd] focus:border-[#1a1a1a] outline-none font-sans text-[16px] font-bold text-[#1a1a1a] placeholder:text-gray-400 transition-colors" 
+                                className="w-full h-[45px] px-0 bg-transparent border-b-2 border-[#ddd] focus:border-[#1a1a1a] outline-none  text-[16px] font-normal text-[#1a1a1a] placeholder:text-gray-400 transition-colors" 
                               />
                             </div>
                             <div className="group">
-                              <label className="block text-[11px] font-bold text-[#333] mb-2 uppercase tracking-[2px] font-sans">Mật khẩu mới</label>
+                              <label className="block text-[11px] font-bold text-[#333] mb-2 uppercase tracking-[2px] ">Mật khẩu mới</label>
                               <input 
                                 type="password" 
                                 value={editForm.newPassword}
                                 onChange={(e) => setEditForm({...editForm, newPassword: e.target.value})}
                                 placeholder="Ít nhất 6 ký tự"
-                                className="w-full h-[45px] px-0 bg-transparent border-b-2 border-[#ddd] focus:border-[#1a1a1a] outline-none font-sans text-[16px] font-bold text-[#1a1a1a] placeholder:text-gray-300 transition-colors" 
+                                className="w-full h-[45px] px-0 bg-transparent border-b-2 border-[#ddd] focus:border-[#1a1a1a] outline-none  text-[16px] font-normal text-[#1a1a1a] placeholder:text-gray-300 transition-colors" 
                               />
                             </div>
                             <div className="group">
-                              <label className="block text-[11px] font-bold text-[#333] mb-2 uppercase tracking-[2px] font-sans">Xác nhận mật khẩu</label>
+                              <label className="block text-[11px] font-bold text-[#333] mb-2 uppercase tracking-[2px] ">Xác nhận mật khẩu</label>
                               <input 
                                 type="password" 
                                 value={editForm.confirmPassword}
                                 onChange={(e) => setEditForm({...editForm, confirmPassword: e.target.value})}
                                 placeholder="Xác nhận lại"
-                                className="w-full h-[45px] px-0 bg-transparent border-b-2 border-[#ddd] focus:border-[#1a1a1a] outline-none font-sans text-[16px] font-bold text-[#1a1a1a] placeholder:text-gray-300 transition-colors" 
+                                className="w-full h-[45px] px-0 bg-transparent border-b-2 border-[#ddd] focus:border-[#1a1a1a] outline-none  text-[16px] font-normal text-[#1a1a1a] placeholder:text-gray-300 transition-colors" 
                               />
                             </div>
                           </div>
@@ -292,10 +338,10 @@ export default function AccountPage() {
                          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm">
                           <FaShoppingBag className="text-primary text-2xl" />
                          </div>
-                         <p className="text-[14px] text-[#888] font-sans italic leading-relaxed">Bạn có {orders.length} đơn hàng đã thực hiện.</p>
+                         <p className="text-[14px] text-[#888]   leading-relaxed">Bạn có {orders.length} đơn hàng đã thực hiện.</p>
                          <button 
                             onClick={() => setActiveTab("orders")}
-                            className="mt-6 inline-flex h-[45px] px-8 bg-primary text-white text-[11px] font-bold uppercase tracking-[2px] items-center justify-center hover:bg-[#333] transition-all font-sans"
+                            className="mt-6 inline-flex h-[45px] px-8 bg-primary text-white text-[11px] font-bold uppercase tracking-[2px] items-center justify-center hover:bg-[#333] transition-all "
                          >
                             Xem lịch sử mua hàng
                          </button>
@@ -304,7 +350,7 @@ export default function AccountPage() {
                   </div>
                 ) : activeTab === "orders" ? (
                   <div className="p-10 border border-[#eee] bg-white shadow-sm rounded-sm">
-                    <h3 className="text-[32px] font-normal text-[#333] mb-8 font-serif italic border-b border-[#eee] pb-4">
+                    <h3 className="text-[32px] font-normal text-[#333] mb-8   border-b border-[#eee] pb-4">
                       Lịch sử đơn hàng
                     </h3>
                     
@@ -323,20 +369,20 @@ export default function AccountPage() {
                           <tbody>
                             {orders.map((order, idx) => (
                               <tr key={idx} className="border-b border-[#f9f9f9] hover:bg-[#fafafa] transition-colors">
-                                <td className="py-5 font-sans font-bold text-[14px] text-primary">{order.id}</td>
-                                <td className="py-5 font-sans text-[14px] text-[#666]">{formatDate(order.date)}</td>
+                                <td className="py-5  font-bold text-[14px] text-primary">{order.id}</td>
+                                <td className="py-5  text-[14px] text-[#666]">{formatDate(order.date)}</td>
                                 <td className="py-5">
                                   <span className={`px-3 py-1 ${getStatusInfo(order.status).bg} ${getStatusInfo(order.status).color} border ${getStatusInfo(order.status).border} text-[10px] font-bold uppercase tracking-[1px] rounded-full`}>
                                     {order.status}
                                   </span>
                                 </td>
-                                <td className="py-5 font-sans font-bold text-[14px] text-[#333]">
+                                <td className="py-5  font-bold text-[14px] text-[#333]">
                                   {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.total)}
                                 </td>
                                 <td className="py-5 text-right flex items-center justify-end gap-4">
                                   {order.status === "Hoàn thành" && (
                                     <button 
-                                      onClick={() => { setSelectedOrder(order); setIsReviewOpen(true); }}
+                                      onClick={() => openReviewModal(order)}
                                       className="text-[11px] font-bold uppercase tracking-[1px] text-primary hover:text-[#333] transition-colors"
                                     >
                                       Đánh giá
@@ -357,16 +403,23 @@ export default function AccountPage() {
                     ) : (
                       <div className="py-20 text-center flex flex-col items-center">
                         <FaShoppingBag size={48} className="text-[#eee] mb-6" />
-                        <p className="text-[15px] text-[#999] font-sans italic mb-8">Bạn chưa có đơn hàng nào.</p>
+                        <p className="text-[15px] text-[#999]   mb-8">Bạn chưa có đơn hàng nào.</p>
                         <Link href="/shop" className="h-[55px] px-12 bg-[#333] text-white text-[12px] font-bold uppercase tracking-[3px] flex items-center justify-center hover:bg-primary transition-all">
                           Bắt đầu mua sắm
                         </Link>
                       </div>
                     )}
                   </div>
+                ) : activeTab === "wishlist" ? (
+                  <div className="p-10 border border-[#eee] bg-white shadow-sm rounded-sm">
+                    <h3 className="text-[32px] font-normal text-[#333] mb-8   border-b border-[#eee] pb-4">
+                      Sản phẩm yêu thích
+                    </h3>
+                    <WishlistTable />
+                  </div>
                 ) : (
                   <div className="p-10 border border-[#eee] bg-white shadow-sm rounded-sm text-center py-20">
-                    <h3 className="text-[24px] font-normal text-[#999] font-serif italic">Tính năng đang được phát triển...</h3>
+                    <h3 className="text-[24px] font-normal text-[#999]  ">Tính năng đang được phát triển...</h3>
                   </div>
                 )}
               </motion.div>
@@ -394,7 +447,7 @@ export default function AccountPage() {
             >
               <div className="p-6 border-b border-[#eee] flex justify-between items-center bg-[#faf9f7]">
                 <div>
-                  <h4 className="text-[18px] font-normal text-[#333] font-serif italic mb-0.5">Chi tiết trạng thái</h4>
+                  <h4 className="text-[18px] font-normal text-[#333]   mb-0.5">Chi tiết trạng thái</h4>
                   <p className="text-[10px] font-bold text-[#999] uppercase tracking-[2px]">Mã đơn: {selectedOrder.id}</p>
                 </div>
                 <button 
@@ -453,7 +506,7 @@ export default function AccountPage() {
                       </div>
                       <div>
                         <p className="text-[9px] font-bold text-[#999] uppercase tracking-[1px] mb-0">Ngày đặt</p>
-                        <p className="text-[13px] font-bold text-[#333] font-sans">{formatDate(selectedOrder.date)}</p>
+                        <p className="text-[13px] font-bold text-[#333] ">{formatDate(selectedOrder.date)}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2.5">
@@ -462,7 +515,7 @@ export default function AccountPage() {
                       </div>
                       <div>
                         <p className="text-[9px] font-bold text-[#999] uppercase tracking-[1px] mb-0">Trạng thái</p>
-                        <p className={`text-[13px] font-bold ${getStatusInfo(selectedOrder.status).color} font-sans uppercase tracking-[0.5px]`}>
+                        <p className={`text-[13px] font-bold ${getStatusInfo(selectedOrder.status).color}  uppercase tracking-[0.5px]`}>
                           {selectedOrder.status}
                         </p>
                       </div>
@@ -475,7 +528,7 @@ export default function AccountPage() {
                       </div>
                       <div>
                         <p className="text-[9px] font-bold text-[#999] uppercase tracking-[1px] mb-0">Tổng tiền</p>
-                        <p className="text-[16px] font-bold text-primary font-sans">
+                        <p className="text-[16px] font-bold text-primary ">
                           {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(selectedOrder.total)}
                         </p>
                       </div>
@@ -486,7 +539,7 @@ export default function AccountPage() {
                 {selectedOrder.status === "Đang xử lý" && (
                   <div className="mt-6 p-4 bg-blue-50/50 border border-blue-100 rounded-sm flex items-start gap-3">
                     <FaClock className="text-blue-500 mt-1 shrink-0" size={14} />
-                    <p className="text-[12px] text-blue-700 italic font-sans leading-relaxed">
+                    <p className="text-[12px] text-blue-700   leading-relaxed">
                       Đơn hàng của bạn đang được Atelier chuẩn bị và kiểm tra kỹ lưỡng trước khi gửi đi.
                     </p>
                   </div>
@@ -497,11 +550,14 @@ export default function AccountPage() {
                     <div className="flex gap-1 text-primary">
                       <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
                     </div>
-                    <p className="text-[13px] text-green-800 font-bold font-serif italic">
+                    <p className="text-[13px] text-green-800 font-bold  ">
                       Đơn hàng đã được giao thành công!
                     </p>
                     <button 
-                      onClick={() => { setIsTrackingOpen(false); setIsReviewOpen(true); }}
+                      onClick={() => {
+                        setIsTrackingOpen(false);
+                        openReviewModal(selectedOrder);
+                      }}
                       className="text-[11px] font-bold uppercase tracking-[2px] text-primary border-b border-primary pb-0.5 hover:text-[#333] hover:border-[#333] transition-all"
                     >
                       Viết đánh giá ngay
@@ -513,7 +569,7 @@ export default function AccountPage() {
               <div className="p-6 bg-[#faf9f7] border-t border-[#eee] flex justify-end">
                 <button 
                   onClick={() => setIsTrackingOpen(false)}
-                  className="h-[40px] px-8 bg-[#333] text-white text-[10px] font-bold uppercase tracking-[2px] hover:bg-primary transition-all font-sans"
+                  className="h-[40px] px-8 bg-[#333] text-white text-[10px] font-bold uppercase tracking-[2px] hover:bg-primary transition-all "
                 >
                   Đóng
                 </button>
@@ -531,7 +587,11 @@ export default function AccountPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsReviewOpen(false)}
+              onClick={() => {
+                if (!isSubmittingReview) {
+                  closeReviewModal();
+                }
+              }}
               className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             />
             <motion.div 
@@ -542,18 +602,38 @@ export default function AccountPage() {
             >
               <div className="p-6 border-b border-[#eee] flex justify-between items-center bg-[#faf9f7]">
                 <div>
-                  <h4 className="text-[18px] font-normal text-[#333] font-serif italic mb-0.5">Đánh giá sản phẩm</h4>
+                  <h4 className="text-[18px] font-normal text-[#333]   mb-0.5">Đánh giá sản phẩm</h4>
                   <p className="text-[10px] font-bold text-[#999] uppercase tracking-[2px]">Mã đơn: {selectedOrder.id}</p>
                 </div>
                 <button 
-                  onClick={() => setIsReviewOpen(false)}
-                  className="w-8 h-8 flex items-center justify-center text-[#999] hover:text-primary transition-colors"
+                  onClick={closeReviewModal}
+                  disabled={isSubmittingReview}
+                  className="w-8 h-8 flex items-center justify-center text-[#999] hover:text-primary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <FaTimes size={12} />
                 </button>
               </div>
 
               <div className="p-8 text-center">
+                <div className="mb-6 text-left">
+                  <label className="mb-2 block text-[11px] font-bold uppercase tracking-[2px] text-[#333]">
+                    Sản phẩm cần đánh giá
+                  </label>
+                  <select
+                    value={selectedReviewProductId}
+                    onChange={(e) => setSelectedReviewProductId(e.target.value)}
+                    disabled={isSubmittingReview}
+                    className="h-[52px] w-full border border-[#eee] bg-[#faf9f7] px-4 text-[14px] text-[#333] outline-none transition-colors focus:border-primary disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    <option value="">Chọn sản phẩm</option>
+                    {(selectedOrder.items || []).map((item: any) => (
+                      <option key={`${item.product_id}-${item.id}`} value={String(item.product_id)}>
+                        {item.product_name} x{item.quantity}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
                 <div className="mb-8">
                   <p className="text-[14px] text-[#333] mb-4 font-bold">Bạn thấy đơn hàng này như thế nào?</p>
                   <div className="flex justify-center gap-2">
@@ -584,20 +664,18 @@ export default function AccountPage() {
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                     placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..."
-                    className="w-full h-[120px] p-4 bg-[#faf9f7] border border-[#eee] focus:border-primary outline-none transition-colors font-sans text-[14px] resize-none"
+                    className="w-full h-[120px] p-4 bg-[#faf9f7] border border-[#eee] focus:border-primary outline-none transition-colors  text-[14px] resize-none"
                   />
                 </div>
 
+                {reviewError && (
+                  <p className="mb-4 text-left text-[12px] font-medium text-red-600">
+                    {reviewError}
+                  </p>
+                )}
+
                 <button 
-                  onClick={async () => {
-                    setIsSubmittingReview(true);
-                    await new Promise(resolve => setTimeout(resolve, 1500));
-                    alert("Cảm ơn bạn đã đánh giá!");
-                    setIsReviewOpen(false);
-                    setIsSubmittingReview(false);
-                    setComment("");
-                    setRating(5);
-                  }}
+                  onClick={handleSubmitReview}
                   disabled={isSubmittingReview}
                   className="w-full h-[50px] bg-[#333] text-white text-[12px] font-bold uppercase tracking-[3px] hover:bg-primary transition-all disabled:opacity-50"
                 >
@@ -608,6 +686,59 @@ export default function AccountPage() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Review Success Modal */}
+      <AnimatePresence>
+        {isReviewSuccessOpen && (
+          <div className="fixed inset-0 z-[10001] flex items-center justify-center px-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsReviewSuccessOpen(false)}
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-[460px] bg-white shadow-2xl rounded-sm overflow-hidden"
+            >
+              <div className="p-6 border-b border-[#eee] flex justify-between items-center bg-[#faf9f7]">
+                <div>
+                  <h4 className="text-[18px] font-normal text-[#333] mb-0.5">Đánh giá đã được gửi</h4>
+                  <p className="text-[10px] font-bold text-[#999] uppercase tracking-[2px]">Cảm ơn bạn đã đồng hành</p>
+                </div>
+                <button
+                  onClick={() => setIsReviewSuccessOpen(false)}
+                  className="w-8 h-8 flex items-center justify-center text-[#999] hover:text-primary transition-colors border border-[#eee] bg-white rounded-full"
+                >
+                  <FaTimes size={12} />
+                </button>
+              </div>
+
+              <div className="px-8 py-10 text-center">
+                <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-green-50 text-green-600 flex items-center justify-center">
+                  <FaCheckCircle size={28} />
+                </div>
+                <p className="text-[14px] text-[#666] leading-relaxed max-w-[300px] mx-auto">
+                  Cảm ơn bạn đã chia sẻ cảm nhận. Đánh giá của bạn sẽ giúp Atelier phục vụ bạn tốt hơn trong những lần mua sắm tiếp theo.
+                </p>
+              </div>
+
+              <div className="p-6 bg-[#faf9f7] border-t border-[#eee] flex justify-end">
+                <button
+                  onClick={() => setIsReviewSuccessOpen(false)}
+                  className="h-[40px] px-8 bg-[#333] text-white text-[10px] font-bold uppercase tracking-[2px] hover:bg-primary transition-all"
+                >
+                  Đóng
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
+

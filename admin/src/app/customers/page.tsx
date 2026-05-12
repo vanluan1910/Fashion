@@ -126,73 +126,72 @@ export default function CustomersPage() {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-extrabold text-[#333] tracking-tight">Quản lý khách hàng</h1>
-          <p className="text-[#888] text-[13px] font-medium mt-1">Quản lý hồ sơ, hành vi mua sắm và chăm sóc thành viên Atelier.</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={() => setIsAddModalOpen(true)}
-            className="flex items-center gap-2 px-6 py-2.5 bg-[#f74f2e] text-white rounded-xl text-[13px] font-bold hover:bg-[#d24327] transition-all shadow-lg shadow-[#f74f2e]/20 active:scale-95"
-          >
-            <UserPlus size={18} />
-            Thêm khách hàng
-          </button>
-        </div>
-      </div>
+      <section className="admin-page-surface overflow-hidden">
+  <div className="flex flex-col gap-4 p-6 sm:flex-row sm:items-end sm:justify-between sm:p-7">
+    <div className="space-y-1.5">
+      <span className="admin-section-kicker">Khách hàng</span>
+      <h1 className="admin-section-title">Quản lý khách hàng</h1>
+      <p className="text-sm text-[var(--admin-text-muted)]">Hồ sơ, đơn, chi tiêu và trạng thái hiển thị theo cùng nhịp magazine grid.</p>
+    </div>
+    <div className="flex items-center gap-3">
+      <button 
+        onClick={() => setIsAddModalOpen(true)}
+        className="flex items-center gap-2 rounded-[calc(var(--admin-radius-md)-4px)] bg-[var(--admin-accent)] px-5 py-2.5 text-[13px] font-semibold text-white shadow-admin-md transition hover:-translate-y-0.5 hover:bg-[var(--admin-accent-strong)] active:scale-95"
+      >
+        <UserPlus size={18} />
+        Thêm khách hàng
+      </button>
+    </div>
+  </div>
+</section>
 
-      {/* Stats Quick View */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-2xl border border-[#eee] shadow-sm flex items-center gap-5 group hover:border-[#f74f2e]/30 transition-all">
-          <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="admin-page-surface flex items-center gap-4 px-5 py-5 group transition-all hover:-translate-y-0.5">
+          <div className="flex h-14 w-14 items-center justify-center rounded-[calc(var(--admin-radius-md)-2px)] bg-blue-50 text-blue-600 transition-transform group-hover:scale-105">
             <Users size={28} />
           </div>
           <div>
-            <p className="text-[11px] text-[#999] font-black uppercase tracking-widest">Tổng khách hàng</p>
-            <h4 className="text-2xl font-black text-[#333] mt-1">{stats.total.toLocaleString()}</h4>
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-[var(--admin-text-muted)]">Tổng khách hàng</p>
+            <h4 className="mt-1 text-[1.9rem] font-semibold text-[var(--admin-heading)]">{stats.total.toLocaleString()}</h4>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-2xl border border-[#eee] shadow-sm flex items-center gap-5 group hover:border-[#f74f2e]/30 transition-all">
-           <div className="w-14 h-14 bg-yellow-50 text-yellow-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+        <div className="admin-page-surface flex items-center gap-4 px-5 py-5 group transition-all hover:-translate-y-0.5">
+           <div className="flex h-14 w-14 items-center justify-center rounded-[calc(var(--admin-radius-md)-2px)] bg-yellow-50 text-yellow-600 transition-transform group-hover:scale-105">
             <ShieldCheck size={28} />
           </div>
           <div>
-            <p className="text-[11px] text-[#999] font-black uppercase tracking-widest">Thành viên VIP</p>
-            <h4 className="text-2xl font-black text-[#333] mt-1">{stats.vip} khách</h4>
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-[var(--admin-text-muted)]">Thành viên VIP</p>
+            <h4 className="mt-1 text-[1.9rem] font-semibold text-[var(--admin-heading)]">{stats.vip} khách</h4>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-2xl border border-[#eee] shadow-sm flex items-center gap-5 group hover:border-[#f74f2e]/30 transition-all">
-          <div className="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+        <div className="admin-page-surface flex items-center gap-4 px-5 py-5 group transition-all hover:-translate-y-0.5">
+          <div className="flex h-14 w-14 items-center justify-center rounded-[calc(var(--admin-radius-md)-2px)] bg-purple-50 text-purple-600 transition-transform group-hover:scale-105">
             <Calendar size={28} />
           </div>
           <div>
-            <p className="text-[11px] text-[#999] font-black uppercase tracking-widest">Hoạt động trong tháng</p>
-            <h4 className="text-2xl font-black text-[#333] mt-1">+{stats.active} mới</h4>
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-[var(--admin-text-muted)]">Hoạt động trong tháng</p>
+            <h4 className="mt-1 text-[1.9rem] font-semibold text-[var(--admin-heading)]">+{stats.active} mới</h4>
           </div>
         </div>
       </div>
 
-      {/* Main Content Card */}
-      <div className="bg-white rounded-2xl border border-[#eee] shadow-sm overflow-hidden min-h-[500px]">
-        {/* Toolbar */}
-        <div className="p-5 border-b border-[#eee] flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-[#fcfcff]">
+      <div className="admin-page-surface overflow-hidden min-h-[500px]">
+        <div className="admin-toolbar !rounded-none !border-x-0 !border-t-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.78),rgba(255,251,246,0.88))]">
           <div className="relative w-full lg:w-[450px]">
             <input 
               type="text" 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Tìm theo tên, email, số điện thoại..." 
-              className="w-full h-12 pl-12 pr-4 bg-[#f3f4f9] border-transparent rounded-xl text-[14px] text-[#333] font-bold placeholder:text-[#aaa] focus:ring-2 focus:ring-[#f74f2e] focus:bg-white transition-all outline-none"
+              className="admin-control h-12 pl-12 pr-4 text-[14px] font-medium"
             />
-            <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999]" />
+            <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--admin-text-muted)]" />
           </div>
           <div className="flex items-center gap-3 w-full lg:w-auto">
              <select 
                value={membershipFilter}
                onChange={(e) => setMembershipFilter(e.target.value)}
-               className="h-12 px-6 bg-[#f3f4f9] border-transparent rounded-xl text-[13px] font-bold text-[#555] focus:ring-2 focus:ring-[#f74f2e] outline-none cursor-pointer flex-1 lg:flex-none"
+               className="admin-control h-12 px-5 text-[13px] font-medium cursor-pointer flex-1 lg:flex-none"
              >
                <option value="Tất cả">Hạng: Tất cả</option>
                <option value="VIP">Thành viên VIP</option>
@@ -201,13 +200,13 @@ export default function CustomersPage() {
              <button 
                onClick={() => setIsFilterModalOpen(true)}
                className={`h-12 px-6 border rounded-xl text-[13px] font-bold transition-all flex items-center gap-2 relative ${
-                 activeFilterCount > 0 ? "bg-[#f74f2e]/5 border-[#f74f2e] text-[#f74f2e]" : "bg-white border-[#eee] text-[#666] hover:bg-[#f3f4f9]"
+                 activeFilterCount > 0 ? "bg-[var(--admin-accent-soft)] border-[var(--admin-border-strong)] text-[var(--admin-accent-strong)]" : "bg-white border-[var(--admin-border)] text-[var(--admin-heading)] hover:bg-[var(--admin-surface-strong)]"
                }`}
              >
                <Filter size={18} /> 
                Lọc nâng cao
                {activeFilterCount > 0 && (
-                 <span className="absolute -top-2 -right-2 w-5 h-5 bg-[#f74f2e] text-white flex items-center justify-center rounded-full text-[10px]">
+                 <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--admin-accent)] text-[10px] text-white">
                    {activeFilterCount}
                  </span>
                )}
@@ -215,7 +214,7 @@ export default function CustomersPage() {
              {activeFilterCount > 0 && (
                <button 
                 onClick={resetFilters}
-                className="p-3 text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                className="rounded-[calc(var(--admin-radius-md)-4px)] p-3 text-red-500 transition-all hover:bg-red-50"
                 title="Xóa tất cả bộ lọc"
                >
                  <RefreshCcw size={18} />
@@ -228,12 +227,12 @@ export default function CustomersPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-[#fcfcff] border-b border-[#eee]">
-                <th className="p-5 font-bold text-[#333] uppercase text-[11px] tracking-widest">Hồ sơ khách hàng</th>
-                <th className="p-5 font-bold text-[#333] uppercase text-[11px] tracking-widest text-center">Đơn hàng</th>
-                <th className="p-5 font-bold text-[#333] uppercase text-[11px] tracking-widest text-right">Tổng chi tiêu</th>
-                <th className="p-5 font-bold text-[#333] uppercase text-[11px] tracking-widest text-center">Trạng thái</th>
-                <th className="p-5 font-bold text-[#333] uppercase text-[11px] tracking-widest text-right">Thao tác</th>
+              <tr className="admin-table-head border-b border-[var(--admin-border)]">
+                <th className="p-5 font-semibold uppercase text-[11px] tracking-widest">Hồ sơ khách hàng</th>
+                <th className="p-5 font-semibold uppercase text-[11px] tracking-widest text-center">Đơn hàng</th>
+                <th className="p-5 font-semibold uppercase text-[11px] tracking-widest text-right">Tổng chi tiêu</th>
+                <th className="p-5 font-semibold uppercase text-[11px] tracking-widest text-center">Trạng thái</th>
+                <th className="p-5 font-semibold uppercase text-[11px] tracking-widest text-right">Thao tác</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#f1f1f1]">
@@ -241,29 +240,29 @@ export default function CustomersPage() {
                 <tr key={customer.account_id || customer.id || index} className="hover:bg-[#fcfcff]/50 transition-colors group">
                   <td className="p-5">
                     <div className="flex items-center gap-5">
-                      <div className="w-14 h-14 bg-[#f74f2e]/10 text-[#f74f2e] rounded-2xl flex items-center justify-center font-black text-xl relative shadow-sm group-hover:rotate-3 transition-transform">
+                      <div className="relative flex h-14 w-14 items-center justify-center rounded-[calc(var(--admin-radius-md)-2px)] bg-[var(--admin-accent-soft)] text-xl font-semibold text-[var(--admin-accent-strong)] transition-transform group-hover:rotate-2">
                         {(customer.full_name || customer.name || "?").charAt(0)}
                         {customer.isVIP && (
-                          <div className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-yellow-400 text-white flex items-center justify-center rounded-full text-[10px] shadow-md border-2 border-white animate-bounce-slow" title="Thành viên VIP">★</div>
+                          <div className="absolute -top-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-yellow-400 text-[10px] text-white shadow-md" title="Thành viên VIP">â˜…</div>
                         )}
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <p className="font-extrabold text-[#333] text-[15px]">{customer.full_name || customer.name}</p>
-                          {customer.isVIP && <span className="text-[9px] bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-lg font-black uppercase tracking-wider border border-yellow-200">VIP Member</span>}
+                          <p className="text-[15px] font-semibold text-[var(--admin-heading)]">{customer.full_name || customer.name}</p>
+                          {customer.isVIP && <span className="rounded-lg border border-yellow-200 bg-yellow-100 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-yellow-700">VIP Member</span>}
                         </div>
                         <div className="flex items-center gap-4 mt-1.5">
-                          <span className="text-[12px] text-[#999] font-medium flex items-center gap-1.5"><Mail size={14} className="opacity-60" /> {customer.email}</span>
-                          <span className="text-[12px] text-[#999] font-medium flex items-center gap-1.5"><Phone size={14} className="opacity-60" /> {customer.phone}</span>
+                          <span className="flex items-center gap-1.5 text-[12px] font-medium text-[var(--admin-text-muted)]"><Mail size={14} className="opacity-60" /> {customer.email}</span>
+                          <span className="flex items-center gap-1.5 text-[12px] font-medium text-[var(--admin-text-muted)]"><Phone size={14} className="opacity-60" /> {customer.phone}</span>
                         </div>
                       </div>
                     </div>
                   </td>
                   <td className="p-5 text-center">
-                     <p className="font-bold text-[#333] text-[15px]">{customer.orders}</p>
-                     <p className="text-[10px] text-[#999] uppercase font-bold tracking-tight">{customer.city}</p>
+                     <p className="text-[15px] font-semibold text-[var(--admin-heading)]">{customer.orders}</p>
+                     <p className="text-[10px] font-semibold uppercase tracking-tight text-[var(--admin-text-muted)]">{customer.city}</p>
                   </td>
-                  <td className="p-5 text-right font-black text-[#f74f2e] text-[15px]">{customer.spent}</td>
+                  <td className="p-5 text-right text-[15px] font-semibold text-[var(--admin-accent-strong)]">{customer.spent}</td>
                   <td className="p-5 text-center">
                     <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase border transition-all ${
                       customer.status === "Hoạt động" ? "bg-green-50 text-green-600 border-green-100" : "bg-red-50 text-red-600 border-red-100"
@@ -287,7 +286,7 @@ export default function CustomersPage() {
                    <td colSpan={5} className="p-20 text-center">
                       <div className="flex flex-col items-center gap-3 text-[#999]">
                          <div className="p-6 bg-[#f3f4f9] rounded-full shadow-inner"><Users size={40} /></div>
-                         <p className="font-bold text-[16px]">Không tìm thấy khách hàng phù hợp</p>
+                         <p className="text-[16px] font-semibold text-[var(--admin-heading)]">Không tìm thấy khách hàng phù hợp</p>
                          <p className="text-[13px]">Vui lòng kiểm tra lại từ khóa hoặc các bộ lọc đang áp dụng.</p>
                          {activeFilterCount > 0 && (
                            <button onClick={resetFilters} className="text-[#f74f2e] font-bold text-sm mt-2 hover:underline">Xóa tất cả bộ lọc</button>
@@ -358,7 +357,7 @@ export default function CustomersPage() {
                 onClick={() => setIsFilterModalOpen(false)}
                 className="px-8 py-2.5 bg-[#333] text-white font-bold text-[13px] rounded-xl hover:bg-black transition-all"
               >
-                Áp dụng
+                Ãp dụng
               </button>
            </div>
         </div>

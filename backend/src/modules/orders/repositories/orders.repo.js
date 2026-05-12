@@ -1,9 +1,31 @@
 const db = require('../../../config/db');
 
 class OrdersRepository {
+  async findItemsByOrderId(orderId) {
+    const [rows] = await db.execute(`
+      SELECT
+        oi.order_item_id,
+        oi.order_id,
+        oi.variant_id,
+        oi.quantity,
+        oi.price_at_purchase,
+        pv.product_id,
+        pv.color,
+        pv.size,
+        pv.sku,
+        p.product_name
+      FROM order_items oi
+      LEFT JOIN product_variants pv ON oi.variant_id = pv.variant_id
+      LEFT JOIN products p ON pv.product_id = p.product_id
+      WHERE oi.order_id = ?
+      ORDER BY oi.order_item_id ASC
+    `, [orderId]);
+
+    return rows;
+  }
+
   async findAll() {
     try {
-      // Join with accounts to get customer info and count items
       const [rows] = await db.execute(`
         SELECT 
           o.*, 
@@ -28,7 +50,10 @@ class OrdersRepository {
         JOIN accounts a ON o.account_id = a.account_id 
         WHERE o.order_id = ?
       `, [id]);
-      return rows[0];
+      const order = rows[0];
+      if (!order) return null;
+      order.items = await this.findItemsByOrderId(order.order_id);
+      return order;
     } catch (error) {
       throw error;
     }
@@ -41,7 +66,19 @@ class OrdersRepository {
         WHERE account_id = ? 
         ORDER BY order_date DESC
       `, [accountId]);
-      return rows;
+      const orders = rows;
+      const itemsByOrder = await Promise.all(
+        orders.map(async (order) => ({
+          order_id: order.order_id,
+          items: await this.findItemsByOrderId(order.order_id)
+        }))
+      );
+
+      const itemsMap = new Map(itemsByOrder.map((entry) => [entry.order_id, entry.items]));
+      return orders.map((order) => ({
+        ...order,
+        items: itemsMap.get(order.order_id) || []
+      }));
     } catch (error) {
       throw error;
     }
@@ -52,17 +89,14 @@ class OrdersRepository {
     try {
       await connection.beginTransaction();
 
-      // 1. Insert into orders
       const [orderResult] = await connection.execute(
         'INSERT INTO orders (account_id, total_amount, status, order_date) VALUES (?, ?, ?, NOW())',
         [data.account_id, data.total_amount, data.status || 'Đang xử lý']
       );
       const orderId = orderResult.insertId;
 
-      // 2. Insert into order_items
       if (data.items && data.items.length > 0) {
         for (const item of data.items) {
-          // If variant_id is missing, try to find the first variant for this product
           let variantId = item.variant_id;
           if (!variantId) {
             const [variants] = await connection.execute(

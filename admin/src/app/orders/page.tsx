@@ -114,7 +114,7 @@ export default function OrdersPage() {
 
   // Mock data for reviews
   const [reviews, setReviews] = useState([
-    { id: 1, customer: "Lê Văn Luyện", product: "Áo Sơ Mi Lụa", rating: 5, comment: "Vải rất đẹp, mặc mát.", status: "Hiển thị", date: "2024-04-20" },
+    { id: 1, customer: "Lê Văn Luyện", product: "Ão Sơ Mi Lụa", rating: 5, comment: "Vải rất đẹp, mặc mát.", status: "Hiển thị", date: "2024-04-20" },
     { id: 2, customer: "Nguyễn Thị Hoa", product: "Váy Dạ Hội Luxury", rating: 4, comment: "Giao hàng hơi chậm nhưng hàng chất lượng.", status: "Chờ duyệt", date: "2024-04-21" },
     { id: 3, customer: "Trần Minh Quân", product: "Quần Jeans Slimfit", rating: 2, comment: "Size hơi chật so với mô tả.", status: "Ẩn", date: "2024-04-22" },
   ]);
@@ -127,52 +127,52 @@ export default function OrdersPage() {
 
   return (
     <div className="space-y-6 pb-20 no-print">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-extrabold text-[#333] tracking-tight text-shadow-sm">Quản lý đơn hàng</h1>
-          <p className="text-[#888] text-[13px] font-medium mt-1">Theo dõi, cập nhật trạng thái và quản lý vận chuyển chuyên nghiệp.</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={handleBulkPrint}
-            className="flex items-center gap-2 px-5 py-2.5 bg-white border border-[#eee] rounded-xl text-[13px] font-bold text-[#666] hover:bg-[#f9f9f9] transition-all shadow-sm active:scale-95"
-          >
-            <Printer size={18} />
-            In hóa đơn
-          </button>
-          <Link 
-            href="/orders/add"
-            className="flex items-center gap-2 px-6 py-2.5 bg-[#f74f2e] text-white rounded-xl text-[13px] font-bold hover:bg-[#d24327] shadow-lg shadow-[#f74f2e]/20 transition-all active:scale-95"
-          >
-            <Plus size={18} />
-            Tạo đơn hàng
-          </Link>
-        </div>
-      </div>
+      <section className="admin-page-surface overflow-hidden">
+  <div className="flex flex-col gap-4 p-6 sm:flex-row sm:items-end sm:justify-between sm:p-7">
+    <div className="space-y-1.5">
+      <span className="admin-section-kicker">Vận hành</span>
+      <h1 className="admin-section-title">Quản lý đơn hàng</h1>
+      <p className="text-sm text-[var(--admin-text-muted)]">Trọng tâm vào trạng thái, nhịp bảng rõ, thao tác nhanh.</p>
+    </div>
+    <div className="flex items-center gap-3">
+      <button 
+        onClick={handleBulkPrint}
+        className="flex items-center gap-2 rounded-[calc(var(--admin-radius-md)-4px)] border border-[var(--admin-border)] bg-white px-4 py-2.5 text-[13px] font-semibold text-[var(--admin-heading)] shadow-admin-sm transition hover:bg-[var(--admin-surface-strong)] active:scale-95"
+      >
+        <Printer size={18} />
+        In hóa đơn
+      </button>
+      <Link 
+        href="/orders/add"
+        className="flex items-center gap-2 rounded-[calc(var(--admin-radius-md)-4px)] bg-[var(--admin-accent)] px-5 py-2.5 text-[13px] font-semibold text-white shadow-admin-md transition hover:-translate-y-0.5 hover:bg-[var(--admin-accent-strong)] active:scale-95"
+      >
+        <Plus size={18} />
+        Tạo đơn hàng
+      </Link>
+    </div>
+  </div>
+</section>
 
-      {/* Order Tabs */}
-      <div className="flex items-center gap-2 border-b border-[#eee] overflow-x-auto no-scrollbar">
+      <div className="flex items-center gap-2 overflow-x-auto rounded-[calc(var(--admin-radius-md)-2px)] border border-[var(--admin-border)] bg-[rgba(255,255,255,0.52)] px-2 no-scrollbar">
         {ORDER_TABS.map((tab) => (
           <button 
             key={tab} 
             onClick={() => setActiveTab(tab)}
             className={`px-5 py-4 text-[13px] font-bold whitespace-nowrap transition-all border-b-2 relative ${
-              activeTab === tab ? "border-[#f74f2e] text-[#f74f2e]" : "border-transparent text-[#999] hover:text-[#555]"
+              activeTab === tab ? "border-[var(--admin-accent)] text-[var(--admin-accent-strong)]" : "border-transparent text-[var(--admin-text-muted)] hover:text-[var(--admin-text)]"
             }`}
           >
             <div className="flex items-center gap-2">
               {tab === "Đánh giá" && <MessageSquare size={14} />}
               {tab}
             </div>
-            {activeTab === tab && <div className="absolute bottom-[-1px] left-0 w-full h-[3px] bg-[#f74f2e] rounded-t-full shadow-[0_-2px_10px_rgba(247,79,46,0.3)]" />}
+            {activeTab === tab && <div className="absolute bottom-[-1px] left-0 h-[3px] w-full rounded-t-full bg-[var(--admin-accent)] shadow-[0_-2px_10px_rgba(139,119,102,0.22)]" />}
           </button>
         ))}
       </div>
 
-      {/* Filters Card */}
       {activeTab !== "Đánh giá" ? (
-        <div className="bg-white p-5 rounded-2xl border border-[#eee] shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div className="admin-page-surface flex flex-col justify-between gap-4 px-5 py-5 lg:flex-row lg:items-center">
           <div className="flex flex-wrap items-center gap-4 flex-1">
             <div className="relative w-full sm:w-[320px]">
               <input 
@@ -180,15 +180,15 @@ export default function OrdersPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Tìm mã đơn, tên khách hàng..." 
-                className="w-full h-12 pl-12 pr-4 bg-[#f3f4f9] border-transparent rounded-xl text-[14px] text-[#333] font-bold placeholder:text-[#aaa] focus:ring-2 focus:ring-[#f74f2e] focus:bg-white transition-all outline-none"
+                className="admin-control h-12 pl-12 pr-4 text-[14px] font-medium"
               />
-              <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#999]" />
+              <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--admin-text-muted)]" />
             </div>
             
             <div className="flex items-center gap-3 w-full sm:w-auto">
               <select 
                 onChange={(e) => setPaymentFilter(e.target.value)}
-                className="h-12 px-5 bg-[#f3f4f9] border-transparent rounded-xl text-[14px] font-bold text-[#555] focus:ring-2 focus:ring-[#f74f2e] outline-none cursor-pointer"
+                className="admin-control h-12 px-5 text-[14px] font-medium cursor-pointer"
               >
                 <option value="Tất cả">Hình thức: Tất cả</option>
                 <option value="COD">COD</option>
@@ -196,32 +196,31 @@ export default function OrdersPage() {
                 <option value="Ví điện tử">Ví điện tử</option>
               </select>
 
-              <button className="flex items-center justify-center gap-2 h-12 px-6 border border-[#eee] rounded-xl text-[13px] font-bold text-[#666] hover:bg-[#f3f4f9] transition-all">
+              <button className="flex h-12 items-center justify-center gap-2 rounded-[calc(var(--admin-radius-md)-4px)] border border-[var(--admin-border)] px-5 text-[13px] font-semibold text-[var(--admin-heading)] transition hover:bg-[var(--admin-surface-strong)]">
                 <Filter size={18} /> Lọc nâng cao
               </button>
             </div>
           </div>
         </div>
       ) : (
-        <div className="bg-white p-5 rounded-2xl border border-[#eee] shadow-sm flex items-center justify-between">
+        <div className="admin-page-surface flex items-center justify-between px-5 py-5">
            <div className="flex items-center gap-4">
-              <h2 className="text-[15px] font-extrabold text-[#333]">Kiểm duyệt đánh giá</h2>
-              <span className="px-3 py-1 bg-[#f74f2e]/10 text-[#f74f2e] text-[12px] font-bold rounded-full">{reviews.length} Phản hồi</span>
+              <h2 className="text-[15px] font-semibold text-[var(--admin-heading)]">Kiểm duyệt đánh giá</h2>
+              <span className="rounded-full bg-[var(--admin-accent-soft)] px-3 py-1 text-[12px] font-semibold text-[var(--admin-accent-strong)]">{reviews.length} Phản hồi</span>
            </div>
            <div className="flex items-center gap-2">
-              <button className="px-4 py-2 text-[12px] font-bold text-[#666] hover:text-[#f74f2e]">Chờ duyệt</button>
-              <button className="px-4 py-2 text-[12px] font-bold text-[#666] hover:text-[#f74f2e]">Đã ẩn</button>
+              <button className="px-4 py-2 text-[12px] font-semibold text-[var(--admin-text-muted)] hover:text-[var(--admin-accent-strong)]">Chờ duyệt</button>
+              <button className="px-4 py-2 text-[12px] font-semibold text-[var(--admin-text-muted)] hover:text-[var(--admin-accent-strong)]">Đã ẩn</button>
            </div>
         </div>
       )}
 
-      {/* Orders or Reviews Table Card */}
-      <div className="bg-white rounded-2xl border border-[#eee] shadow-sm overflow-hidden min-h-[400px]">
+      <div className="admin-page-surface overflow-hidden min-h-[400px]">
         {activeTab !== "Đánh giá" ? (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-[#fcfcff] border-b border-[#eee]">
+                <tr className="admin-table-head border-b border-[var(--admin-border)]">
                   <th className="p-5 w-[60px]">
                     <input 
                       type="checkbox" 
@@ -230,12 +229,12 @@ export default function OrdersPage() {
                       className="rounded border-[#ddd] accent-[#f74f2e] cursor-pointer w-4 h-4" 
                     />
                   </th>
-                  <th className="p-5 font-extrabold text-[#333] uppercase text-[11px] tracking-widest">Mã đơn hàng</th>
-                  <th className="p-5 font-extrabold text-[#333] uppercase text-[11px] tracking-widest">Thông tin khách</th>
-                  <th className="p-5 font-extrabold text-[#333] uppercase text-[11px] tracking-widest">Thời gian</th>
-                  <th className="p-5 font-extrabold text-[#333] uppercase text-[11px] tracking-widest">Tổng giá trị</th>
-                  <th className="p-5 font-extrabold text-[#333] uppercase text-[11px] tracking-widest text-center">Trạng thái</th>
-                  <th className="p-5 font-extrabold text-[#333] uppercase text-[11px] tracking-widest text-right whitespace-nowrap">Thao tác</th>
+                  <th className="p-5 font-semibold uppercase text-[11px] tracking-widest">Mã đơn hàng</th>
+                  <th className="p-5 font-semibold uppercase text-[11px] tracking-widest">Thông tin khách</th>
+                  <th className="p-5 font-semibold uppercase text-[11px] tracking-widest">Thời gian</th>
+                  <th className="p-5 font-semibold uppercase text-[11px] tracking-widest">Tổng giá trị</th>
+                  <th className="p-5 font-semibold uppercase text-[11px] tracking-widest text-center">Trạng thái</th>
+                  <th className="p-5 font-semibold uppercase text-[11px] tracking-widest text-right whitespace-nowrap">Thao tác</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#f1f1f1]">
@@ -249,7 +248,7 @@ export default function OrdersPage() {
                         className="rounded border-[#ddd] accent-[#f74f2e] cursor-pointer w-4 h-4" 
                       />
                     </td>
-                    <td className="p-5 font-black text-[#f74f2e] text-[14px]">#{order.id}</td>
+                      <td className="p-5 font-semibold text-[var(--admin-accent-strong)] text-[14px]">#{order.id}</td>
                     <td className="p-5">
                       <p className="font-extrabold text-[#333] text-[14px]">{order.customerName}</p>
                       <p className="text-[11px] text-[#999] font-black uppercase mt-1 tracking-wider">{order.itemsCount || 0} sản phẩm • {order.payment || "COD"}</p>
@@ -263,9 +262,9 @@ export default function OrdersPage() {
                         year: 'numeric'
                       })}
                     </td>
-                    <td className="p-5 font-black text-[#333] text-[16px] tracking-tight">
-                      {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.total)}
-                    </td>
+                      <td className="p-5 font-semibold text-[var(--admin-heading)] text-[16px] tracking-tight">
+                        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.total)}
+                      </td>
                     <td className="p-5">
                       <div className="flex justify-center relative">
                         <button 
@@ -315,10 +314,10 @@ export default function OrdersPage() {
                   </tr>
                 )) : (
                   <tr>
-                    <td colSpan={7} className="p-24 text-center">
+                    <td colSpan={7} className="p-20 text-center">
                       <div className="flex flex-col items-center gap-4 text-[#999]">
                          <div className="p-6 bg-[#f3f4f9] rounded-full text-[#f74f2e]/30"><Search size={48} strokeWidth={1} /></div>
-                         <p className="font-black text-[18px] text-[#333] tracking-tight">Không tìm thấy đơn hàng nào!</p>
+                         <p className="font-semibold text-[18px] text-[var(--admin-heading)] tracking-tight">Không tìm thấy đơn hàng nào!</p>
                          <p className="text-[13px] font-medium max-w-[280px] mx-auto text-gray-400 leading-relaxed">Dữ liệu hiện tại không khớp với từ khóa của bạn. Vui lòng thử tìm kiếm khác.</p>
                       </div>
                     </td>
@@ -330,14 +329,14 @@ export default function OrdersPage() {
         ) : (
           <div className="overflow-x-auto">
              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-[#fcfcff] border-b border-[#eee]">
-                    <th className="p-5 font-extrabold text-[#333] uppercase text-[11px] tracking-widest">Khách hàng</th>
-                    <th className="p-5 font-extrabold text-[#333] uppercase text-[11px] tracking-widest">Sản phẩm</th>
-                    <th className="p-5 font-extrabold text-[#333] uppercase text-[11px] tracking-widest">Đánh giá</th>
-                    <th className="p-5 font-extrabold text-[#333] uppercase text-[11px] tracking-widest">Nội dung</th>
-                    <th className="p-5 font-extrabold text-[#333] uppercase text-[11px] tracking-widest text-center">Trạng thái</th>
-                    <th className="p-5 font-extrabold text-[#333] uppercase text-[11px] tracking-widest text-right">Thao tác</th>
+              <thead>
+                  <tr className="admin-table-head border-b border-[var(--admin-border)]">
+                    <th className="p-5 font-semibold uppercase text-[11px] tracking-widest">Khách hàng</th>
+                    <th className="p-5 font-semibold uppercase text-[11px] tracking-widest">Sản phẩm</th>
+                    <th className="p-5 font-semibold uppercase text-[11px] tracking-widest">Đánh giá</th>
+                    <th className="p-5 font-semibold uppercase text-[11px] tracking-widest">Nội dung</th>
+                    <th className="p-5 font-semibold uppercase text-[11px] tracking-widest text-center">Trạng thái</th>
+                    <th className="p-5 font-semibold uppercase text-[11px] tracking-widest text-right">Thao tác</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#f1f1f1]">
@@ -353,7 +352,7 @@ export default function OrdersPage() {
                             </div>
                          </td>
                          <td className="p-5">
-                            <p className="text-[13px] text-[#555] italic max-w-[250px] line-clamp-2">"{review.comment}"</p>
+                             <p className="text-[13px] text-[#555] italic max-w-[250px] line-clamp-2">&quot;{review.comment}&quot;</p>
                             <p className="text-[10px] text-[#aaa] mt-1 font-bold uppercase">{review.date}</p>
                          </td>
                          <td className="p-5 text-center">

@@ -7,6 +7,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/core/providers/AuthProvider";
 import { useCart } from "@/core/providers/CartProvider";
+import { formatImageUrl } from "@/features/products/utils/productImages.mjs";
 import { useWishlist } from "@/core/providers/WishlistProvider";
 import { useCurrency } from "@/core/providers/CurrencyProvider";
 import { getproductsData } from "@/features/products/services/productsService";
@@ -62,10 +63,10 @@ export function Header() {
         <div className="flex-[0_0_20.1%] max-w-[20.1%] flex items-center h-full">
           <Link href="/" className="flex items-center bg-primary py-[2px] px-3 rounded-sm shadow-sm hover:opacity-90 transition-opacity">
             <Image
-              src="/images/lo_go.png"
+              src="/images/lo_go_horizontal.png"
               alt="Atelier Fashion"
-              width={90}
-              height={22}
+              width={172}
+              height={28}
               className="object-contain brightness-0 invert"
               priority
             />
@@ -102,19 +103,19 @@ export function Header() {
                     <div className="w-1/3 px-[15px]">
                       <h5 className="font-bold uppercase mb-[22px] text-[16px] text-[#333] tracking-widest">Danh mục 1</h5>
                       <ul className="space-y-[10px] list-none p-0 m-0">
-                        <li><Link href="/shop?category=Dresses" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Váy đầm</Link></li>
-                        <li><Link href="/shop?category=Skirts" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Chân váy</Link></li>
-                        <li><Link href="/shop?category=Shirts" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Áo sơ mi</Link></li>
-                        <li><Link href="/shop?category=Jeans" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Quần Jeans</Link></li>
-                        <li><Link href="/shop?category=Sweaters" className="text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Áo len</Link></li>
+                        <li><Link href="/shop?subCategory=Váy đầm" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Váy đầm</Link></li>
+                        <li><Link href="/shop?subCategory=Chân váy" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Chân váy</Link></li>
+                        <li><Link href="/shop?subCategory=Áo sơ mi" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Áo sơ mi</Link></li>
+                        <li><Link href="/shop?subCategory=Quần jeans" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Quần Jeans</Link></li>
+                        <li><Link href="/shop?subCategory=Áo len" className="text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Áo len</Link></li>
                       </ul>
                     </div>
                     <div className="w-1/3 px-[15px]">
                       <h5 className="font-bold uppercase mb-[22px] text-[16px] text-[#333] tracking-widest">Danh mục 2</h5>
                       <ul className="space-y-[10px] list-none p-0 m-0">
-                        <li><Link href="/shop?category=Winter Wear" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Đồ mùa đông</Link></li>
-                        <li><Link href="/shop?category=Summer Specials" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Đồ mùa hè</Link></li>
-                        <li><Link href="/shop?category=Tops" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Đồ lót</Link></li>
+                        <li><Link href="/shop?subCategory=Áo khoác,Áo len" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Đồ mùa đông</Link></li>
+                        <li><Link href="/shop?subCategory=Váy đầm,Áo thun" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Đồ mùa hè</Link></li>
+                        <li><Link href="/shop?subCategory=Áo thun" className="flex items-center text-[14px] text-[#777] hover:text-primary transition-colors capitalize font-sans"><span className="flaticon-down-arrow-1 !text-[6px] -rotate-90 mr-2 opacity-50"></span>Áo thun</Link></li>
                       </ul>
                     </div>
                   </div>
@@ -239,7 +240,7 @@ export function Header() {
                                   className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors group"
                                 >
                                   <div className="w-12 h-14 bg-gray-50 relative overflow-hidden flex-shrink-0 rounded-sm">
-                                    <Image src={p.image} alt={p.name} fill className="object-cover" />
+                                    <Image src={formatImageUrl(p.image)} alt={p.name} fill className="object-cover" />
                                   </div>
                                   <div className="ml-4 flex-grow">
                                     <h6 className="text-[14px] font-medium text-[#333] group-hover:text-primary transition-colors line-clamp-1">{p.name}</h6>
@@ -356,7 +357,14 @@ export function Header() {
           </button>
 
           <Link href="/" className="absolute left-1/2 -translate-x-1/2 flex-shrink-0">
-            <Image src="/images/lo_go.png" alt="logo" width={85} height={20} className="object-contain" priority />
+            <Image
+              src="/images/lo_go_horizontal.png"
+              alt="logo"
+              width={150}
+              height={24}
+              className="object-contain brightness-0"
+              priority
+            />
           </Link>
 
           <div className="flex items-center space-x-3 flex-shrink-0">
@@ -380,7 +388,7 @@ export function Header() {
             </button>
             <Link href="/cart" className="relative text-[#333] hover:text-primary transition-colors">
               <i className="flaticon-shopping-bag !text-[17px]"></i>
-              <span className="absolute -bottom-1 -right-1.5 bg-[#f74f2e] text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">
+              <span className="absolute -top-1.5 -right-1.5 bg-[#f74f2e] text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">
                 {mounted ? cartCount : 0}
               </span>
             </Link>
@@ -441,18 +449,18 @@ export function Header() {
                     <li className="py-2 border-t border-gray-50">
                       <span className="block font-bold text-[#333] mb-1.5 text-[11px] uppercase pt-1">Danh mục 1</span>
                       <ul className="pl-4 space-y-2 pb-1.5">
-                        <li><Link href="/shop?category=Dresses" onClick={() => setIsMenuOpen(false)}>Váy đầm</Link></li>
-                        <li><Link href="/shop?category=Skirts" onClick={() => setIsMenuOpen(false)}>Chân váy</Link></li>
-                        <li><Link href="/shop?category=Shirts" onClick={() => setIsMenuOpen(false)}>Áo sơ mi</Link></li>
-                        <li><Link href="/shop?category=Bottoms" onClick={() => setIsMenuOpen(false)}>Quần Jeans</Link></li>
+                        <li><Link href="/shop?subCategory=Váy đầm" onClick={() => setIsMenuOpen(false)}>Váy đầm</Link></li>
+                        <li><Link href="/shop?subCategory=Chân váy" onClick={() => setIsMenuOpen(false)}>Chân váy</Link></li>
+                        <li><Link href="/shop?subCategory=Áo sơ mi" onClick={() => setIsMenuOpen(false)}>Áo sơ mi</Link></li>
+                        <li><Link href="/shop?subCategory=Quần jeans" onClick={() => setIsMenuOpen(false)}>Quần Jeans</Link></li>
                       </ul>
                     </li>
                     <li className="py-2 border-t border-gray-50">
                       <span className="block font-bold text-[#333] mb-1.5 text-[11px] uppercase pt-1">Danh mục 2</span>
                       <ul className="pl-4 space-y-2 pb-1.5">
-                        <li><Link href="/shop?category=Winter Wear" onClick={() => setIsMenuOpen(false)}>Đồ mùa đông</Link></li>
-                        <li><Link href="/shop?category=Summer Specials" onClick={() => setIsMenuOpen(false)}>Đồ mùa hè</Link></li>
-                        <li><Link href="/shop?category=Tops" onClick={() => setIsMenuOpen(false)}>Đồ lót</Link></li>
+                        <li><Link href="/shop?subCategory=Áo khoác,Áo len" onClick={() => setIsMenuOpen(false)}>Đồ mùa đông</Link></li>
+                        <li><Link href="/shop?subCategory=Váy đầm,Áo thun" onClick={() => setIsMenuOpen(false)}>Đồ mùa hè</Link></li>
+                        <li><Link href="/shop?subCategory=Áo thun" onClick={() => setIsMenuOpen(false)}>Áo thun</Link></li>
                       </ul>
                     </li>
                   </ul>

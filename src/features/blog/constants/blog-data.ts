@@ -22,7 +22,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
       <p>Kết luận, phong cách tối giản là người bạn đồng hành hoàn hảo cho những ai yêu thích sự thanh lịch và bền vững. Hãy bắt đầu xây dựng tủ đồ tối giản của bạn ngay hôm nay!</p>
     `,
-    image: "/images/blog1.png",
+    image: "https://images.unsplash.com/photo-1593032465175-481ac7f401a0?q=80&w=800&auto=format&fit=crop",
     date: "21 Tháng 3, 2024",
     author: "Quản trị viên",
     category: "Thời trang",
@@ -43,7 +43,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
       <p>Bằng cách áp dụng những mẹo nhỏ này, bạn sẽ ngạc nhiên khi thấy những bộ đồ yêu thích của mình vẫn giữ được form dáng và màu sắc sau nhiều năm sử dụng.</p>
     `,
-    image: "/images/blog2.png",
+    image: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=800&auto=format&fit=crop",
     date: "20 Tháng 3, 2024",
     author: "Quản trị viên",
     category: "Lối sống",

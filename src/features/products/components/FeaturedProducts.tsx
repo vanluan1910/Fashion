@@ -23,6 +23,7 @@ interface Product {
 
 import { QuickViewModal } from "./QuickViewModal";
 import { getproductsData } from "../services/productsService";
+import { formatImageUrl } from "../utils/productImages.mjs";
 
 export function FeaturedProducts({ title }: { title: string }) {
   const { addToCart } = useCart();
@@ -59,7 +60,7 @@ export function FeaturedProducts({ title }: { title: string }) {
           {isLoading ? (
             <div className="w-full text-center py-20 text-[#999] italic">Đang tải sản phẩm từ cửa hàng...</div>
           ) : products.length > 0 ? (
-            products.map((product, index) => {
+            products.slice(0, 4).map((product, index) => {
               const isSlideFromLeft = index < 4;
               const delay = (index % 4) * 0.2;
 
@@ -74,13 +75,13 @@ export function FeaturedProducts({ title }: { title: string }) {
                 >
                   <div className="group flex flex-col featured_content">
                     <div className="relative overflow-hidden mb-5 featured_img_content">
-                      <div className="relative w-full featured_img_box" style={{ aspectRatio: '270/340' }}>
+                      <div className="relative w-full featured_img_box bg-[#f0f0f0] flex items-center justify-center" style={{ aspectRatio: '270/340' }}>
                         <Image
-                          src={product.image}
+                          src={formatImageUrl(product.image)}
                           alt={product.name}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 33vw, 25vw"
-                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                          className="object-cover object-top mix-blend-multiply transition-transform duration-700 group-hover:scale-110"
                         />
                       </div>
 

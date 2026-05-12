@@ -10,7 +10,18 @@ class OrderDTO {
       total: order.total_amount,
       status: order.status,
       itemsCount: order.items_count || 0,
-      items: [] // Can be populated via order_items repo later
+      items: (order.items || []).map((item) => ({
+        id: item.order_item_id,
+        order_id: item.order_id,
+        variant_id: item.variant_id,
+        product_id: item.product_id,
+        product_name: item.product_name,
+        color: item.color,
+        size: item.size,
+        sku: item.sku,
+        quantity: item.quantity,
+        price_at_purchase: item.price_at_purchase
+      }))
     };
   }
 

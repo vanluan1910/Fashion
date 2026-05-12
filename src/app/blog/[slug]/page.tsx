@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getBlogBySlug, getBlogsData } from "@/features/blog/services/blogService";
 import { BlogBreadcrumb } from "@/features/blog/components/BlogBreadcrumb";
 import { BlogDetailContent } from "@/features/blog/components/BlogDetailContent";
+import { BlogComments } from "@/features/blog/components/BlogComments";
 import { BlogSidebar } from "@/features/blog/components/BlogSidebar";
 
 import { BLOG_POSTS as STATIC_POSTS } from "@/features/blog/constants/blog-data";
@@ -33,7 +34,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             {/* Main Content Area */}
             <div className="w-full lg:w-8/12 px-[15px]">
               <BlogDetailContent post={post} />
-
+              <BlogComments postId={post.id} />
             </div>
 
             {/* Sidebar Area */}

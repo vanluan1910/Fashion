@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { SHOP_CATEGORIES, SHOP_SIZES, SHOP_COLORS } from "../constants/shop-data";
+import { SHOP_COLORS } from "../constants/shop-data";
+import {
+  getShopCategoryLabel,
+  getShopSubCategoryLabel,
+  normalizeShopCategory,
+  normalizeShopSubCategory,
+  normalizeShopText,
+} from "../constants/shop-taxonomy";
 
 // Simple Close Icon component for perfect scaling
 const CloseIcon = ({ className = "w-3 h-3" }: { className?: string }) => (
@@ -36,12 +43,12 @@ export function ShopSidebar() {
   const [minPrice, setMinPrice] = useState(Number(searchParams.get("minPrice")) || 0);
   const [maxPrice, setMaxPrice] = useState(Number(searchParams.get("maxPrice")) || maxLimit);
   const [menSearch, setMenSearch] = useState("");
-  
-  const menSubCategories = ["T-Shirts", "Shirts", "Jackets", "Sweaters", "Jeans", "Suits"];
-  const womenSubCategories = ["Dresses", "Skirts"];
-  const accessoriesSubs = ["Handbags", "Shoes", "Hats", "Accessories"];
 
-  const filteredMenSubs = menSubCategories.filter(s => s.toLowerCase().includes(menSearch.toLowerCase()));
+  const menSubCategories = ["Áo thun", "Áo sơ mi", "Áo khoác", "Áo len", "Quần jeans", "Bộ suit"];
+  const womenSubCategories = ["Váy đầm", "Chân váy"];
+  const accessoriesSubs = ["Túi xách", "Giày dép", "Mũ nón", "Phụ kiện khác"];
+
+  const filteredMenSubs = menSubCategories.filter(s => normalizeShopText(s).includes(normalizeShopText(menSearch)));
 
   const updateUrl = (min: number, max: number) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -66,16 +73,25 @@ export function ShopSidebar() {
     setMaxPrice(maxLimit);
   }, [currency, maxLimit]);
 
+  const getFilterValues = (key: string) => searchParams.get(key)?.split(",").filter(Boolean) || [];
+
+  const normalizeFilterValue = (key: string, value: string) => {
+    if (key === "category") return normalizeShopCategory(value);
+    if (key === "subCategory") return normalizeShopSubCategory(value);
+    return normalizeShopText(value);
+  };
+
   const toggleFilter = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    const currentValues = params.get(key)?.split(",") || [];
-    
-    if (currentValues.includes(value.toLowerCase())) {
-      const newValues = currentValues.filter(v => v !== value.toLowerCase());
+    const currentValues = getFilterValues(key);
+    const target = normalizeFilterValue(key, value);
+
+    if (currentValues.some(v => normalizeFilterValue(key, v) === target)) {
+      const newValues = currentValues.filter(v => normalizeFilterValue(key, v) !== target);
       if (newValues.length > 0) params.set(key, newValues.join(","));
       else params.delete(key);
     } else {
-      currentValues.push(value.toLowerCase());
+      currentValues.push(value);
       params.set(key, currentValues.join(","));
     }
     
@@ -83,7 +99,7 @@ export function ShopSidebar() {
   };
 
   const isChecked = (key: string, value: string) => {
-    return (searchParams.get(key)?.split(",") || []).includes(value.toLowerCase());
+    return getFilterValues(key).some(v => normalizeFilterValue(key, v) === normalizeFilterValue(key, value));
   };
 
   const clearAll = (key: string) => {
@@ -97,7 +113,7 @@ export function ShopSidebar() {
   return (
     <div className="collection_sidebar">
       {/* 1. Shopping by (Đang lọc theo) */}
-      {(searchParams.get("category") || searchParams.get("minPrice") || searchParams.get("sale")) && (
+      {(searchParams.get("category") || searchParams.get("subCategory") || searchParams.get("minPrice") || searchParams.get("sale")) && (
         <div className="category_list border border-[#e0dcdc] mb-[20px] bg-white">
           <div className="category_list_title border-b border-[#e0dcdc] px-[10px] pt-[12px] pb-[16px] flex items-center justify-between cursor-pointer">
             <h2 className="text-[18px] font-medium text-[#333] mb-0 leading-none capitalize tracking-tighter">Bộ lọc đang chọn</h2>
@@ -107,8 +123,16 @@ export function ShopSidebar() {
             <div className="flex flex-wrap gap-2">
               {searchParams.get("category") && searchParams.get("category")?.split(",").map(cat => (
                 <span key={cat} className="bg-gray-100 px-2 py-1 text-[12px] flex items-center gap-1 group">
-                  {cat} 
+                  {getShopCategoryLabel(cat)}
                   <button onClick={() => toggleFilter("category", cat)}>
+                    <CloseIcon className="w-2 h-2 cursor-pointer text-gray-400 group-hover:text-red-500" />
+                  </button>
+                </span>
+              ))}
+              {searchParams.get("subCategory") && searchParams.get("subCategory")?.split(",").map(cat => (
+                <span key={cat} className="bg-gray-100 px-2 py-1 text-[12px] flex items-center gap-1 group">
+                  {getShopSubCategoryLabel(cat)}
+                  <button onClick={() => toggleFilter("subCategory", cat)}>
                     <CloseIcon className="w-2 h-2 cursor-pointer text-gray-400 group-hover:text-red-500" />
                   </button>
                 </span>
@@ -173,9 +197,7 @@ export function ShopSidebar() {
                     </svg>
                   )}
                 </div>
-                <span className={`text-[14px] transition-colors ${isChecked("category", cat.value) ? "text-primary font-bold" : "text-[#666] group-hover:text-primary"}`}>
-                  {cat.label}
-                </span>
+                <span className={`text-[14px] transition-colors ${isChecked("category", cat.value) ? "text-primary font-bold" : "text-[#666] group-hover:text-primary"}`}>{cat.label}</span>
               </li>
             ))}
           </ul>
@@ -217,14 +239,7 @@ export function ShopSidebar() {
                       </svg>
                     )}
                   </div>
-                  <span className={`text-[14px] transition-colors ${isChecked("subCategory", cat) ? "text-primary font-bold" : "text-[#666] group-hover:text-primary"}`}>
-                    {cat === "T-Shirts" ? "Áo thun (T-Shirts)" : 
-                     cat === "Shirts" ? "Áo sơ mi (Shirts)" : 
-                     cat === "Jackets" ? "Áo khoác (Jackets)" : 
-                     cat === "Sweaters" ? "Áo len (Sweaters)" : 
-                     cat === "Jeans" ? "Quần Jeans" : 
-                     cat === "Suits" ? "Bộ Suit / Vest" : cat}
-                  </span>
+                  <span className={`text-[14px] transition-colors ${isChecked("subCategory", cat) ? "text-primary font-bold" : "text-[#666] group-hover:text-primary"}`}>{getShopSubCategoryLabel(cat)}</span>
                 </div>
               </li>
             ))}
@@ -262,9 +277,7 @@ export function ShopSidebar() {
                       </svg>
                     )}
                   </div>
-                  <span className={`text-[14px] transition-colors ${isChecked("subCategory", cat) ? "text-primary font-bold" : "text-[#666] group-hover:text-primary"}`}>
-                    {cat === "Dresses" ? "Váy liền (Dresses)" : cat === "Skirts" ? "Chân váy (Skirts)" : cat}
-                  </span>
+                  <span className={`text-[14px] transition-colors ${isChecked("subCategory", cat) ? "text-primary font-bold" : "text-[#666] group-hover:text-primary"}`}>{getShopSubCategoryLabel(cat)}</span>
                 </div>
               </li>
             ))}
@@ -293,9 +306,7 @@ export function ShopSidebar() {
                       </svg>
                     )}
                   </div>
-                  <span className={`text-[14px] transition-colors ${isChecked("subCategory", cat) ? "text-primary font-bold" : "text-[#666] group-hover:text-primary"}`}>
-                    {cat === "Handbags" ? "Túi xách (Handbags)" : cat === "Shoes" ? "Giày dép (Shoes)" : cat === "Hats" ? "Mũ nón (Hats)" : cat === "Accessories" ? "Phụ kiện khác" : cat}
-                  </span>
+                  <span className={`text-[14px] transition-colors ${isChecked("subCategory", cat) ? "text-primary font-bold" : "text-[#666] group-hover:text-primary"}`}>{getShopSubCategoryLabel(cat)}</span>
                 </div>
               </li>
             ))}

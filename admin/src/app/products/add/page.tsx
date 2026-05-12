@@ -101,9 +101,6 @@ export default function AddProductPage() {
           <h1 className="text-2xl font-extrabold text-[#333] tracking-tight">
             {editId ? "Chỉnh sửa sản phẩm" : "Thêm sản phẩm mới"}
           </h1>
-          <p className="text-[13px] text-[#666] font-medium mt-1">
-            {editId ? `Cập nhật thông tin cho mã sản phẩm: ${editId}` : "Điền đầy đủ thông tin bên dưới để đăng bán sản phẩm mới vào cửa hàng."}
-          </p>
         </div>
       </div>
 

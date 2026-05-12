@@ -25,7 +25,7 @@ export function Footer() {
               transition={{ duration: 0.8 }}
             >
               <div className="column text-center sm:text-left" style={{ borderLeft: "0px" }}>
-                <a href="#" className="inline-block"><img src="/images/lo_go.png" alt="logo" className="img-fluid footer_logo mb-[14px] h-[35px] w-auto mx-auto sm:mx-0" /></a>
+                <a href="#" className="inline-block"><img src="/images/lo_go_horizontal.png" alt="logo" className="img-fluid footer_logo mb-[14px] h-[36px] w-auto mx-auto sm:mx-0 brightness-0" /></a>
                 <p className="text-[#777] text-[14px] leading-relaxed mb-0">
                   There are many variations of passages of Lorem Ipsum has been the industry stand ard dummy text ever since...
                 </p>

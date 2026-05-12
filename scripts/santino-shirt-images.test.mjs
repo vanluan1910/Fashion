@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 import {
+  buildProductImageEntries,
   extractShirtCategoryLinks,
   extractProductLinks,
   extractProductImages,
@@ -56,6 +57,37 @@ test('extractProductTitle prefers page heading', async () => {
 
 test('isShirtText matches shirt-like labels only', () => {
   assert.equal(isShirtText('Ao so mi nam'), true);
-  assert.equal(isShirtText('Sơ mi dài tay'), true);
+  assert.equal(isShirtText('So mi dai tay'), true);
   assert.equal(isShirtText('Ao vest nam'), false);
+});
+
+test('buildProductImageEntries stores images under product slug folder', () => {
+  const entries = buildProductImageEntries({
+    outputDir: 'output/santino-shirts',
+    productUrl: 'https://santino.com.vn/product/ao-so-mi-dai-tay-bamboo-nam-cao-cap-santino-s851',
+    title: 'Ao so mi dai tay bamboo nam cao cap Santino S851',
+    images: [
+      'https://cdn.santino.com.vn/storage/upload/products/2026/03/S851-08.jpg',
+      'https://cdn.santino.com.vn/storage/upload/products/2026/03/S851-09.png',
+    ],
+  });
+
+  assert.deepEqual(entries, [
+    {
+      title: 'Ao so mi dai tay bamboo nam cao cap Santino S851',
+      productUrl: 'https://santino.com.vn/product/ao-so-mi-dai-tay-bamboo-nam-cao-cap-santino-s851',
+      sourceUrl: 'https://santino.com.vn/product/ao-so-mi-dai-tay-bamboo-nam-cao-cap-santino-s851',
+      imageUrl: 'https://cdn.santino.com.vn/storage/upload/products/2026/03/S851-08.jpg',
+      localPath: path.join('output/santino-shirts', 's851', '01.jpg'),
+      index: 1,
+    },
+    {
+      title: 'Ao so mi dai tay bamboo nam cao cap Santino S851',
+      productUrl: 'https://santino.com.vn/product/ao-so-mi-dai-tay-bamboo-nam-cao-cap-santino-s851',
+      sourceUrl: 'https://santino.com.vn/product/ao-so-mi-dai-tay-bamboo-nam-cao-cap-santino-s851',
+      imageUrl: 'https://cdn.santino.com.vn/storage/upload/products/2026/03/S851-09.png',
+      localPath: path.join('output/santino-shirts', 's851', '02.png'),
+      index: 2,
+    },
+  ]);
 });

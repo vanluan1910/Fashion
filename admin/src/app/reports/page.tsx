@@ -25,7 +25,6 @@ export default function ReportsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-[#333] tracking-tight">Báo cáo & Thống kê</h1>
-          <p className="text-[#888] text-[13px] font-medium mt-1">Phân tích chi tiết hiệu quả kinh doanh của cửa hàng.</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 px-4 py-2 bg-white border border-[#eee] rounded-xl text-[13px] font-bold text-[#333] shadow-sm">

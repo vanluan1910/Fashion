@@ -1,20 +1,23 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/core/providers/CartProvider";
 import { useWishlist } from "@/core/providers/WishlistProvider";
+import { ProductDetailGallery } from "./ProductDetailGallery";
+import { getProductImages } from "../utils/productImages.mjs";
 
 interface QuickViewModalProps {
   isOpen: boolean;
   onClose: () => void;
   product: {
     id: number;
-    title: string;
+    title?: string;
+    name?: string;
     price: number;
     image: string;
+    images?: string[];
     oldPrice?: number;
     colors?: string[];
   } | null;
@@ -44,11 +47,13 @@ export function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps
     };
   }, [isOpen]);
 
+  const displayTitle = product?.title || product?.name || "";
+
   const handleAddToCart = () => {
     if (!product) return;
     addToCart({
       id: product.id,
-      name: product.title,
+      name: displayTitle,
       price: product.price,
       image: product.image,
       quantity: quantity,
@@ -64,7 +69,7 @@ export function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps
     } else {
       addToWishlist({
         id: product.id,
-        name: product.title,
+        name: displayTitle,
         price: product.price,
         image: product.image
       });
@@ -72,6 +77,7 @@ export function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps
   };
 
   if (!product) return null;
+  const galleryImages = getProductImages(product);
 
   return (
     <AnimatePresence>
@@ -101,39 +107,12 @@ export function QuickViewModal({ isOpen, onClose, product }: QuickViewModalProps
                 <div className="container max-w-full lg:p-0">
                     <div className="row flex flex-wrap -mx-[15px] overflow-y-auto max-h-[90vh]">
                         <div className="col-lg-6 w-full lg:w-1/2 px-[15px] pt-[30px] lg:pt-[45px] pb-[30px] lg:pb-[45px]">
-                            <div id="q_sync1" className="owl-carousel owl-theme mb-4">
-                                <div className="item">
-                                    <div className="product_img relative w-full" style={{ aspectRatio: '470/560' }}>
-                                        <Image 
-                                            src={product.image} 
-                                            alt={product.title} 
-                                            fill 
-                                            sizes="(max-width: 1024px) 100vw, 50vw"
-                                            className="vertical_middle img-fluid object-contain" 
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="q_sync2" className="owl-carousel owl-theme flex gap-2.5 px-4 lg:px-6">
-                                {[1, 2, 3, 4].map((i) => (
-                                    <div key={i} className="item">
-                                        <div className="product_img relative w-[70px] h-[85px] border border-[#eee] cursor-pointer">
-                                            <Image 
-                                                src={product.image} 
-                                                alt="thumb" 
-                                                fill 
-                                                sizes="70px"
-                                                className="vertical_middle img-fluid object-cover" 
-                                            />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                            <ProductDetailGallery images={galleryImages} />
                         </div>
                         <div className="col-lg-6 w-full lg:w-1/2 px-[15px] pt-[30px] lg:pt-[42px] lg:pr-[45px] lg:pb-0 lg:pl-0">
                             <div className="product_content px-4 lg:px-0">
                                 <div className="product_title">
-                                    <h2 className="text-[20px] font-medium text-[#333] mb-2">{product.title}</h2>
+                                    <h2 className="text-[20px] font-medium text-[#333] mb-2">{displayTitle}</h2>
                                     <span className="product_price title_h4 text-[24px] font-bold text-[#f74f2e]"> ${product.price.toFixed(2)}</span>
                                     <span className="stock text-right float-right text-[14px] text-[#4CAF50] font-bold">Còn hàng</span>
                                     <p className="sku_text text-[12px] text-[#999] mt-2 mb-4">SKU: 01-2345678</p>

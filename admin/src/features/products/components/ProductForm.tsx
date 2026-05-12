@@ -78,7 +78,7 @@ export default function ProductForm({ onSubmit, onCancel, initialData, isEditing
       const nextP = type === 'price' ? cleanVal : prev.price;
       const nextPct = type === 'percent' ? (parseInt(cleanVal) || 0) : prev.discountPercent;
 
-      let finalOp = nextOp;
+      const finalOp = nextOp;
       let finalP = nextP;
       let finalPct = Math.min(100, nextPct);
 

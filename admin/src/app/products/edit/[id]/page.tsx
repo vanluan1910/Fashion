@@ -100,7 +100,6 @@ export default function EditProductPage() {
         </button>
         <div>
           <h1 className="text-2xl font-extrabold text-[#333] tracking-tight">Chỉnh sửa sản phẩm</h1>
-          <p className="text-[13px] text-[#666] font-medium mt-1">Cập nhật thông tin chi tiết cho mã sản phẩm: <span className="text-[#f74f2e] font-bold">{decodeURIComponent(id)}</span></p>
         </div>
       </div>
 

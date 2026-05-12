@@ -64,8 +64,8 @@ export function CheckoutForm({ onSuccess }: { onSuccess?: () => void }) {
         <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
           <i className="flaticon-arrows-1 text-white text-[32px]"></i>
         </div>
-        <h2 className="text-[32px] font-normal text-[#333] mb-4 uppercase font-sans">Cảm ơn bạn!</h2>
-        <p className="text-[18px] text-[#777] mb-8 font-sans">Đơn hàng của bạn đã được đặt thành công.</p>
+        <h2 className="text-[32px] font-normal text-[#333] mb-4 uppercase">Cảm ơn bạn!</h2>
+        <p className="text-[18px] text-[#777] mb-8">Đơn hàng của bạn đã được đặt thành công.</p>
         <div className="max-w-[500px] mx-auto bg-white p-6 border border-[#eee] text-left mb-8">
             <h4 className="font-bold uppercase text-[14px] mb-4">Chi tiết đơn hàng</h4>
             <div className="flex justify-between mb-2"><span className="text-[#777]">Mã đơn hàng:</span> <b>#AT-{(Math.floor(Math.random() * 90000) + 10000)}</b></div>
@@ -98,54 +98,54 @@ export function CheckoutForm({ onSuccess }: { onSuccess?: () => void }) {
         <div className="flex flex-wrap -mx-[15px]">
           {/* Billing Details - Keeping form inputs same */}
           <div className="w-full lg:w-2/3 px-[15px] mb-[40px] lg:mb-0 text-left">
-            <h3 className="text-[24px] font-medium text-[#333] mb-[30px] font-sans">Thông tin thanh toán</h3>
+            <h3 className="text-[24px] font-medium text-[#333] mb-[30px]">Thông tin thanh toán</h3>
             
             <div className="flex flex-wrap -mx-[10px]">
               <div className="w-full md:w-1/2 px-[10px] mb-4">
-                <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 font-sans text-left">Tên <span className="text-[#f74f2e]">*</span></label>
+                <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 text-left">Tên <span className="text-[#f74f2e]">*</span></label>
                 <input type="text" name="FirstName" className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors" required suppressHydrationWarning />
               </div>
               <div className="w-full md:w-1/2 px-[10px] mb-4">
-                <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 font-sans text-left">Họ <span className="text-[#f74f2e]">*</span></label>
+                <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 text-left">Họ <span className="text-[#f74f2e]">*</span></label>
                 <input type="text" name="LastName" className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors" required suppressHydrationWarning />
               </div>
             </div>
 
             <div className="mb-4">
-              <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 font-sans text-left">Quốc gia / Khu vực <span className="text-[#f74f2e]">*</span></label>
-              <select className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors bg-white font-sans" suppressHydrationWarning>
+              <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 text-left">Quốc gia / Khu vực <span className="text-[#f74f2e]">*</span></label>
+              <select className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors bg-white" suppressHydrationWarning>
                 <option>Việt Nam</option>
                 <option>Hoa Kỳ</option>
               </select>
             </div>
 
             <div className="mb-4">
-              <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 font-sans text-left">Địa chỉ <span className="text-[#f74f2e]">*</span></label>
+              <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 text-left">Địa chỉ <span className="text-[#f74f2e]">*</span></label>
               <input type="text" name="Address" placeholder="Số nhà và tên đường" className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors mb-4" required suppressHydrationWarning />
             </div>
 
             <div className="mb-4">
-              <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 font-sans text-left">Thành phố <span className="text-[#f74f2e]">*</span></label>
+              <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 text-left">Thành phố <span className="text-[#f74f2e]">*</span></label>
               <input type="text" name="City" className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors" required suppressHydrationWarning />
             </div>
 
             <div className="flex flex-wrap -mx-[10px]">
               <div className="w-full md:w-1/2 px-[10px] mb-4">
-                <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 font-sans text-left">Số điện thoại <span className="text-[#f74f2e]">*</span></label>
+                <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 text-left">Số điện thoại <span className="text-[#f74f2e]">*</span></label>
                 <input type="tel" name="Phone" className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors" required suppressHydrationWarning />
               </div>
               <div className="w-full md:w-1/2 px-[10px] mb-4">
-                <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 font-sans text-left">Địa chỉ Email <span className="text-[#f74f2e]">*</span></label>
+                <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 text-left">Địa chỉ Email <span className="text-[#f74f2e]">*</span></label>
                 <input type="email" name="Email" className="w-full h-[45px] border border-[#eee] px-4 text-[14px] outline-none focus:border-primary transition-colors" required suppressHydrationWarning />
               </div>
             </div>
 
             <div className="mt-6">
-              <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 font-sans text-left">Ghi chú đơn hàng (Tùy chọn)</label>
+              <label className="block text-[14px] font-bold text-[#333] uppercase mb-2 text-left">Ghi chú đơn hàng (Tùy chọn)</label>
               <textarea 
                 name="OrderNote"
                 placeholder="Yêu cầu đặc biệt cho đơn hàng của bạn, ví dụ: lưu ý về thời gian giao hàng."
-                className="w-full h-[120px] border border-[#eee] p-4 text-[14px] outline-none focus:border-primary transition-colors resize-none font-sans"
+                className="w-full h-[120px] border border-[#eee] p-4 text-[14px] outline-none focus:border-primary transition-colors resize-none"
                 suppressHydrationWarning
               ></textarea>
             </div>
@@ -154,36 +154,36 @@ export function CheckoutForm({ onSuccess }: { onSuccess?: () => void }) {
           {/* Dynamic Order Summary */}
           <div className="w-full lg:w-1/3 px-[15px]">
             <div className="border-[2px] border-[#eee] p-[30px] bg-[#fdfdfd]">
-              <h3 className="text-[20px] font-medium text-[#333] mb-[25px] font-sans uppercase text-left">Đơn hàng của bạn</h3>
+              <h3 className="text-[20px] font-medium text-[#333] mb-[25px] uppercase text-left">Đơn hàng của bạn</h3>
               
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between items-center pb-4 border-b border-[#eee]">
-                  <span className="text-[15px] font-bold text-[#333] uppercase font-sans">Sản phẩm</span>
-                  <span className="text-[15px] font-bold text-[#333] uppercase font-sans">Tổng</span>
+                  <span className="text-[15px] font-bold text-[#333] uppercase">Sản phẩm</span>
+                  <span className="text-[15px] font-bold text-[#333] uppercase">Tổng</span>
                 </div>
                 
                 {cartItems.map(item => (
                   <div key={item.id} className="flex justify-between items-start py-2">
-                    <span className="text-[14px] text-[#777] font-sans text-left pr-4">{item.name} × {item.quantity}</span>
-                    <span className="text-[14px] text-[#333] font-medium font-sans">{formatPrice(item.price * item.quantity)}</span>
+                    <span className="text-[14px] text-[#777] text-left pr-4">{item.name} × {item.quantity}</span>
+                    <span className="text-[14px] text-[#333] font-medium">{formatPrice(item.price * item.quantity)}</span>
                   </div>
                 ))}
 
-                {cartItems.length === 0 && <p className="text-[14px] text-[#777] font-sans py-4">Giỏ hàng trống.</p>}
+                {cartItems.length === 0 && <p className="text-[14px] text-[#777] py-4">Giỏ hàng trống.</p>}
 
                 <div className="flex justify-between items-center py-4 border-t border-[#eee]">
-                  <span className="text-[15px] font-bold text-[#333] uppercase font-sans">Tạm tính</span>
-                  <span className="text-[15px] font-bold font-sans">{formatPrice(cartTotal)}</span>
+                  <span className="text-[15px] font-bold text-[#333] uppercase">Tạm tính</span>
+                  <span className="text-[15px] font-bold">{formatPrice(cartTotal)}</span>
                 </div>
 
                 <div className="flex justify-between items-center py-4 border-t border-[#eee]">
-                    <span className="text-[15px] font-bold text-[#333] uppercase font-sans">Vận chuyển</span>
-                    <span className="text-[14px] text-[#777] font-sans">Đồng giá: {formatPrice(10)}</span>
+                    <span className="text-[15px] font-bold text-[#333] uppercase">Vận chuyển</span>
+                    <span className="text-[14px] text-[#777]">Đồng giá: {formatPrice(10)}</span>
                 </div>
 
                 <div className="flex justify-between items-center py-4 border-t border-b border-[#eee]">
-                  <span className="text-[18px] font-bold text-[#333] uppercase font-sans">Tổng cộng</span>
-                  <span className="text-[18px] font-bold text-primary font-sans">{formatPrice(cartTotal + 10)}</span>
+                  <span className="text-[18px] font-bold text-[#333] uppercase">Tổng cộng</span>
+                  <span className="text-[18px] font-bold text-primary">{formatPrice(cartTotal + 10)}</span>
                 </div>
               </div>
 
@@ -191,25 +191,25 @@ export function CheckoutForm({ onSuccess }: { onSuccess?: () => void }) {
               <div className="payment_methods space-y-4 mb-8">
                 <div className="flex items-start space-x-3">
                   <input type="radio" name="payment" id="bank" className="mt-1 accent-primary" defaultChecked suppressHydrationWarning />
-                  <label htmlFor="bank" className="text-[14px] text-[#333] font-bold font-sans uppercase cursor-pointer">Chuyển khoản ngân hàng</label>
+                  <label htmlFor="bank" className="text-[14px] text-[#333] font-bold uppercase cursor-pointer">Chuyển khoản ngân hàng</label>
                 </div>
-                <p className="text-[13px] text-[#777] pl-6 mb-4 font-sans text-left">Thực hiện thanh toán trực tiếp vào tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng Mã đơn hàng làm nội dung thanh toán. Đơn hàng sẽ được giao sau khi tiền đã chuyển vào tài khoản.</p>
+                <p className="text-[13px] text-[#777] pl-6 mb-4 text-left">Thực hiện thanh toán trực tiếp vào tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng Mã đơn hàng làm nội dung thanh toán. Đơn hàng sẽ được giao sau khi tiền đã chuyển vào tài khoản.</p>
                 
                 <div className="flex items-start space-x-3">
                   <input type="radio" name="payment" id="cod" className="mt-1 accent-primary" suppressHydrationWarning />
-                  <label htmlFor="cod" className="text-[14px] text-[#333] font-bold font-sans uppercase cursor-pointer">Thanh toán khi nhận hàng (COD)</label>
+                  <label htmlFor="cod" className="text-[14px] text-[#333] font-bold uppercase cursor-pointer">Thanh toán khi nhận hàng (COD)</label>
                 </div>
 
                 <div className="flex items-start space-x-3">
                   <input type="radio" name="payment" id="paypal" className="mt-1 accent-primary" suppressHydrationWarning />
-                  <label htmlFor="paypal" className="text-[14px] text-[#333] font-bold font-sans uppercase cursor-pointer">PayPal <img src="/images/payments.png" alt="paypal" className="inline ml-2 h-4" /></label>
+                  <label htmlFor="paypal" className="text-[14px] text-[#333] font-bold uppercase cursor-pointer">PayPal <img src="/images/payments.png" alt="paypal" className="inline ml-2 h-4" /></label>
                 </div>
               </div>
 
               <button 
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full background-btn bg-primary text-white py-[15px] text-[15px] font-bold uppercase transition-all flex items-center justify-center font-sans tracking-widest ${isSubmitting ? "opacity-70 cursor-not-allowed" : "hover:bg-[#333]"}`}
+                className={`w-full background-btn bg-primary text-white py-[15px] text-[15px] font-bold uppercase transition-all flex items-center justify-center tracking-widest ${isSubmitting ? "opacity-70 cursor-not-allowed" : "hover:bg-[#333]"}`}
                 suppressHydrationWarning
               >
                 {isSubmitting ? "Đang xử lý..." : "Đặt hàng ngay"}

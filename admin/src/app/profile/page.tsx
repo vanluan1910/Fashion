@@ -108,7 +108,6 @@ export default function ProfilePage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold text-[#333] tracking-tight">Hồ sơ cá nhân</h1>
-          <p className="text-[13px] text-[#666] font-medium mt-1">Quản lý và cập nhật thông tin định danh của bạn trên hệ thống.</p>
         </div>
         {isEditing && (
           <div className="flex items-center gap-3">

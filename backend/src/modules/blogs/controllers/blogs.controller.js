@@ -38,6 +38,24 @@ class BlogsController {
       res.status(400).json(result);
     }
   }
+
+  async getComments(req, res) {
+    const result = await blogsService.getComments(req.params.id);
+    if (result.success) {
+      res.json(result);
+    } else {
+      res.status(result.statusCode || 400).json(result);
+    }
+  }
+
+  async createComment(req, res) {
+    const result = await blogsService.createComment(req.params.id, req.body);
+    if (result.success) {
+      res.status(201).json(result);
+    } else {
+      res.status(result.statusCode || 400).json(result);
+    }
+  }
 }
 
 module.exports = new BlogsController();

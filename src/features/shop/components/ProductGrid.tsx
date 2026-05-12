@@ -6,6 +6,12 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ProductCard } from "./ProductCard";
 import { getproductsData } from "../../products/services/productsService";
+import {
+  getShopCategoryLabel,
+  getShopSubCategoryLabel,
+  normalizeShopCategory,
+  normalizeShopSubCategory,
+} from "../constants/shop-taxonomy";
 
 export function ProductGrid({ category, onFilterOpen }: { category?: string, onFilterOpen?: () => void }) {
   const [products, setProducts] = useState<any[]>([]);
@@ -13,8 +19,8 @@ export function ProductGrid({ category, onFilterOpen }: { category?: string, onF
   const [columns, setColumns] = useState(3);
   const searchParams = useSearchParams();
   const idParam = searchParams.get("id");
-  const categoryFilter = (category ? [category.toLowerCase()] : searchParams.get("category")?.toLowerCase().split(",")) || [];
-  const subCategoryFilter = searchParams.get("subCategory")?.toLowerCase().split(",") || [];
+  const categoryFilter = (category ? [category] : searchParams.get("category")?.split(",")) || [];
+  const subCategoryFilter = searchParams.get("subCategory")?.split(",") || [];
   const saleFilter = searchParams.get("sale") === "true";
   const sizeFilter = searchParams.get("size")?.toLowerCase().split(",") || [];
   const colorFilter = searchParams.get("color")?.toLowerCase().split(",") || [];
@@ -42,23 +48,17 @@ export function ProductGrid({ category, onFilterOpen }: { category?: string, onF
     if (price < minPriceFilter || price > maxPriceFilter) return false;
 
     // 3. Lọc theo Danh mục chính
-    if (categoryFilter.length > 0 && categoryFilter[0] !== "") {
-      const productCat = String(product.category || "").toLowerCase();
-      if (!categoryFilter.some(filter => {
-        const f = filter.toLowerCase();
-        // So khớp linh hoạt: bao gồm nhau hoặc ánh xạ từ tiếng Việt sang tiếng Anh
-        if (productCat.includes(f) || f.includes(productCat)) return true;
-        if (f.includes("nam") && productCat.includes("men")) return true;
-        if (f.includes("nữ") && productCat.includes("women")) return true;
-        if (f.includes("phụ kiện") && productCat.includes("acc")) return true;
-        return false;
-      })) return false;
+    const normalizedCategoryFilters = categoryFilter.map(normalizeShopCategory).filter(Boolean);
+    if (normalizedCategoryFilters.length > 0 && normalizedCategoryFilters[0] !== "") {
+      const productCat = normalizeShopCategory(String(product.category || ""));
+      if (!normalizedCategoryFilters.some(filter => filter === productCat)) return false;
     }
 
     // 4. Lọc theo Danh mục con (subCategory)
-    if (subCategoryFilter.length > 0 && subCategoryFilter[0] !== "") {
-      const productSubCat = String(product.subCategory || "").toLowerCase();
-      if (!subCategoryFilter.some(filter => productSubCat.includes(filter))) return false;
+    const normalizedSubCategoryFilters = subCategoryFilter.map(normalizeShopSubCategory).filter(Boolean);
+    if (normalizedSubCategoryFilters.length > 0 && normalizedSubCategoryFilters[0] !== "") {
+      const productSubCat = normalizeShopSubCategory(String(product.subCategory || ""));
+      if (!normalizedSubCategoryFilters.some(filter => filter === productSubCat)) return false;
     }
 
     // 5. Lọc theo Trạng thái Giảm giá
@@ -125,7 +125,9 @@ export function ProductGrid({ category, onFilterOpen }: { category?: string, onF
               ) : searchFilter ? (
                 <>Hiển thị {filteredProducts.length} kết quả cho "<span className="font-bold">{searchFilter}</span>"</>
               ) : categoryFilter.length > 0 && categoryFilter[0] !== "" ? (
-                <>Hiển thị {filteredProducts.length} kết quả cho "<span className="font-bold">{categoryFilter.join(", ")}</span>"</>
+                <>Hiển thị {filteredProducts.length} kết quả cho "<span className="font-bold">{categoryFilter.map(getShopCategoryLabel).join(", ")}</span>"</>
+              ) : subCategoryFilter.length > 0 && subCategoryFilter[0] !== "" ? (
+                <>Hiển thị {filteredProducts.length} kết quả cho "<span className="font-bold">{subCategoryFilter.map(getShopSubCategoryLabel).join(", ")}</span>"</>
               ) : (
                 <>Hiển thị tất cả {filteredProducts.length} sản phẩm</>
               )}

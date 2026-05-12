@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Work_Sans, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import "./flaticon.css";
@@ -12,15 +12,14 @@ import { AuthProvider } from "@/core/providers/AuthProvider";
 import { NewsletterPopup } from "@/shared/components/NewsletterPopup";
 import { ScrollToTop } from "@/shared/components/ScrollToTop";
 
-const workSans = Work_Sans({
-  subsets: ["latin"],
-  variable: "--font-work-sans",
-  weight: ["300", "400", "500", "600", "700"],
+const inter = Inter({
+  subsets: ["latin", "vietnamese"],
+  variable: "--font-inter",
   display: "swap",
 });
 
 const playfair = Playfair_Display({
-  subsets: ["latin"],
+  subsets: ["latin", "vietnamese"],
   variable: "--font-playfair",
   display: "swap",
 });
@@ -75,7 +74,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="vi" className={`${workSans.variable} ${playfair.variable} ${elegantoSans.variable}`}>
+    <html lang="vi" className={`${inter.variable} ${playfair.variable} ${elegantoSans.variable}`}>
       <body suppressHydrationWarning className="font-sans antialiased">
         <AuthProvider>
           <CurrencyProvider>

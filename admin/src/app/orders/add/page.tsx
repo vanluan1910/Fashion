@@ -317,7 +317,7 @@ export default function AddOrderPage() {
                         className="bg-white p-4 rounded-xl flex gap-4 border border-slate-100 shadow-sm hover:shadow-md transition-all cursor-pointer group"
                       >
                           <div className="w-20 h-20 rounded-lg bg-slate-50 overflow-hidden shrink-0 border border-slate-100 flex items-center justify-center transition-transform group-hover:scale-105 duration-300">
-                              <img src={p.image} className="w-full h-full object-cover" />
+                              <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
                           </div>
                           <div className="flex flex-col justify-between py-0.5 flex-1">
                               <div>

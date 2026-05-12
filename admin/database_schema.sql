@@ -160,3 +160,18 @@ CREATE TABLE IF NOT EXISTS product_reviews (
     CONSTRAINT fk_review_account FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE CASCADE,
     CONSTRAINT fk_review_order FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
+
+-- 12. Table: Notifications (Dòng thời gian thông báo hợp nhất cho admin)
+CREATE TABLE IF NOT EXISTS notifications (
+    notification_id INT AUTO_INCREMENT PRIMARY KEY,
+    type VARCHAR(50) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    entity_type VARCHAR(50) NOT NULL,
+    entity_id VARCHAR(50) NOT NULL,
+    actor_account_id INT NULL,
+    metadata_json JSON NULL,
+    is_read TINYINT(1) NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    read_at TIMESTAMP NULL
+) ENGINE=InnoDB;

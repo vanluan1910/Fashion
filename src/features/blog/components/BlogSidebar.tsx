@@ -30,10 +30,7 @@ export function BlogSidebar({ recentPosts }: BlogSidebarProps) {
     <aside className="blog_sidebar space-y-12">
       {/* Search Widget */}
       <div className="widget search_widget">
-        <h3 
-          className="text-[18px] font-normal text-[#333] mb-[25px] uppercase tracking-[3px] border-b-2 border-[#f74f2e] inline-block pb-2"
-          style={{ fontFamily: "var(--font-playfair), serif" }}
-        >
+        <h3 className="text-[18px] font-normal text-[#333] mb-[25px] uppercase tracking-[3px] border-b-2 border-[#f74f2e] inline-block pb-2 font-serif">
           Tìm kiếm
         </h3>
         <div className="relative">
@@ -51,10 +48,7 @@ export function BlogSidebar({ recentPosts }: BlogSidebarProps) {
 
       {/* Categories Widget */}
       <div className="widget categories_widget">
-        <h3 
-          className="text-[18px] font-normal text-[#333] mb-[25px] uppercase tracking-[3px] border-b-2 border-[#f74f2e] inline-block pb-2"
-          style={{ fontFamily: "var(--font-playfair), serif" }}
-        >
+        <h3 className="text-[18px] font-normal text-[#333] mb-[25px] uppercase tracking-[3px] border-b-2 border-[#f74f2e] inline-block pb-2 font-serif">
           Danh mục
         </h3>
         <ul className="space-y-4">
@@ -73,10 +67,7 @@ export function BlogSidebar({ recentPosts }: BlogSidebarProps) {
 
       {/* Recent Posts Widget */}
       <div className="widget recent_posts_widget">
-        <h3 
-          className="text-[18px] font-normal text-[#333] mb-[25px] uppercase tracking-[3px] border-b-2 border-[#f74f2e] inline-block pb-2"
-          style={{ fontFamily: "var(--font-playfair), serif" }}
-        >
+        <h3 className="text-[18px] font-normal text-[#333] mb-[25px] uppercase tracking-[3px] border-b-2 border-[#f74f2e] inline-block pb-2 font-serif">
           Bài viết mới
         </h3>
         <div className="space-y-6">
@@ -92,10 +83,7 @@ export function BlogSidebar({ recentPosts }: BlogSidebarProps) {
                 />
               </div>
               <div className="post_info">
-                <h4 
-                  className="text-[15px] font-normal text-[#333] mb-1 group-hover:text-[#f74f2e] transition-colors line-clamp-2 leading-snug"
-                  style={{ fontFamily: "var(--font-playfair), serif" }}
-                >
+                <h4 className="text-[15px] font-normal text-[#333] mb-1 group-hover:text-[#f74f2e] transition-colors line-clamp-2 leading-snug font-serif">
                   {post.title}
                 </h4>
                 <span className="text-[11px] text-[#999] uppercase tracking-widest font-sans">{post.date}</span>
@@ -107,10 +95,7 @@ export function BlogSidebar({ recentPosts }: BlogSidebarProps) {
 
       {/* Instagram Widget */}
       <div className="widget instagram_widget">
-        <h3 
-          className="text-[18px] font-normal text-[#333] mb-[25px] uppercase tracking-[3px] border-b-2 border-[#f74f2e] inline-block pb-2"
-          style={{ fontFamily: "var(--font-playfair), serif" }}
-        >
+        <h3 className="text-[18px] font-normal text-[#333] mb-[25px] uppercase tracking-[3px] border-b-2 border-[#f74f2e] inline-block pb-2 font-serif">
           Instagram
         </h3>
         <div className="grid grid-cols-3 gap-2">

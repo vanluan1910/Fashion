@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 
 interface ModalProps {
@@ -20,7 +21,6 @@ export default function Modal({
   footer,
   size = 'md' 
 }: ModalProps) {
-  
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -35,7 +35,7 @@ export default function Modal({
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen || typeof document === "undefined") return null;
 
   const sizes = {
     sm: "max-w-md",
@@ -44,7 +44,7 @@ export default function Modal({
     xl: "max-w-4xl"
   };
 
-  return (
+  const modalContent = (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 transition-all">
       {/* Backdrop */}
       <div 
@@ -53,13 +53,13 @@ export default function Modal({
       ></div>
       
       {/* Modal Content */}
-      <div className={`${sizes[size]} w-full bg-white rounded-2xl shadow-2xl relative z-10 animate-in zoom-in-95 slide-in-from-bottom-4 duration-300 overflow-hidden`}>
+      <div className={`${sizes[size]} w-full bg-white rounded-2xl shadow-[0_28px_70px_-40px_rgba(54,43,34,0.22)] relative z-10 animate-in zoom-in-95 slide-in-from-bottom-4 duration-300 overflow-hidden border border-[var(--admin-border)]`}>
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-[#eee]">
-          <h3 className="text-lg font-bold text-[#333] tracking-tight">{title}</h3>
+        <div className="flex items-center justify-between p-6 border-b border-[var(--admin-border)]">
+          <h3 className="text-lg font-bold text-[var(--admin-heading)] tracking-tight">{title}</h3>
           <button 
             onClick={onClose}
-            className="p-2 hover:bg-[#f3f4f9] rounded-xl text-[#999] hover:text-[#333] transition-all"
+            className="p-2 hover:bg-[var(--admin-surface-muted)] rounded-xl text-[var(--admin-text-muted)] hover:text-[var(--admin-heading)] transition-all"
           >
             <X size={20} />
           </button>
@@ -72,11 +72,13 @@ export default function Modal({
         
         {/* Footer */}
         {footer && (
-          <div className="p-6 border-t border-[#eee] bg-[#fcfcff] flex items-center justify-end gap-3">
+          <div className="p-6 border-t border-[var(--admin-border)] bg-[var(--admin-surface-strong)] flex items-center justify-end gap-3">
             {footer}
           </div>
         )}
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }

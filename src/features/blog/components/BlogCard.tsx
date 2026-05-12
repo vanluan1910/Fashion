@@ -35,7 +35,7 @@ export function BlogCard({ post }: BlogCardProps) {
         </span>
         
         <Link href={`/blog/${post.slug}`}>
-          <h5 className="text-[20px] font-bold text-[#333] mb-[15px] hover:text-[#f74f2e] transition-colors leading-tight font-sans">
+          <h5 className="text-[20px] font-bold text-[#333] mb-[15px] hover:text-[#f74f2e] transition-colors leading-tight font-serif">
             {post.title}
           </h5>
         </Link>
