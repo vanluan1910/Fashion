@@ -1,4 +1,6 @@
-const API_URL = "http://localhost:5000/api/orders";
+import { buildStorefrontApiUrl } from "@/shared/config/storefrontApi";
+
+const API_URL = buildStorefrontApiUrl("/orders");
 
 export interface OrderData {
   items: any[];

@@ -1,6 +1,7 @@
-import { Product } from "../types/product";
+import { buildStorefrontApiUrl } from "../../../shared/config/storefrontApi.ts";
+import type { Product } from "../types/product";
 
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = buildStorefrontApiUrl("/products");
 
 export async function getproductsData(): Promise<Product[]> {
   try {

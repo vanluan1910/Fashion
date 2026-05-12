@@ -9,6 +9,7 @@
     "vercel-build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test:storefront-api": "node --test --experimental-strip-types --experimental-default-type=module --experimental-specifier-resolution=node src/shared/config/storefrontApi.test.ts src/features/products/services/productsService.test.ts",
     "scrape:santino-shirts": "node scripts/santino-shirt-images.mjs"
   },
   "keywords": [],
@@ -27,6 +28,7 @@
   },
   "dependencies": {
     "framer-motion": "^12.0.0",
+    "mysql2": "^3.22.3",
     "next": "15.5.15",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
